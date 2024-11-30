@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    #all-count p {
+      margin: 4px;
+    }
+    div {
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div>
+    <input type="text" value="650" id="count">
+    <button onclick="startRandom()">随机生成</button>
+    <button onclick="handelClean()">清空</button>
+  </div>
+  <div>
+    <textarea id="content" cols="30" rows="10"></textarea>
+    <p>一共生成了 <span id="limit">0</span> 个组合; <button onclick="handelCopy()">一键复制</button></p>
+  </div>
+  <p>
+    <span id="tip"></span>
+  </p>
+  <div>
+    <button onclick="handelSort()">升序排序</button>
+    <input type="text" id="awardNumber">
+    <button onclick="handelExist()">验证是否存在</button>
+  </div>
+  <div>
+    <textarea id="contentSort" cols="30" rows="10"></textarea>
+  </div>
+
+  <p id="all-count"></p>
+
+  <script>
+    // 0-9 10个数字 3位数组成一个组；根据传入的个数，生成所有组合 不重复
+    const arr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+    const allCombination = [];
+
+    const result = [];
+    // 生成所有组合
+    function calcRandomAllCombination() {
+      allCombination.length = 0;
+      for (let i = 0; i < arr.length; i++) {
+        for (let j = 0; j < arr.length; j++) {
+          for (let k = 0; k < arr.length; k++) {
+            allCombination.push(`${arr[i]}${arr[j]}${arr[k]}`);
+          }
+        }
+      }
+    }
+
+    // 开始生成
+    function startRandom() {
+      calcRandomAllCombination();
+      const count = document.querySelector('#count').value;
+      getRandomCombination(count);
+      handelSort();
+      calcStartCount();
+
+      document.querySelector('#content').value = result.join(',');
+      document.querySelector('#limit').innerText = result.length;
+    }
+
+    // 随机取对应的个数
+    function getRandomCombination(count) {
+      result.length = 0;
+      while (result.length < count) {
+        let randomIndex = Math.floor(Math.random() * allCombination.length);
+        // 从allCombination截取到result
+        result.push(allCombination.splice(randomIndex, 1)[0]);
+      }
+      return result;
+    }
+
+    // 一键复制
+    function handelCopy() {
+      const content = document.querySelector('#content');
+      content.select();
+      document.execCommand('copy');
+      document.querySelector('#tip').innerText = '复制成功';
+    }
+
+    // 清空
+    function handelClean() {
+      result.length = 0;
+      calcRandomAllCombination();
+      document.querySelector('#content').value = '';
+      document.querySelector('#limit').innerText = 0;
+      document.querySelector('#contentSort').value = '';
+      document.querySelector('#tip').innerText = '清空成功';
+    }
+
+    // 升序排序
+    function handelSort() {
+      const value = [...result].sort((a, b) => a - b);
+      document.querySelector('#contentSort').value = value.join(',');
+      document.querySelector('#tip').innerText = '排序成功';
+    }
+
+    // 验证是否存在
+    function handelExist() {
+      const awardNumber = document.querySelector('#awardNumber').value;
+      const isExist = result.includes(awardNumber);
+      document.querySelector('#tip').innerText = isExist ? '存在' : '不存在';
+    }
+
+     // 计算每一个数字开头的个数
+    function calcStartCount() {
+      const p_ = document.getElementById('all-count');
+      p_.innerHTML = '';
+      const startCount = {};
+      for (let i = 0; i < result.length; i++) {
+        const start = result[i][0];
+        if (startCount[start]) {
+          startCount[start] += 1;
+        } else {
+          startCount[start] = 1;
+        }
+      }
+      Object.keys(startCount).forEach(key => {
+        const p = document.createElement('p');
+        p.innerText = `${key} 开头的有 ${startCount[key]} 个`;
+        p_.appendChild(p);
+      });
+    }
+  </script>
+</body>
+
+</html>
