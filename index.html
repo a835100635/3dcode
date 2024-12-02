@@ -5,33 +5,41 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <!-- import element-ui CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+  <!-- import Vue before Element -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+  <!-- import element-ui JavaScript -->
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+  <script src="history.js"></script>
+
   <style>
-    #all-count p {
-      margin: 4px;
+    * {
+      font-size: 12px;
     }
+    .el-input {
+      width: 100px;
+    }
+
     div {
-      margin-bottom: 10px;
+      margin-bottom: 2px;
+    }
+
+    .flex {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .flex-ac {
+      align-items: center;
     }
   </style>
 </head>
 
 <body>
 
-  <div>
-    <select name="pets" id="pet-select">
-      <option value="-1">无需</option>
-      <option value="0">0</option>
-      <option value="1">1</option>
-      <option value="2">2</option>
-      <option value="3">3</option>
-      <option value="4">4</option>
-      <option value="5">5</option>
-      <option value="6">6</option>
-      <option value="7">7</option>
-      <option value="8">8</option>
-      <option value="9">9</option>
-    </select>
+  <!-- <div>
     <input type="text" value="650" id="count">
     <button onclick="startRandom()">随机生成</button>
     <button onclick="handelClean()">清空</button>
@@ -57,116 +65,297 @@
     <textarea id="contentSort" cols="30" rows="10"></textarea>
   </div>
 
-  <p id="all-count"></p>
+  <p id="all-count"></p> -->
+
+  <div id="app">
+    <div>
+      <el-select v-model="exclude" multiple placeholder="排除选项" size="mini" clearable>
+        <el-option v-for="item in arr" :key="item" :label="item" :value="item">
+        </el-option>
+      </el-select>
+
+      <el-select v-model="value" placeholder="历史开奖" size="mini">
+        <el-option v-for="(item, index) in history" :key="index" :label="item" :value="item">
+        </el-option>
+      </el-select>
+      
+      <el-button type="primary" @click="handleRepeat(50)" size="mini">50期是否存在重复</el-button>
+      <el-button type="primary" @click="handleRepeat(100)" size="mini">100期是否存在重复</el-button>
+    </div>
+
+    <div>
+      <el-input v-model="createCount" placeholder="输入随机个数" size="mini"></el-input>
+      <el-button type="primary" @click="startRandom" size="mini">随机生成</el-button>
+      <el-button type="primary" @click="handelClean" size="mini">清空</el-button>
+      <el-button type="primary" @click="handlePaste" size="mini">粘贴</el-button>
+    </div>
+
+    <div>
+      <el-input type="textarea" :rows="8" placeholder="请输入内容" :value="result.join(',')">
+      </el-input>
+    </div>
+
+    <p>
+      一共生成了 <span id="limit">{{result.length}}</span> 个组合;
+    </p>
+
+    <div class="flex flex-ac">
+      <el-button type="primary" @click="handelCopy(0)" size="mini">复制所有</el-button>
+      <el-button type="primary" @click="handelCopy(2)" size="mini">复制组三</el-button>
+      <el-button type="primary" @click="handelCopy(3)" size="mini">复制组六</el-button>
+      <el-button type="primary" @click="handelCopy(1)" size="mini">复制豹子</el-button>
+      <el-button type="primary" @click="handelCopy(4)" size="mini">复制(除豹子)</el-button>
+      <el-button type="primary" @click="handelCopy(5)" size="mini">剔除近50期</el-button>
+    </div>
+
+    <div v-html="tip"></div>
+
+    <div>
+      <el-button type="primary" @click="handelSort" size="mini">升序排序</el-button>
+      <el-input v-model="awardNumber" placeholder="输入中奖号码" size="mini"></el-input>
+      <el-button type="primary" @click="handelExist" size="mini">验证是否存在</el-button>
+    </div>
+
+    <div>
+      <el-input type="textarea" :rows="8" v-model="resultStr">
+      </el-input>
+    </div>
+    <p>
+      筛选后还剩<span id="limit">{{filterAfterValue}}</span> 个组合;
+    </p>
+
+    <div v-html="allCountTip"></div>
+  </div>
 
   <script>
+    // 创建vue
+    new Vue({
+      // 控制的标签容器
+      el: '#app',
+      // 交互的数据
+      data: function () {
+        return {
+          value: '',
 
-    const key = '27b41ccb9e2d03fe2aed99f53e27cfe2';
-    axios.get(`https://api.tanshuapi.com/api/caipiao/v1/query?key=${key}&caipiaoid=12&issueno=`).then(res => {
-      console.log(res.data);
-    });
+          arr: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+          exclude: [],
+          history: window.historyCode,
+          createCount: 650,
+          allCombination: [],
+          result: [],
+          resultStr: '',
+          allCountTip: '',
+          awardNumber: '',
+          tip: ''
+        }
+      },
+      computed: {
+        filterAfterValue() {
+          const value = this.resultStr.split(',');
+          return value.filter(item => item).length;
+        }
+      },
+      created() {
+        this.calcRandomAllCombination();
+      },
+      mounted() {},
+      // 方法
+      methods: {
+        calcRandomAllCombination() {
+          this.allCombination.length = 0;
+          const arr_ = [...this.arr].filter(item => !this.exclude.includes(item));
+          for (let i = 0; i < arr_.length; i++) {
+            for (let j = 0; j < arr_.length; j++) {
+              for (let k = 0; k < arr_.length; k++) {
+                this.allCombination.push(`${arr_[i]}${arr_[j]}${arr_[k]}`);
+              }
+            }
+          }
+        },
+        startRandom() {
+          this.result.length = 0;
+          const result = []
+          this.calcCombination(this.allCombination);
+          this.allCountTip = '';
+          this.handelSort();
+          this.calcStartCount();
+        },
+        calcCombination(arr) {
+          const allCombination = [...arr];
+          if (this.result.length < this.createCount) {
+            let randomIndex = Math.floor(Math.random() * allCombination.length);
+            this.result.push(allCombination.splice(randomIndex, 1)[0]);
+            this.calcCombination(allCombination);
+          }
+        },
+        handelClean() {
+          this.exclude.length = 0;
+          this.allCombination.length = 0;
+          this.result = [],
+            this.resultStr = '',
+            this.allCountTip = '',
+            this.awardNumber = '',
+            this.tip = ''
+          this.calcRandomAllCombination();
+        },
+        handelExist() {
+          const isExist = this.result.includes(this.awardNumber);
+          this.tip = isExist ? '存在' : '不存在';
+        },
+        handelSort() {
+          this.resultStr = [...this.result].sort((a, b) => a - b).join(',');
+        },
+        calcStartCount() {
+          const startCount = {};
+          this.allCountTip = '';
+          for (let i = 0; i < this.result.length; i++) {
+            const start = this.result[i][0];
+            if (startCount[start]) {
+              startCount[start] += 1;
+            } else {
+              startCount[start] = 1;
+            }
+          }
+          Object.keys(startCount).forEach(key => {
+            this.allCountTip += `${key} 开头的有 ${startCount[key]} 个 <br>`;
+          });
+        },
+        handelCopy(type) {
+          let tip = '';
+          switch (type) {
+            case 0:
+              this.resultStr = this.result.join(',');
+              tip = '复制成功';
+              break;
+            case 1:
+            case 2:
+            case 3:
+              this.resultStr = this.result.filter(item => new Set(item).size === type).join(',');
+              tip = type === 1 ? '显示所有豹子' : type === 2 ? '显示所有组三' : '显示所有组六';
+              break;
+            case 4:
+              this.resultStr = this.result.filter(item => new Set(item).size !== 1).join(',');
+              tip = '显示所有组三和组六';
+              break;
+            case 5:
+              this.resultStr = this.result.filter(item => !this.history.includes(item)).join(',');
+              tip = '剔除近50期出现过的号码';
+              break;
+          }
+          this.tip = tip;
+          navigator.clipboard.writeText(this.resultStr);
+        },
+        handlePaste() {
+          navigator.clipboard.readText().then(text => {
+            this.result = text.split(',');
+          });
+        },
+        handleRepeat(count) {
+          const last = this.history.slice(0, count);
+          const lastMap = new Map();
+          last.forEach(item => {
+            if (lastMap.has(item)) {
+              lastMap.set(item, lastMap.get(item) + 1);
+            } else {
+              lastMap.set(item, 1);
+            }
+          });
+          // 是否存在重复出现的号码
+          let tip = `近${count}期不存在重复号码`;
+          Object.keys(lastMap).forEach(key => {
+            if (lastMap.get(key) > 1) {
+              tip = `近${count}期存在重复号码 ${key} 出现了 ${lastMap.get(key)} 次 <br>`;
+            }
+          });
+          this.tip = tip;
 
+        }
+      }
+    })
 
     // 0-9 10个数字 3位数组成一个组；根据传入的个数，生成所有组合 不重复
-    const arr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-    const allCombination = [];
+    // const arr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+    // const allCombination = [];
 
-    const result = [];
-    // 生成所有组合
-    function calcRandomAllCombination() {
-      const exclude = document.getElementById('pet-select').value;
-      console.log('calcRandomAllCombination', exclude);
-      allCombination.length = 0;
-      const arr_ = [...arr].filter(item => item !== +exclude);
-      for (let i = 0; i < arr_.length; i++) {
-        for (let j = 0; j < arr_.length; j++) {
-          for (let k = 0; k < arr_.length; k++) {
-            allCombination.push(`${arr_[i]}${arr_[j]}${arr_[k]}`);
-          }
-        }
-      }
-    }
+    // const result = [];
 
-    // 开始生成
-    function startRandom() {
-      calcRandomAllCombination();
-      const count = document.querySelector('#count').value;
-      getRandomCombination(count);
-      handelSort();
-      calcStartCount();
-      document.querySelector('#content').value = result.join(',');
-      document.querySelector('#limit').innerText = result.length;
-    }
 
-    // 随机取对应的个数
-    function getRandomCombination(count) {
-      result.length = 0;
-      while (result.length < count) {
-        let randomIndex = Math.floor(Math.random() * allCombination.length);
-        // 从allCombination截取到result
-        result.push(allCombination.splice(randomIndex, 1)[0]);
-      }
-      return result;
-    }
+    // // 开始生成
+    // function startRandom() {
+    //   calcRandomAllCombination();
+    //   const count = document.querySelector('#count').value;
+    //   getRandomCombination(count);
+    //   handelSort();
+    //   calcStartCount();
+    //   document.querySelector('#content').value = result.join(',');
+    //   document.querySelector('#limit').innerText = result.length;
+    // }
 
-    // 一键复制
-    function handelCopy() {
-      const content = document.querySelector('#content');
-      content.select();
-      document.execCommand('copy');
-      document.querySelector('#tip').innerText = '复制成功';
-      handelSort();
-    }
+    // // 随机取对应的个数
+    // function getRandomCombination(count) {
+    //   result.length = 0;
+    //   while (result.length < count) {
+    //     let randomIndex = Math.floor(Math.random() * allCombination.length);
+    //     // 从allCombination截取到result
+    //     result.push(allCombination.splice(randomIndex, 1)[0]);
+    //   }
+    //   return result;
+    // }
 
-    // 清空
-    function handelClean() {
-      result.length = 0;
-      calcRandomAllCombination();
-      document.querySelector('#content').value = '';
-      document.querySelector('#limit').innerText = 0;
-      document.querySelector('#contentSort').value = '';
-      document.querySelector('#tip').innerText = '清空成功';
-    }
+    // // 一键复制
+    // function handelCopy() {
+    //   const content = document.querySelector('#content');
+    //   content.select();
+    //   document.execCommand('copy');
+    //   document.querySelector('#tip').innerText = '复制成功';
+    //   handelSort();
+    // }
 
-    // 升序排序
-    function handelSort() {
-      const value = [...result].sort((a, b) => a - b);
-      document.querySelector('#contentSort').value = value.join(',');
-      document.querySelector('#tip').innerText = '排序成功';
-    }
+    // // 清空
+    // function handelClean() {
+    //   result.length = 0;
+    //   calcRandomAllCombination();
+    //   document.querySelector('#content').value = '';
+    //   document.querySelector('#limit').innerText = 0;
+    //   document.querySelector('#contentSort').value = '';
+    //   document.querySelector('#tip').innerText = '清空成功';
+    // }
 
-    // 验证是否存在
-    function handelExist() {
-      const awardNumber = document.querySelector('#awardNumber').value;
-      const isExist = result.includes(awardNumber);
-      document.querySelector('#tip').innerText = isExist ? '存在' : '不存在';
-    }
+    // // 升序排序
+    // function handelSort() {
+    //   const value = [...result].sort((a, b) => a - b);
+    //   document.querySelector('#contentSort').value = value.join(',');
+    //   document.querySelector('#tip').innerText = '排序成功';
+    // }
 
-     // 计算每一个数字开头的个数
-    function calcStartCount() {
-      const p_ = document.getElementById('all-count');
-      p_.innerHTML = '';
-      const startCount = {};
-      for (let i = 0; i < result.length; i++) {
-        const start = result[i][0];
-        if (startCount[start]) {
-          startCount[start] += 1;
-        } else {
-          startCount[start] = 1;
-        }
-      }
-      Object.keys(startCount).forEach(key => {
-        const p = document.createElement('p');
-        p.innerText = `${key} 开头的有 ${startCount[key]} 个`;
-        p_.appendChild(p);
-      });
-    }
-    // 复制组合 组三 组六 豹子
-    function copyType(type) {
-      const value = result.filter(item => new Set(item).size === type);
-      document.querySelector('#contentSort').value = value.join(',');
-      document.querySelector('#tip').innerText = '复制成功';
-    }
+    // // 验证是否存在
+    // function 
+
+    // // 计算每一个数字开头的个数
+    // function calcStartCount() {
+    //   const p_ = document.getElementById('all-count');
+    //   p_.innerHTML = '';
+    //   const startCount = {};
+    //   for (let i = 0; i < result.length; i++) {
+    //     const start = result[i][0];
+    //     if (startCount[start]) {
+    //       startCount[start] += 1;
+    //     } else {
+    //       startCount[start] = 1;
+    //     }
+    //   }
+    //   Object.keys(startCount).forEach(key => {
+    //     const p = document.createElement('p');
+    //     p.innerText = `${key} 开头的有 ${startCount[key]} 个`;
+    //     p_.appendChild(p);
+    //   });
+    // }
+    // // 复制组合 组三 组六 豹子
+    // function copyType(type) {
+    //   const value = result.filter(item => new Set(item).size === type);
+    //   document.querySelector('#contentSort').value = value.join(',');
+    //   document.querySelector('#tip').innerText = '复制成功';
+    // }
   </script>
 </body>
 

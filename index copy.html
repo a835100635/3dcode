@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+    <!-- import element-ui CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- import Vue before Element -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <!-- import element-ui JavaScript -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+  <style>
+    #all-count p {
+      margin: 4px;
+    }
+
+    div {
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div>
+    排除：
+    <select name="pets" id="pet-select" multiple size="7">
+      <option value="-1">无需</option>
+      <option value="0">0</option>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+      <option value="9">9</option>
+    </select>
+  </div>
+  <div>
+    <input type="text" value="650" id="count">
+    <button onclick="startRandom()">随机生成</button>
+    <button onclick="handelClean()">清空</button>
+  </div>
+  <div>
+    <textarea id="content" cols="30" rows="10"></textarea>
+    <p>一共生成了 <span id="limit">0</span> 个组合; <button onclick="handelCopy()">一键复制</button></p>
+  </div>
+  <div>
+    <button onclick="copyType(2)">复制组三</button>
+    <button onclick="copyType(3)">复制组六</button>
+    <button onclick="copyType(1)">复制豹子</button>
+  </div>
+  <p>
+    <span id="tip"></span>
+  </p>
+  <div>
+    <button onclick="handelSort()">升序排序</button>
+    <input type="text" id="awardNumber">
+    <button onclick="handelExist()">验证是否存在</button>
+  </div>
+  <div>
+    <textarea id="contentSort" cols="30" rows="10"></textarea>
+  </div>
+
+  <p id="all-count"></p>
+
+  <div id="app">
+  </div>
+
+  <script>
+
+        // 创建vue
+    new Vue({
+        // 控制的标签容器
+        el: '#app',
+        // 交互的数据
+        data: function () {
+            return {visible: false}
+        },
+        // 方法
+        methods: {
+            open() {
+                this.$alert('这是一段内容', '标题名称', {
+                    confirmButtonText: '确定',
+                    callback: action => {
+                        this.$message({
+                            type: 'info',
+                            message: `action: ${action}`
+                        });
+                    }
+                });
+            }
+        }
+    })
+
+    // 0-9 10个数字 3位数组成一个组；根据传入的个数，生成所有组合 不重复
+    const arr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+    const allCombination = [];
+
+    const result = [];
+    // 生成所有组合
+    function calcRandomAllCombination() {
+      const exclude = document.getElementById('pet-select').value;
+      console.log('calcRandomAllCombination', exclude);
+      allCombination.length = 0;
+      const arr_ = [...arr].filter(item => item !== +exclude);
+      for (let i = 0; i < arr_.length; i++) {
+        for (let j = 0; j < arr_.length; j++) {
+          for (let k = 0; k < arr_.length; k++) {
+            allCombination.push(`${arr_[i]}${arr_[j]}${arr_[k]}`);
+          }
+        }
+      }
+    }
+
+    // 开始生成
+    function startRandom() {
+      calcRandomAllCombination();
+      const count = document.querySelector('#count').value;
+      getRandomCombination(count);
+      handelSort();
+      calcStartCount();
+      document.querySelector('#content').value = result.join(',');
+      document.querySelector('#limit').innerText = result.length;
+    }
+
+    // 随机取对应的个数
+    function getRandomCombination(count) {
+      result.length = 0;
+      while (result.length < count) {
+        let randomIndex = Math.floor(Math.random() * allCombination.length);
+        // 从allCombination截取到result
+        result.push(allCombination.splice(randomIndex, 1)[0]);
+      }
+      return result;
+    }
+
+    // 一键复制
+    function handelCopy() {
+      const content = document.querySelector('#content');
+      content.select();
+      document.execCommand('copy');
+      document.querySelector('#tip').innerText = '复制成功';
+      handelSort();
+    }
+
+    // 清空
+    function handelClean() {
+      result.length = 0;
+      calcRandomAllCombination();
+      document.querySelector('#content').value = '';
+      document.querySelector('#limit').innerText = 0;
+      document.querySelector('#contentSort').value = '';
+      document.querySelector('#tip').innerText = '清空成功';
+    }
+
+    // 升序排序
+    function handelSort() {
+      const value = [...result].sort((a, b) => a - b);
+      document.querySelector('#contentSort').value = value.join(',');
+      document.querySelector('#tip').innerText = '排序成功';
+    }
+
+    // 验证是否存在
+    function handelExist() {
+      const awardNumber = document.querySelector('#awardNumber').value;
+      const isExist = result.includes(awardNumber);
+      document.querySelector('#tip').innerText = isExist ? '存在' : '不存在';
+    }
+
+    // 计算每一个数字开头的个数
+    function calcStartCount() {
+      const p_ = document.getElementById('all-count');
+      p_.innerHTML = '';
+      const startCount = {};
+      for (let i = 0; i < result.length; i++) {
+        const start = result[i][0];
+        if (startCount[start]) {
+          startCount[start] += 1;
+        } else {
+          startCount[start] = 1;
+        }
+      }
+      Object.keys(startCount).forEach(key => {
+        const p = document.createElement('p');
+        p.innerText = `${key} 开头的有 ${startCount[key]} 个`;
+        p_.appendChild(p);
+      });
+    }
+    // 复制组合 组三 组六 豹子
+    function copyType(type) {
+      const value = result.filter(item => new Set(item).size === type);
+      document.querySelector('#contentSort').value = value.join(',');
+      document.querySelector('#tip').innerText = '复制成功';
+    }
+  </script>
+</body>
+
+</html>
