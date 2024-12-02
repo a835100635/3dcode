@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <style>
     #all-count p {
       margin: 4px;
@@ -18,6 +19,19 @@
 <body>
 
   <div>
+    <select name="pets" id="pet-select">
+      <option value="-1">无需</option>
+      <option value="0">0</option>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+      <option value="9">9</option>
+    </select>
     <input type="text" value="650" id="count">
     <button onclick="startRandom()">随机生成</button>
     <button onclick="handelClean()">清空</button>
@@ -25,6 +39,11 @@
   <div>
     <textarea id="content" cols="30" rows="10"></textarea>
     <p>一共生成了 <span id="limit">0</span> 个组合; <button onclick="handelCopy()">一键复制</button></p>
+  </div>
+  <div>
+    <button onclick="copyType(2)">复制组三</button>
+    <button onclick="copyType(3)">复制组六</button>
+    <button onclick="copyType(1)">复制豹子</button>
   </div>
   <p>
     <span id="tip"></span>
@@ -41,6 +60,13 @@
   <p id="all-count"></p>
 
   <script>
+
+    const key = '27b41ccb9e2d03fe2aed99f53e27cfe2';
+    axios.get(`https://api.tanshuapi.com/api/caipiao/v1/query?key=${key}&caipiaoid=12&issueno=`).then(res => {
+      console.log(res.data);
+    });
+
+
     // 0-9 10个数字 3位数组成一个组；根据传入的个数，生成所有组合 不重复
     const arr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
     const allCombination = [];
@@ -48,11 +74,14 @@
     const result = [];
     // 生成所有组合
     function calcRandomAllCombination() {
+      const exclude = document.getElementById('pet-select').value;
+      console.log('calcRandomAllCombination', exclude);
       allCombination.length = 0;
-      for (let i = 0; i < arr.length; i++) {
-        for (let j = 0; j < arr.length; j++) {
-          for (let k = 0; k < arr.length; k++) {
-            allCombination.push(`${arr[i]}${arr[j]}${arr[k]}`);
+      const arr_ = [...arr].filter(item => item !== +exclude);
+      for (let i = 0; i < arr_.length; i++) {
+        for (let j = 0; j < arr_.length; j++) {
+          for (let k = 0; k < arr_.length; k++) {
+            allCombination.push(`${arr_[i]}${arr_[j]}${arr_[k]}`);
           }
         }
       }
@@ -86,6 +115,7 @@
       content.select();
       document.execCommand('copy');
       document.querySelector('#tip').innerText = '复制成功';
+      handelSort();
     }
 
     // 清空
@@ -130,6 +160,12 @@
         p.innerText = `${key} 开头的有 ${startCount[key]} 个`;
         p_.appendChild(p);
       });
+    }
+    // 复制组合 组三 组六 豹子
+    function copyType(type) {
+      const value = result.filter(item => new Set(item).size === type);
+      document.querySelector('#contentSort').value = value.join(',');
+      document.querySelector('#tip').innerText = '复制成功';
     }
   </script>
 </body>
