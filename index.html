@@ -106,6 +106,7 @@
       <el-button type="primary" @click="handelCopy(1)" size="mini">复制豹子</el-button>
       <el-button type="primary" @click="handelCopy(4)" size="mini">复制(除豹子)</el-button>
       <el-button type="primary" @click="handelCopy(5)" size="mini">剔除近50期</el-button>
+      <el-button type="primary" @click="handelCopy(6)" size="mini">剔除近100期</el-button>
     </div>
 
     <div v-html="tip"></div>
@@ -156,7 +157,6 @@
         }
       },
       created() {
-        this.calcRandomAllCombination();
       },
       mounted() {},
       // 方法
@@ -173,6 +173,7 @@
           }
         },
         startRandom() {
+          this.calcRandomAllCombination();
           this.result.length = 0;
           const result = []
           this.calcCombination(this.allCombination);
@@ -224,22 +225,26 @@
           let tip = '';
           switch (type) {
             case 0:
-              this.resultStr = this.result.join(',');
+              this.resultStr = this.result.sort((a, b) => a - b).join(',');
               tip = '复制成功';
               break;
             case 1:
             case 2:
             case 3:
-              this.resultStr = this.result.filter(item => new Set(item).size === type).join(',');
+              this.resultStr = this.result.filter(item => new Set(item).size === type).sort((a, b) => a - b).join(',');
               tip = type === 1 ? '显示所有豹子' : type === 2 ? '显示所有组三' : '显示所有组六';
               break;
             case 4:
-              this.resultStr = this.result.filter(item => new Set(item).size !== 1).join(',');
+              this.resultStr = this.result.filter(item => new Set(item).size !== 1).sort((a, b) => a - b).join(',');
               tip = '显示所有组三和组六';
               break;
             case 5:
-              this.resultStr = this.result.filter(item => !this.history.includes(item)).join(',');
+              this.resultStr = this.result.filter(item => !this.history.slice(0, 50).includes(item)).sort((a, b) => a - b).join(',');
               tip = '剔除近50期出现过的号码';
+              break;
+            case 6:
+              this.resultStr = this.result.filter(item => !this.history.slice(0, 100).includes(item)).sort((a, b) => a - b).join(',');
+              tip = '剔除近100期出现过的号码';
               break;
           }
           this.tip = tip;
