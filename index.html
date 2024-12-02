@@ -81,6 +81,7 @@
       
       <el-button type="primary" @click="handleRepeat(50)" size="mini">50期是否存在重复</el-button>
       <el-button type="primary" @click="handleRepeat(100)" size="mini">100期是否存在重复</el-button>
+      <el-button type="primary" @click="handleRepeat(300)" size="mini">300期是否存在重复</el-button>
     </div>
 
     <div>
@@ -105,8 +106,9 @@
       <el-button type="primary" @click="handelCopy(3)" size="mini">复制组六</el-button>
       <el-button type="primary" @click="handelCopy(1)" size="mini">复制豹子</el-button>
       <el-button type="primary" @click="handelCopy(4)" size="mini">复制(除豹子)</el-button>
-      <el-button type="primary" @click="handelCopy(5)" size="mini">剔除近50期</el-button>
-      <el-button type="primary" @click="handelCopy(6)" size="mini">剔除近100期</el-button>
+      <el-button type="primary" @click="handelCopy(5, 50)" size="mini">剔除近50期</el-button>
+      <el-button type="primary" @click="handelCopy(5, 100)" size="mini">剔除近100期</el-button>
+      <el-button type="primary" @click="handelCopy(5, 300)" size="mini">剔除近300期</el-button>
     </div>
 
     <div v-html="tip"></div>
@@ -221,7 +223,7 @@
             this.allCountTip += `${key} 开头的有 ${startCount[key]} 个 <br>`;
           });
         },
-        handelCopy(type) {
+        handelCopy(type, count) {
           let tip = '';
           switch (type) {
             case 0:
@@ -239,12 +241,8 @@
               tip = '显示所有组三和组六';
               break;
             case 5:
-              this.resultStr = this.result.filter(item => !this.history.slice(0, 50).includes(item)).sort((a, b) => a - b).join(',');
-              tip = '剔除近50期出现过的号码';
-              break;
-            case 6:
-              this.resultStr = this.result.filter(item => !this.history.slice(0, 100).includes(item)).sort((a, b) => a - b).join(',');
-              tip = '剔除近100期出现过的号码';
+              this.resultStr = this.result.filter(item => !this.history.slice(0, count).includes(item)).sort((a, b) => a - b).join(',');
+              tip = `剔除近${count}期出现过的号码`;
               break;
           }
           this.tip = tip;
