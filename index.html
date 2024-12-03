@@ -21,7 +21,7 @@
       width: 100px;
     }
 
-    div {
+    #app > div {
       margin-bottom: 2px;
     }
 
@@ -38,55 +38,33 @@
 </head>
 
 <body>
-
-  <!-- <div>
-    <input type="text" value="650" id="count">
-    <button onclick="startRandom()">随机生成</button>
-    <button onclick="handelClean()">清空</button>
-  </div>
-  <div>
-    <textarea id="content" cols="30" rows="10"></textarea>
-    <p>一共生成了 <span id="limit">0</span> 个组合; <button onclick="handelCopy()">一键复制</button></p>
-  </div>
-  <div>
-    <button onclick="copyType(2)">复制组三</button>
-    <button onclick="copyType(3)">复制组六</button>
-    <button onclick="copyType(1)">复制豹子</button>
-  </div>
-  <p>
-    <span id="tip"></span>
-  </p>
-  <div>
-    <button onclick="handelSort()">升序排序</button>
-    <input type="text" id="awardNumber">
-    <button onclick="handelExist()">验证是否存在</button>
-  </div>
-  <div>
-    <textarea id="contentSort" cols="30" rows="10"></textarea>
-  </div>
-
-  <p id="all-count"></p> -->
-
   <div id="app">
     <div>
-      <el-select v-model="exclude" multiple placeholder="排除选项" size="mini" clearable>
-        <el-option v-for="item in arr" :key="item" :label="item" :value="item">
-        </el-option>
-      </el-select>
 
       <el-select v-model="value" placeholder="历史开奖" size="mini">
         <el-option v-for="(item, index) in history" :key="index" :label="item" :value="item">
         </el-option>
       </el-select>
-      
-      <el-button type="primary" @click="handleRepeat(50)" size="mini">50期是否存在重复</el-button>
-      <el-button type="primary" @click="handleRepeat(100)" size="mini">100期是否存在重复</el-button>
-      <el-button type="primary" @click="handleRepeat(300)" size="mini">300期是否存在重复</el-button>
+
+      <el-select v-model="periods" placeholder="是否重复" size="mini">
+        <el-option v-for="(item, index) in history.length" :key="index" :label="item" :value="item"></el-option>
+      </el-select>
+
+      <span>期内：{{ periodsCount }} 个重复项</span>
     </div>
 
-    <div>
+    <div class="flex flex-ac">
+      排除：
+      <el-select v-model="exclude" multiple placeholder="输入" size="mini" clearable>
+        <el-option v-for="item in arr" :key="item" :label="item" :value="item">
+        </el-option>
+      </el-select>
+      生成：
       <el-input v-model="createCount" placeholder="输入随机个数" size="mini"></el-input>
-      <el-button type="primary" @click="startRandom" size="mini">随机生成</el-button>
+      个组合
+    </div>
+    <div>
+      <el-button type="primary" @click="startRandom" size="mini">生成</el-button>
       <el-button type="primary" @click="handelClean" size="mini">清空</el-button>
       <el-button type="primary" @click="handlePaste" size="mini">粘贴</el-button>
     </div>
@@ -114,7 +92,8 @@
     <div v-html="tip"></div>
 
     <div>
-      <el-button type="primary" @click="handelSort" size="mini">升序排序</el-button>
+      <el-button type="primary" @click="handelSort(1)" size="mini">升序排序</el-button>
+      <el-button type="primary" @click="handelSort(-1)" size="mini">降序排序</el-button>
       <el-input v-model="awardNumber" placeholder="输入中奖号码" size="mini"></el-input>
       <el-button type="primary" @click="handelExist" size="mini">验证是否存在</el-button>
     </div>
@@ -149,13 +128,18 @@
           resultStr: '',
           allCountTip: '',
           awardNumber: '',
-          tip: ''
+          tip: '',
+          periods: 100
         }
       },
       computed: {
         filterAfterValue() {
           const value = this.resultStr.split(',');
           return value.filter(item => item).length;
+        },
+        periodsCount() {
+          const { count } = this.handleRepeat(this.periods)
+          return count;
         }
       },
       created() {
@@ -205,8 +189,8 @@
           const isExist = this.result.includes(this.awardNumber);
           this.tip = isExist ? '存在' : '不存在';
         },
-        handelSort() {
-          this.resultStr = [...this.result].sort((a, b) => a - b).join(',');
+        handelSort(type = 1) {
+          this.resultStr = [...this.result].sort((a, b) => type ===1 ? a - b : b - a).join(',');
         },
         calcStartCount() {
           const startCount = {};
@@ -227,7 +211,7 @@
           let tip = '';
           switch (type) {
             case 0:
-              this.resultStr = this.result.sort((a, b) => a - b).join(',');
+              this.resultStr = [...this.result].sort((a, b) => a - b).join(',');
               tip = '复制成功';
               break;
             case 1:
@@ -263,102 +247,17 @@
               lastMap.set(item, 1);
             }
           });
-          // 是否存在重复出现的号码
-          let tip = `近${count}期不存在重复号码`;
-          Object.keys(lastMap).forEach(key => {
-            if (lastMap.get(key) > 1) {
-              tip = `近${count}期存在重复号码 ${key} 出现了 ${lastMap.get(key)} 次 <br>`;
-            }
-          });
-          this.tip = tip;
+          const repeatData = Array.from(lastMap.entries());
+          
+          const uniqueCount = repeatData.filter(item => item[1] > 1).length;
 
+          return {
+            count: uniqueCount,         // 不同重复项的数量
+            repeatData: repeatData      // 每个重复项及其出现次数
+          };
         }
       }
-    })
-
-    // 0-9 10个数字 3位数组成一个组；根据传入的个数，生成所有组合 不重复
-    // const arr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-    // const allCombination = [];
-
-    // const result = [];
-
-
-    // // 开始生成
-    // function startRandom() {
-    //   calcRandomAllCombination();
-    //   const count = document.querySelector('#count').value;
-    //   getRandomCombination(count);
-    //   handelSort();
-    //   calcStartCount();
-    //   document.querySelector('#content').value = result.join(',');
-    //   document.querySelector('#limit').innerText = result.length;
-    // }
-
-    // // 随机取对应的个数
-    // function getRandomCombination(count) {
-    //   result.length = 0;
-    //   while (result.length < count) {
-    //     let randomIndex = Math.floor(Math.random() * allCombination.length);
-    //     // 从allCombination截取到result
-    //     result.push(allCombination.splice(randomIndex, 1)[0]);
-    //   }
-    //   return result;
-    // }
-
-    // // 一键复制
-    // function handelCopy() {
-    //   const content = document.querySelector('#content');
-    //   content.select();
-    //   document.execCommand('copy');
-    //   document.querySelector('#tip').innerText = '复制成功';
-    //   handelSort();
-    // }
-
-    // // 清空
-    // function handelClean() {
-    //   result.length = 0;
-    //   calcRandomAllCombination();
-    //   document.querySelector('#content').value = '';
-    //   document.querySelector('#limit').innerText = 0;
-    //   document.querySelector('#contentSort').value = '';
-    //   document.querySelector('#tip').innerText = '清空成功';
-    // }
-
-    // // 升序排序
-    // function handelSort() {
-    //   const value = [...result].sort((a, b) => a - b);
-    //   document.querySelector('#contentSort').value = value.join(',');
-    //   document.querySelector('#tip').innerText = '排序成功';
-    // }
-
-    // // 验证是否存在
-    // function 
-
-    // // 计算每一个数字开头的个数
-    // function calcStartCount() {
-    //   const p_ = document.getElementById('all-count');
-    //   p_.innerHTML = '';
-    //   const startCount = {};
-    //   for (let i = 0; i < result.length; i++) {
-    //     const start = result[i][0];
-    //     if (startCount[start]) {
-    //       startCount[start] += 1;
-    //     } else {
-    //       startCount[start] = 1;
-    //     }
-    //   }
-    //   Object.keys(startCount).forEach(key => {
-    //     const p = document.createElement('p');
-    //     p.innerText = `${key} 开头的有 ${startCount[key]} 个`;
-    //     p_.appendChild(p);
-    //   });
-    // }
-    // // 复制组合 组三 组六 豹子
-    // function copyType(type) {
-    //   const value = result.filter(item => new Set(item).size === type);
-    //   document.querySelector('#contentSort').value = value.join(',');
-    //   document.querySelector('#tip').innerText = '复制成功';
-    // }
+    });
   </script>
 </body>
 
