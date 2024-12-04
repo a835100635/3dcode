@@ -17,12 +17,13 @@
     * {
       font-size: 12px;
     }
-    .el-input {
-      width: 100px;
+
+    #app>div {
+      margin-bottom: 2px;
     }
 
-    #app > div {
-      margin-bottom: 2px;
+    .w100 {
+      width: 100px;
     }
 
     .flex {
@@ -33,6 +34,10 @@
 
     .flex-ac {
       align-items: center;
+    }
+
+    .mr-16 {
+      margin-right: 16px !important;
     }
   </style>
 </head>
@@ -60,7 +65,7 @@
         </el-option>
       </el-select>
       生成：
-      <el-input v-model="createCount" placeholder="输入随机个数" size="mini"></el-input>
+      <el-input class="w100" v-model="createCount" placeholder="输入随机个数" size="mini"></el-input>
       个组合
     </div>
     <div>
@@ -78,28 +83,47 @@
       一共生成了 <span id="limit">{{result.length}}</span> 个组合;
     </p>
 
+    <div style="margin: 8px 0;">
+      <el-radio v-model="sortType" :label="1">升序排序</el-radio>
+      <el-radio v-model="sortType" :label="-1">降序排序</el-radio>
+    </div>
+
+    <div class="flex flex-ac" style="margin: 8px 0;">
+      <el-checkbox class="mr-16" :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选
+      </el-checkbox>
+      <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
+        <el-checkbox v-for="(i, index) in filters" :label="i.value" :key="i.key">{{ i.label }}</el-checkbox>
+      </el-checkbox-group>
+    </div>
+
     <div class="flex flex-ac">
-      <el-button type="primary" @click="handelCopy(0)" size="mini">复制所有</el-button>
-      <el-button type="primary" @click="handelCopy(2)" size="mini">复制组三</el-button>
-      <el-button type="primary" @click="handelCopy(3)" size="mini">复制组六</el-button>
-      <el-button type="primary" @click="handelCopy(1)" size="mini">复制豹子</el-button>
-      <el-button type="primary" @click="handelCopy(4)" size="mini">复制(除豹子)</el-button>
-      <el-button type="primary" @click="handelCopy(5, 50)" size="mini">剔除近50期</el-button>
-      <el-button type="primary" @click="handelCopy(5, 100)" size="mini">剔除近100期</el-button>
-      <el-button type="primary" @click="handelCopy(5, 300)" size="mini">剔除近300期</el-button>
+      排除：百:
+      <el-select v-model="hundred" multiple placeholder="输入" size="mini" clearable>
+        <el-option v-for="item in arr" :key="item" :label="item" :value="item">
+        </el-option>
+      </el-select>
+      十:
+      <el-select v-model="ten" multiple placeholder="输入" size="mini" clearable>
+        <el-option v-for="item in arr" :key="item" :label="item" :value="item">
+        </el-option>
+      </el-select>
+      个:
+      <el-select v-model="unit" multiple placeholder="输入" size="mini" clearable>
+        <el-option v-for="item in arr" :key="item" :label="item" :value="item">
+        </el-option>
+      </el-select>
     </div>
 
     <div v-html="tip"></div>
 
-    <div>
-      <el-button type="primary" @click="handelSort(1)" size="mini">升序排序</el-button>
-      <el-button type="primary" @click="handelSort(-1)" size="mini">降序排序</el-button>
-      <el-input v-model="awardNumber" placeholder="输入中奖号码" size="mini"></el-input>
+    <div style="margin-top: 10px;">
+      <el-button type="primary" @click="handelCopy" size="mini">复制</el-button>
+      <el-input class="w100" v-model="awardNumber" placeholder="输入中奖号码" size="mini"></el-input>
       <el-button type="primary" @click="handelExist" size="mini">验证是否存在</el-button>
     </div>
 
     <div>
-      <el-input type="textarea" :rows="8" v-model="resultStr">
+      <el-input type="textarea" :rows="8" :value="resultStr">
       </el-input>
     </div>
     <p>
@@ -116,20 +140,62 @@
       el: '#app',
       // 交互的数据
       data: function () {
+        this.filters = [{
+            key: 1,
+            value: 1,
+            initChecked: true,
+            label: '豹子',
+            handle: (v) => v.filter(item => new Set(item).size === 1)
+          },
+          {
+            key: 2,
+            value: 2,
+            initChecked: true,
+            label: '组三',
+            handle: (v) => v.filter(item => new Set(item).size === 2)
+          },
+          {
+            key: 3,
+            value: 3,
+            initChecked: true,
+            label: '组六',
+            handle: (v) => v.filter(item => new Set(item).size === 3)
+          },
+          {
+            key: 4,
+            value: 4,
+            initChecked: false,
+            label: '剔除近100期',
+            replace: (v) => v.filter(item => !this.history.slice(0, 100).includes(item))
+          },
+        ];
         return {
           value: '',
 
           arr: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
           exclude: [],
           history: window.historyCode,
-          createCount: 650,
+          createCount: 50,
           allCombination: [],
           result: [],
-          resultStr: '',
           allCountTip: '',
           awardNumber: '',
           tip: '',
-          periods: 100
+          periods: 100,
+
+          isIndeterminate: true,
+          checkAll: false,
+          checkedCities: [],
+          sortType: 1,
+
+          hundred: [],
+          ten: [],
+          unit: [],
+        }
+      },
+      watch: {
+        unit() {
+          console.log(this.unit)
         }
       },
       computed: {
@@ -138,11 +204,45 @@
           return value.filter(item => item).length;
         },
         periodsCount() {
-          const { count } = this.handleRepeat(this.periods)
+          const {
+            count
+          } = this.handleRepeat(this.periods)
           return count;
+        },
+        resultStr({
+          result,
+          sortType,
+          checkedCities
+        }) {
+          let value = [];
+          checkedCities.forEach(item => {
+            const filter = this.filters.find(i => i.value === item);
+            if (filter && filter.handle) {
+              value.push(...filter.handle(result));
+            }
+
+            if (filter && filter.replace) {
+              value = filter.replace(value);
+            }
+          });
+          value.sort((a, b) => sortType === 1 ? a - b : b - a);
+          // 排除百位开头
+          if (this.hundred.length) {
+            value = value.filter(item => !this.hundred.includes(+item[0]));
+          }
+          // 排除十位开头
+          if (this.ten.length) {
+            value = value.filter(item => !this.ten.includes(+item[1]));
+          }
+          // 排除个位开头
+          if (this.unit.length) {
+            value = value.filter(item => !this.unit.includes(+item[2]));
+          }
+          return value.filter(item => item).join(',');
         }
       },
       created() {
+        this.checkedCities = this.filters.filter(i => i.initChecked).map(i => i.value);
       },
       mounted() {},
       // 方法
@@ -164,7 +264,6 @@
           const result = []
           this.calcCombination(this.allCombination);
           this.allCountTip = '';
-          this.handelSort();
           this.calcStartCount();
         },
         calcCombination(arr) {
@@ -189,9 +288,6 @@
           const isExist = this.result.includes(this.awardNumber);
           this.tip = isExist ? '存在' : '不存在';
         },
-        handelSort(type = 1) {
-          this.resultStr = [...this.result].sort((a, b) => type ===1 ? a - b : b - a).join(',');
-        },
         calcStartCount() {
           const startCount = {};
           this.allCountTip = '';
@@ -207,29 +303,8 @@
             this.allCountTip += `${key} 开头的有 ${startCount[key]} 个 <br>`;
           });
         },
-        handelCopy(type, count) {
-          let tip = '';
-          switch (type) {
-            case 0:
-              this.resultStr = [...this.result].sort((a, b) => a - b).join(',');
-              tip = '复制成功';
-              break;
-            case 1:
-            case 2:
-            case 3:
-              this.resultStr = this.result.filter(item => new Set(item).size === type).sort((a, b) => a - b).join(',');
-              tip = type === 1 ? '显示所有豹子' : type === 2 ? '显示所有组三' : '显示所有组六';
-              break;
-            case 4:
-              this.resultStr = this.result.filter(item => new Set(item).size !== 1).sort((a, b) => a - b).join(',');
-              tip = '显示所有组三和组六';
-              break;
-            case 5:
-              this.resultStr = this.result.filter(item => !this.history.slice(0, count).includes(item)).sort((a, b) => a - b).join(',');
-              tip = `剔除近${count}期出现过的号码`;
-              break;
-          }
-          this.tip = tip;
+        handelCopy() {
+          this.tip = '复制成功';
           navigator.clipboard.writeText(this.resultStr);
         },
         handlePaste() {
@@ -248,15 +323,26 @@
             }
           });
           const repeatData = Array.from(lastMap.entries());
-          
+
           const uniqueCount = repeatData.filter(item => item[1] > 1).length;
 
           return {
-            count: uniqueCount,         // 不同重复项的数量
-            repeatData: repeatData      // 每个重复项及其出现次数
+            count: uniqueCount, // 不同重复项的数量
+            repeatData: repeatData // 每个重复项及其出现次数
           };
+        },
+
+        handleCheckAllChange(val) {
+          console.log(val)
+          this.checkedCities = val ? this.filters.map(i => i.value) : [];
+          this.isIndeterminate = false;
+        },
+        handleCheckedCitiesChange(value) {
+          let checkedCount = value.length;
+          this.checkAll = checkedCount === this.filters.length;
+          this.isIndeterminate = checkedCount > 0 && checkedCount < this.filters.length;
         }
-      }
+      },
     });
   </script>
 </body>
