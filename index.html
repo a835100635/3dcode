@@ -192,6 +192,20 @@
             label: '剔除近100期',
             replace: (v) => v.filter(item => !this.history.slice(0, 100).includes(item))
           },
+          {
+            key: 5,
+            value: 5,
+            initChecked: false,
+            label: '剔除近200期',
+            replace: (v) => v.filter(item => !this.history.slice(0, 200).includes(item))
+          },
+          {
+            key: 6,
+            value: 6,
+            initChecked: false,
+            label: '剔除近300期',
+            replace: (v) => v.filter(item => !this.history.slice(0, 300).includes(item))
+          },
         ];
         return {
           value: '',
@@ -298,7 +312,7 @@
         },
         calcCombination(arr) {
           const allCombination = [...arr];
-          if (this.result.length < this.createCount) {
+          if (this.result.length < this.createCount && this.createCount) {
             let randomIndex = Math.floor(Math.random() * allCombination.length);
             this.result.push(allCombination.splice(randomIndex, 1)[0]);
             this.calcCombination(allCombination);
