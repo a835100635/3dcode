@@ -33,6 +33,7 @@
     .w120 {
       width: 120px;
     }
+
     .w150 {
       width: 150px;
     }
@@ -57,12 +58,12 @@
   <div id="app">
     <div>
 
-      <el-select  class="w100" v-model="value" placeholder="历史开奖" size="mini">
+      <el-select class="w100" v-model="value" placeholder="历史开奖" size="mini">
         <el-option v-for="(item, index) in history" :key="index" :label="item" :value="item">
         </el-option>
       </el-select>
 
-      <el-select  class="w70" v-model="periods" placeholder="是否重复" size="mini">
+      <el-select class="w70" v-model="periods" placeholder="是否重复" size="mini">
         <el-option v-for="(item, index) in history.length" :key="index" :label="item" :value="item"></el-option>
       </el-select>
 
@@ -147,7 +148,7 @@
       <el-button type="primary" @click="createEveryDayRandom" size="mini">每日随机</el-button>
       <el-input class="w70" v-model="everyDayRandom" placeholder="" size="mini"></el-input>
       随机
-      <el-select  class="w70" v-model="everyDayRandomCount" placeholder="几次" size="mini">
+      <el-select class="w70" v-model="everyDayRandomCount" placeholder="几次" size="mini">
         <el-option v-for="(item, index) in history" :key="index" :label="index+1" :value="index+1">
         </el-option>
       </el-select>
@@ -155,6 +156,56 @@
       <el-button type="primary" @click="calcHitRate" size="mini">计算</el-button>
       {{ hitRate }}
     </div>
+
+    <el-divider></el-divider>
+
+    <p>lhc</p>
+    <div style="margin-top: 10px;">
+      生成：
+      <el-select class="w70" v-model="lhcCount" placeholder="输入" size="mini">
+        <el-option v-for="item in lhcCode" :key="item" :label="item" :value="item">
+        </el-option>
+      </el-select>
+      个特码；
+      <el-button type="primary" @click="createRandomLhc" size="mini">随机</el-button>
+      <el-button type="primary" @click="handelCopy(lhcCodeResult)" size="mini">复制</el-button>
+      </p>
+    </div>
+
+    <p>
+      {{ lhcCodeResult }}
+    </p>
+
+    <div style="margin-top: 10px;">
+      生成：
+      <el-select class="w70" v-model="lhcZodiacCount" placeholder="输入" size="mini">
+        <el-option v-for="item in lhcZodiac" :key="item" :label="item" :value="item">
+        </el-option>
+      </el-select>
+      个生肖；
+      <el-button type="primary" @click="createRandomLhcZodiac" size="mini">随机</el-button>
+      <el-button type="primary" @click="handelCopy(lhcZodiacResult)" size="mini">复制</el-button>
+    </div>
+
+    <p>
+      {{ lhcZodiacResult }}
+    </p>
+
+    <el-divider></el-divider>
+
+    <p>sc</p>
+    <div style="margin-top: 10px;">
+      生成：
+      <el-select class="w70" v-model="carCount" placeholder="输入" size="mini">
+        <el-option v-for="item in car" :key="item" :label="item" :value="item">
+        </el-option>
+      </el-select>
+      个；
+      <el-button type="primary" @click="createRandomCar" size="mini">随机</el-button>
+      <el-button type="primary" @click="handelCopy(carResult)" size="mini">复制</el-button>
+    </div>
+
+    <p>{{ carResult }}</p>
   </div>
 
   <script>
@@ -184,6 +235,13 @@
             initChecked: true,
             label: '组六',
             handle: (v) => v.filter(item => new Set(item).size === 3)
+          },
+          {
+            key: 7,
+            value: 7,
+            initChecked: false,
+            label: '剔除近50期',
+            replace: (v) => v.filter(item => !this.history.slice(0, 5).includes(item))
           },
           {
             key: 4,
@@ -232,7 +290,22 @@
           // 每天一注
           everyDayRandom: '',
           everyDayRandomCount: 10,
-          hitRate: 0
+          hitRate: 0,
+
+
+          // 六合彩
+          lhcCode: new Array(48).fill(0).map((item, index) => index + 1),
+          lhcCount: 30,
+          lhcCodeResult: '',
+          // 生肖
+          lhcZodiac: ['鼠', '牛', '虎', '兔', '龙', '蛇', '马', '羊', '猴', '鸡', '狗', '猪'],
+          lhcZodiacCount: 8,
+          lhcZodiacResult: '',
+
+          // 赛车
+          car: new Array(10).fill(0).map((item, index) => index + 1),
+          carCount: 5,
+          carResult: '',
         }
       },
       watch: {
@@ -287,6 +360,7 @@
         this.checkedCities = this.filters.filter(i => i.initChecked).map(i => i.value);
         this.calcRandomAllCombination();
         this.createEveryDayRandom();
+        console.log(this.lhcCode)
       },
       mounted() {},
       // 方法
@@ -347,9 +421,9 @@
             this.allCountTip += `${key} 开头的有 ${startCount[key]} 个 <br>`;
           });
         },
-        handelCopy() {
+        handelCopy(v) {
           this.tip = '复制成功';
-          navigator.clipboard.writeText(this.resultStr);
+          navigator.clipboard.writeText(v || this.resultStr);
         },
         handlePaste() {
           navigator.clipboard.readText().then(text => {
@@ -407,8 +481,36 @@
             }
             arr.length = 0;
             allCombination.length = 0;
-          } 
-          this.hitRate = `${hitCount}/${this.everyDayRandomCount} ; 命中率：${(hitCount / this.everyDayRandomCount * 100).toFixed(2)}%`;
+          }
+          this.hitRate =
+            `${hitCount}/${this.everyDayRandomCount} ; 命中率：${(hitCount / this.everyDayRandomCount * 100).toFixed(2)}%`;
+        },
+        createRandomLhc() {
+          const result = [];
+          const lhcCode = [...this.lhcCode];
+          while (result.length < this.lhcCount) {
+            const randomIndex = Math.floor(Math.random() * lhcCode.length);
+            result.push(lhcCode.splice(randomIndex, 1)[0]);
+          }
+          this.lhcCodeResult = result.sort((a, b) => a - b).join(',');
+        },
+        createRandomLhcZodiac() {
+          const result = [];
+          const lhcZodiac = [...this.lhcZodiac];
+          while (result.length < this.lhcZodiacCount) {
+            const randomIndex = Math.floor(Math.random() * lhcZodiac.length);
+            result.push(lhcZodiac.splice(randomIndex, 1)[0]);
+          }
+          this.lhcZodiacResult = result.join(',');
+        },
+        createRandomCar() {
+          const result = [];
+          const car = [...this.car];
+          while (result.length < this.carCount) {
+            const randomIndex = Math.floor(Math.random() * car.length);
+            result.push(car.splice(randomIndex, 1)[0]);
+          }
+          this.carResult = result.sort((a, b) => a - b).join(',');
         }
       },
     });
