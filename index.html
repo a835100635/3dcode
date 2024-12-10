@@ -290,7 +290,7 @@
             value: 15,
             initChecked: false,
             label: '双双双',
-            replace: (v) => v.filter(item => item.sizeAndForm === '双双双')
+            replace: (v) => v.filter(item => item.singleAndDoubleForm === '双双双')
           },
           {
             key: 16,
@@ -311,7 +311,7 @@
             value: 18,
             initChecked: false,
             label: '小大小',
-            replace: (v) => v.filter(item => item.sizeAndForm === '大大大')
+            replace: (v) => v.filter(item => item.sizeAndForm === '小大小')
           },
           {
             key: 7,
@@ -496,7 +496,7 @@
           const startCount = {};
           this.allCountTip = '';
           for (let i = 0; i < this.result.length; i++) {
-            const start = this.result[i][0];
+            const start = this.result[i].code[0];
             if (startCount[start]) {
               startCount[start] += 1;
             } else {
@@ -562,7 +562,7 @@
               const randomIndex = Math.floor(Math.random() * allCombination.length);
               arr.push(allCombination.splice(randomIndex, 1)[0]);
             }
-            if (arr.includes(this.everyDayRandom)) {
+            if (arr.map(i => i.code).includes(this.everyDayRandom)) {
               hitCount++;
             }
             arr.length = 0;
