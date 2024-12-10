@@ -385,11 +385,7 @@
           carResult: '',
         }
       },
-      watch: {
-        unit() {
-          console.log(this.unit)
-        }
-      },
+      watch: {},
       computed: {
         filterAfterValue() {
           const value = this.resultStr.split(',');
@@ -537,7 +533,6 @@
         },
 
         handleCheckAllChange(val) {
-          console.log(val)
           this.checkedCities = val ? this.filters.map(i => i.value) : [];
           this.isIndeterminate = false;
         },
