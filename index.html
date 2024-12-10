@@ -87,7 +87,7 @@
     </div>
 
     <div>
-      <el-input type="textarea" :rows="8" placeholder="请输入内容" :value="result.join(',')">
+      <el-input type="textarea" :rows="8" placeholder="请输入内容" :value="result.map(i => i.code).join(',')">
       </el-input>
     </div>
 
@@ -220,49 +220,126 @@
             value: 1,
             initChecked: true,
             label: '豹子',
-            handle: (v) => v.filter(item => new Set(item).size === 1)
+            handle: (v) => v.filter(item => new Set(item.code).size === 1)
           },
           {
             key: 2,
             value: 2,
             initChecked: true,
             label: '组三',
-            handle: (v) => v.filter(item => new Set(item).size === 2)
+            handle: (v) => v.filter(item => new Set(item.code).size === 2)
           },
           {
             key: 3,
             value: 3,
             initChecked: true,
             label: '组六',
-            handle: (v) => v.filter(item => new Set(item).size === 3)
+            handle: (v) => v.filter(item => new Set(item.code).size === 3)
+          },
+          {
+            key: 8,
+            value: 8,
+            initChecked: false,
+            label: '取单',
+            replace: (v) => v.filter(item => +item.code % 2 === 1)
+          },
+          {
+            key: 9,
+            value: 9,
+            initChecked: false,
+            label: '取双',
+            replace: (v) => v.filter(item => +item.code % 2 === 0)
+          },
+          {
+            key: 10,
+            value: 10,
+            initChecked: false,
+            label: '取小',
+            replace: (v) => v.filter(item => item.size === '小')
+          },
+          {
+            key: 11,
+            value: 11,
+            initChecked: false,
+            label: '取大',
+            replace: (v) => v.filter(item => item.size === '大')
+          },
+          {
+            key: 12,
+            value: 12,
+            initChecked: false,
+            label: '单双单',
+            replace: (v) => v.filter(item => item.singleAndDoubleForm === '单双单')
+          },
+          {
+            key: 13,
+            value: 13,
+            initChecked: false,
+            label: '双单双',
+            replace: (v) => v.filter(item => item.singleAndDoubleForm === '双单双')
+          },
+          {
+            key: 14,
+            value: 14,
+            initChecked: false,
+            label: '单单单',
+            replace: (v) => v.filter(item => item.singleAndDoubleForm === '单单单')
+          },
+          {
+            key: 15,
+            value: 15,
+            initChecked: false,
+            label: '双双双',
+            replace: (v) => v.filter(item => item.sizeAndForm === '双双双')
+          },
+          {
+            key: 16,
+            value: 16,
+            initChecked: false,
+            label: '小小小',
+            replace: (v) => v.filter(item => item.sizeAndForm === '小小小')
+          },
+          {
+            key: 17,
+            value: 17,
+            initChecked: false,
+            label: '大大大',
+            replace: (v) => v.filter(item => item.sizeAndForm === '大大大')
+          },
+          {
+            key: 18,
+            value: 18,
+            initChecked: false,
+            label: '小大小',
+            replace: (v) => v.filter(item => item.sizeAndForm === '大大大')
           },
           {
             key: 7,
             value: 7,
             initChecked: false,
             label: '剔除近50期',
-            replace: (v) => v.filter(item => !this.history.slice(0, 5).includes(item))
+            replace: (v) => v.filter(item => !this.history.slice(0, 5).includes(item.code))
           },
           {
             key: 4,
             value: 4,
             initChecked: false,
             label: '剔除近100期',
-            replace: (v) => v.filter(item => !this.history.slice(0, 100).includes(item))
+            replace: (v) => v.filter(item => !this.history.slice(0, 100).includes(item.code))
           },
           {
             key: 5,
             value: 5,
             initChecked: false,
             label: '剔除近200期',
-            replace: (v) => v.filter(item => !this.history.slice(0, 200).includes(item))
+            replace: (v) => v.filter(item => !this.history.slice(0, 200).includes(item.code))
           },
           {
             key: 6,
             value: 6,
             initChecked: false,
             label: '剔除近300期',
-            replace: (v) => v.filter(item => !this.history.slice(0, 300).includes(item))
+            replace: (v) => v.filter(item => !this.history.slice(0, 300).includes(item.code))
           },
         ];
         return {
@@ -340,20 +417,20 @@
               value = filter.replace(value);
             }
           });
-          value.sort((a, b) => sortType === 1 ? a - b : b - a);
+          value.sort((a, b) => sortType === 1 ? a.code - b.code : b.code - a.code);
           // 排除百位开头
           if (this.hundred.length) {
-            value = value.filter(item => !this.hundred.includes(+item[0]));
+            value = value.filter(item => !this.hundred.includes(+item.code[0]));
           }
           // 排除十位开头
           if (this.ten.length) {
-            value = value.filter(item => !this.ten.includes(+item[1]));
+            value = value.filter(item => !this.ten.includes(+item.code[1]));
           }
           // 排除个位开头
           if (this.unit.length) {
-            value = value.filter(item => !this.unit.includes(+item[2]));
+            value = value.filter(item => !this.unit.includes(+item.code[2]));
           }
-          return value.filter(item => item).join(',');
+          return value.map(i => i.code).filter(i => i).join(',');
         }
       },
       created() {
@@ -371,10 +448,16 @@
           for (let i = 0; i < arr_.length; i++) {
             for (let j = 0; j < arr_.length; j++) {
               for (let k = 0; k < arr_.length; k++) {
-                this.allCombination.push(`${arr_[i]}${arr_[j]}${arr_[k]}`);
+                this.allCombination.push({
+                  code: `${arr_[i]}${arr_[j]}${arr_[k]}`,
+                  singleAndDoubleForm: `${arr_[i] % 2 === 0 ? '双' : '单'}${arr_[j] % 2 === 0 ? '双' : '单'}${arr_[k] % 2 === 0 ? '双' : '单'}`,
+                  sizeAndForm: `${arr_[i] < 6 ? '小' : '大'}${arr_[j] < 6 ? '小' : '大'}${arr_[k] < 6 ? '小' : '大'}`,
+                  size: +`${arr_[i]}${arr_[j]}${arr_[k]}` < 500 ? '小' : '大',
+                });
               }
             }
           }
+          console.log(this.allCombination)
         },
         startRandom() {
           this.calcRandomAllCombination();
@@ -399,12 +482,15 @@
             this.resultStr = '',
             this.allCountTip = '',
             this.awardNumber = '',
-            this.tip = ''
+            this.setTip('');
           this.calcRandomAllCombination();
         },
+        setTip(str) {
+          this.tip = `${new Date().toLocaleString()}: ${str}`;
+        },
         handelExist() {
-          const isExist = this.result.includes(this.awardNumber);
-          this.tip = isExist ? '存在' : '不存在';
+          const isExist = this.result.includes(his.awardNumber);
+          this.setTip(isExist ? '存在' : '不存在')
         },
         calcStartCount() {
           const startCount = {};
@@ -422,7 +508,7 @@
           });
         },
         handelCopy(v) {
-          this.tip = '复制成功';
+          this.setTip('复制成功');
           navigator.clipboard.writeText(v);
         },
         handlePaste() {
@@ -462,7 +548,7 @@
         },
 
         createEveryDayRandom() {
-          this.everyDayRandom = this.allCombination[Math.floor(Math.random() * this.allCombination.length)];
+          this.everyDayRandom = this.allCombination[Math.floor(Math.random() * this.allCombination.length)].code;
         },
         // 计算命中率
         calcHitRate() {
