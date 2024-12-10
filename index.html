@@ -489,7 +489,7 @@
           this.tip = `${new Date().toLocaleString()}: ${str}`;
         },
         handelExist() {
-          const isExist = this.result.includes(his.awardNumber);
+          const isExist = this.result.includes(this.awardNumber);
           this.setTip(isExist ? '存在' : '不存在')
         },
         calcStartCount() {
