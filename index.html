@@ -179,7 +179,7 @@
     <div style="margin-top: 10px;">
       生成：
       <el-select class="w70" v-model="lhcZodiacCount" placeholder="输入" size="mini">
-        <el-option v-for="item in lhcZodiac" :key="item" :label="item" :value="item">
+        <el-option v-for="item in lhcZodiac" :key="item.index" :label="item.label" :value="item.label">
         </el-option>
       </el-select>
       个生肖；
@@ -375,7 +375,7 @@
           lhcCount: 30,
           lhcCodeResult: '',
           // 生肖
-          lhcZodiac: ['鼠', '牛', '虎', '兔', '龙', '蛇', '马', '羊', '猴', '鸡', '狗', '猪'],
+          lhcZodiac: ['鼠', '牛', '虎', '兔', '龙', '蛇', '马', '羊', '猴', '鸡', '狗', '猪'].map((i, index) => ({ index, label: i })),
           lhcZodiacCount: 8,
           lhcZodiacResult: '',
 
@@ -582,7 +582,8 @@
             const randomIndex = Math.floor(Math.random() * lhcZodiac.length);
             result.push(lhcZodiac.splice(randomIndex, 1)[0]);
           }
-          this.lhcZodiacResult = result.join(',');
+          result.sort((a, b) => a.index - b.index);
+          this.lhcZodiacResult = result.map(i => i.label).join(',');
         },
         createRandomCar() {
           const result = [];
