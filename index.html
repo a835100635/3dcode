@@ -87,7 +87,7 @@
     </div>
 
     <div>
-      <el-input type="textarea" :rows="8" placeholder="请输入内容" :value="result.map(i => i.code).join(',')">
+      <el-input type="textarea" :rows="2" placeholder="请输入内容" :value="result.map(i => i.code).join(',')">
       </el-input>
     </div>
 
@@ -135,7 +135,7 @@
     </div>
 
     <div>
-      <el-input type="textarea" :rows="8" :value="resultStr">
+      <el-input type="textarea" :rows="5" :value="resultStr">
       </el-input>
     </div>
     <p>
@@ -485,7 +485,7 @@
           this.tip = `${new Date().toLocaleString()}: ${str}`;
         },
         handelExist() {
-          const isExist = this.result.includes(this.awardNumber);
+          const isExist = this.result.filter(i => i.code === this.awardNumber).length > 0;
           this.setTip(isExist ? '存在' : '不存在')
         },
         calcStartCount() {
