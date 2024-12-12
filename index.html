@@ -375,7 +375,10 @@
           lhcCount: 30,
           lhcCodeResult: '',
           // 生肖
-          lhcZodiac: ['鼠', '牛', '虎', '兔', '龙', '蛇', '马', '羊', '猴', '鸡', '狗', '猪'].map((i, index) => ({ index, label: i })),
+          lhcZodiac: ['鼠', '牛', '虎', '兔', '龙', '蛇', '马', '羊', '猴', '鸡', '狗', '猪'].map((i, index) => ({
+            index,
+            label: i
+          })),
           lhcZodiacCount: 8,
           lhcZodiacResult: '',
 
@@ -444,16 +447,24 @@
           for (let i = 0; i < arr_.length; i++) {
             for (let j = 0; j < arr_.length; j++) {
               for (let k = 0; k < arr_.length; k++) {
-                this.allCombination.push({
-                  code: `${arr_[i]}${arr_[j]}${arr_[k]}`,
-                  singleAndDoubleForm: `${arr_[i] % 2 === 0 ? '双' : '单'}${arr_[j] % 2 === 0 ? '双' : '单'}${arr_[k] % 2 === 0 ? '双' : '单'}`,
-                  sizeAndForm: `${arr_[i] < 6 ? '小' : '大'}${arr_[j] < 6 ? '小' : '大'}${arr_[k] < 6 ? '小' : '大'}`,
-                  size: +`${arr_[i]}${arr_[j]}${arr_[k]}` < 500 ? '小' : '大',
-                });
+
+                this.allCombination.push(this.calcType({
+                  code: `${arr_[i]}${arr_[j]}${arr_[k]}`
+                }));
               }
             }
           }
           console.log(this.allCombination)
+        },
+        calcType(params) {
+          const code = params.code;
+          params = {
+            ...params,
+            singleAndDoubleForm: `${code[0] % 2 === 0 ? '双' : '单'}${code[1] % 2 === 0 ? '双' : '单'}${code[2] % 2 === 0 ? '双' : '单'}`,
+            sizeAndForm: `${code[0] < 6 ? '小' : '大'}${code[1] < 6 ? '小' : '大'}${code[2] < 6 ? '小' : '大'}`,
+            size: +`${code[0]}${code[1]}${code[2]}` < 500 ? '小' : '大',
+          }
+          return params;
         },
         startRandom() {
           this.calcRandomAllCombination();
@@ -509,7 +520,14 @@
         },
         handlePaste() {
           navigator.clipboard.readText().then(text => {
-            this.result = text.split(',');
+            this.result.length = 0;
+            text = text.split(',');
+            text.forEach(i => {
+              this.result.push(this.calcType({
+                code: i
+              }));
+            })
+            // this.result = text.split(',');
           });
         },
         handleRepeat(count) {
