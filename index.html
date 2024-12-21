@@ -59,7 +59,7 @@
     <div>
 
       <el-select class="w100" v-model="value" placeholder="历史开奖" size="mini">
-        <el-option v-for="(item, index) in history" :key="index" :label="item" :value="item">
+        <el-option v-for="(item, index) in historyCode_" :key="index" :label="item?.label" :value="item.value">
         </el-option>
       </el-select>
 
@@ -390,6 +390,18 @@
       },
       watch: {},
       computed: {
+        historyCode_({ history }) {
+          const calc = (item, index) => {
+            const value = history.slice(index+1, index+300);
+            return value.includes(item) ? `${item}: 前${value.findIndex(i => i === item)+1}期出现` : `${item}: 300期内未出现`;
+          };
+          return history.map((item, index) => {
+            return {
+              value: item,
+              label: calc(item, index),
+            }
+          });
+        },
         filterAfterValue() {
           const value = this.resultStr.split(',');
           return value.filter(item => item).length;

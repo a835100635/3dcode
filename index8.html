@@ -1,11 +1,166 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <!-- import element-ui CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+  <!-- import Vue before Element -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+  <!-- import element-ui JavaScript -->
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+  <script src="history.js"></script>
+  <style>
+    * {
+      font-size: 12px;
+    }
+
+    #app>div {
+      margin-bottom: 2px;
+    }
+
+    .w70 {
+      width: 70px;
+    }
+
+    .w100 {
+      width: 100px;
+    }
+
+    .w120 {
+      width: 120px;
+    }
+
+    .w150 {
+      width: 150px;
+    }
+
+    .flex {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .flex-ac {
+      align-items: center;
+    }
+
+    .mr-16 {
+      margin-right: 16px !important;
+    }
+  </style>
 </head>
+
 <body>
-  888
+  <div id="app">
+    <div>
+      <el-select v-model="value" placeholder="历史开奖" size="mini">
+        <el-option v-for="(item, index) in historyCode" :key="index" :label="item.label" :value="item">
+        </el-option>
+      </el-select>
+    </div>
+
+    <div>
+      <p>
+        选中: {{ value?.value }}
+      </p>
+      <p>
+        上期重复: {{ value?.lastRepetition }}
+      </p>
+      <p>
+        上期开奖: {{ value?.preCode }}
+      </p>
+    </div>
+    <div>
+
+      <!-- <el-table :data="historyCode">
+        <el-table-column prop="label" label="code" />
+        <el-table-column prop="lastRepetition" label="重复" />
+        <el-table-column prop="preCode" label="上期" />
+      </el-table> -->
+
+
+      <el-table :data="historyCode" style="width: 660px" :show-overflow-tooltip="true">
+        <el-table-column prop="label" label="code" width="180">
+        </el-table-column>
+        <el-table-column prop="lastRepetition" label="重复" width="100">
+        </el-table-column>
+        <el-table-column prop="preCode" label="上期" width="180">
+        </el-table-column>
+        <el-table-column prop="recommend" label="下期推荐" width="100">
+        </el-table-column>
+        <el-table-column prop="isWin" label="中数量" width="70">
+        </el-table-column>
+      </el-table>
+    </div>
+
+  </div>
+
+  <script>
+    // 创建vue
+    new Vue({
+      // 控制的标签容器
+      el: '#app',
+      // 交互的数据
+      data: function () {
+        return {
+          value: '',
+          history: window.historyCode8.map((i) => i.map(i => `${i}`)),
+          historyCode: [],
+          code: new Array(80).fill(0).map((item, index) => index + 1)
+        }
+      },
+      watch: {},
+      computed: {},
+      created() {
+        this.historyCode = this.history.map((item, index) => {
+          const arr = [];
+          if (this.history[index + 1]) {
+            for (let i = 0; i < item.length; i++) {
+              if (this.history[index + 1].includes(`${item[i]}`)) {
+                arr.push(item[i]);
+              }
+            }
+          }
+          // 排除上期出现的号码
+          const brr = this.code.filter(item => !this.history[index].includes(`${item}`));
+          // 随机8个
+          const crr = [];
+          for (let i = 0; i < 8; i++) {
+            const index = Math.floor(Math.random() * brr.length);
+            crr.push(brr[index]);
+            brr.splice(index, 1);
+          }
+          crr.sort((a, b) => a - b);
+          let count = 0;
+          if (this.history[index - 1]) {
+            crr.forEach(item => {
+              if (this.history[index - 1].includes(`${item}`)) {
+                count++;
+              }
+            });
+          }
+          return {
+            label: `${index+1}: ${item.join(',')}`,
+            value: item.join(','),
+            lastRepetition: arr.join(',') || '无',
+            preCode: this.history[index + 1] ? this.history[index + 1].join(',') : '无',
+            // 推荐
+            recommend: crr.join(','),
+            // 是否中
+            isWin: count
+          };
+        })
+
+        console.log(this.code);
+      },
+      mounted() {},
+      // 方法
+      methods: {},
+    });
+  </script>
 </body>
+
 </html>
