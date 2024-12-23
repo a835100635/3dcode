@@ -328,6 +328,13 @@
             replace: (v) => v.filter(item => !this.history.slice(0, 100).includes(item.code))
           },
           {
+            key: 19,
+            value: 19,
+            initChecked: false,
+            label: '剔除近150期',
+            replace: (v) => v.filter(item => !this.history.slice(0, 150).includes(item.code))
+          },
+          {
             key: 5,
             value: 5,
             initChecked: false,
