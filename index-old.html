@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <!-- import element-ui CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+  <!-- import Vue before Element -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+  <!-- import element-ui JavaScript -->
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+  <script src="history.js"></script>
+
+  <style>
+    * {
+      font-size: 12px;
+    }
+
+    #app>div {
+      margin-bottom: 2px;
+    }
+
+    .w70 {
+      width: 70px;
+    }
+
+    .w100 {
+      width: 100px;
+    }
+
+    .w120 {
+      width: 120px;
+    }
+
+    .w150 {
+      width: 150px;
+    }
+
+    .flex {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .flex-ac {
+      align-items: center;
+    }
+
+    .mr-16 {
+      margin-right: 16px !important;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <div>
+
+      <el-select class="w100" v-model="value" placeholder="历史开奖" size="mini">
+        <el-option v-for="(item, index) in historyCode_" :key="index" :label="item?.label" :value="item.value">
+        </el-option>
+      </el-select>
+
+      <el-select class="w70" v-model="periods" placeholder="是否重复" size="mini">
+        <el-option v-for="(item, index) in history.length" :key="index" :label="item" :value="item"></el-option>
+      </el-select>
+
+      <span>期内：{{ periodsCount }} 个重复项</span>
+    </div>
+
+    <div class="flex flex-ac">
+      排除：
+      <el-select class="w150" v-model="exclude" multiple placeholder="输入" size="mini" clearable>
+        <el-option v-for="item in arr" :key="item" :label="item" :value="item">
+        </el-option>
+      </el-select>
+      生成：
+      <el-input class="w70" v-model="createCount" placeholder="输入随机个数" size="mini"></el-input>
+      个组合
+    </div>
+    <div>
+      <el-button type="primary" @click="startRandom" size="mini">生成</el-button>
+      <el-button type="primary" @click="handelClean" size="mini">清空</el-button>
+      <el-button type="primary" @click="handlePaste" size="mini">粘贴</el-button>
+    </div>
+
+    <div>
+      <el-input type="textarea" :rows="2" placeholder="请输入内容" :value="result.map(i => i.code).join(',')">
+      </el-input>
+    </div>
+
+    <p>
+      一共生成了 <span id="limit">{{result.length}}</span> 个组合;
+    </p>
+
+    <div style="margin: 8px 0;">
+      <el-radio v-model="sortType" :label="1">升序排序</el-radio>
+      <el-radio v-model="sortType" :label="-1">降序排序</el-radio>
+    </div>
+
+    <div class="flex flex-ac" style="margin: 8px 0;">
+      <el-checkbox class="mr-16" :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选
+      </el-checkbox>
+      <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
+        <el-checkbox v-for="(i, index) in filters" :label="i.value" :key="i.key">{{ i.label }}</el-checkbox>
+      </el-checkbox-group>
+    </div>
+
+    <div class="flex flex-ac">
+      排除：百:
+      <el-select class="w120" v-model="hundred" multiple placeholder="输入" size="mini" clearable>
+        <el-option v-for="item in arr" :key="item" :label="item" :value="item">
+        </el-option>
+      </el-select>
+      十:
+      <el-select class="w120" v-model="ten" multiple placeholder="输入" size="mini" clearable>
+        <el-option v-for="item in arr" :key="item" :label="item" :value="item">
+        </el-option>
+      </el-select>
+      个:
+      <el-select class="w120" v-model="unit" multiple placeholder="输入" size="mini" clearable>
+        <el-option v-for="item in arr" :key="item" :label="item" :value="item">
+        </el-option>
+      </el-select>
+    </div>
+
+    <div v-html="tip"></div>
+
+    <div style="margin-top: 10px;">
+      <el-button type="primary" @click="handelCopy(resultStr)" size="mini">复制</el-button>
+      <el-input class="w70" v-model="awardNumber" placeholder="号码" size="mini"></el-input>
+      <el-button type="primary" @click="handelExist" size="mini">验证是否存在</el-button>
+    </div>
+
+    <div>
+      <el-input type="textarea" :rows="5" :value="resultStr">
+      </el-input>
+    </div>
+    <p>
+      筛选后还剩<span id="limit">{{filterAfterValue}}</span> 个组合;
+    </p>
+
+    <div v-html="allCountTip"></div>
+
+    <div>
+      <el-button type="primary" @click="createEveryDayRandom" size="mini">每日随机</el-button>
+      <el-input class="w70" v-model="everyDayRandom" placeholder="" size="mini"></el-input>
+      随机
+      <el-select class="w70" v-model="everyDayRandomCount" placeholder="几次" size="mini">
+        <el-option v-for="(item, index) in history" :key="index" :label="index+1" :value="index+1">
+        </el-option>
+      </el-select>
+      次；
+      <el-button type="primary" @click="calcHitRate" size="mini">计算</el-button>
+      {{ hitRate }}
+    </div>
+
+    <el-divider></el-divider>
+
+    <p>lhc</p>
+    <div style="margin-top: 10px;">
+      生成：
+      <el-select class="w70" v-model="lhcCount" placeholder="输入" size="mini">
+        <el-option v-for="item in lhcCode" :key="item" :label="item" :value="item">
+        </el-option>
+      </el-select>
+      个特码；
+      <el-button type="primary" @click="createRandomLhc" size="mini">随机</el-button>
+      <el-button type="primary" @click="handelCopy(lhcCodeResult)" size="mini">复制</el-button>
+      </p>
+    </div>
+
+    <p>
+      {{ lhcCodeResult }}
+    </p>
+
+    <div style="margin-top: 10px;">
+      生成：
+      <el-select class="w70" v-model="lhcZodiacCount" placeholder="输入" size="mini">
+        <el-option v-for="item in lhcZodiac" :key="item.index" :label="item.label" :value="item.label">
+        </el-option>
+      </el-select>
+      个生肖；
+      <el-button type="primary" @click="createRandomLhcZodiac" size="mini">随机</el-button>
+      <el-button type="primary" @click="handelCopy(lhcZodiacResult)" size="mini">复制</el-button>
+    </div>
+
+    <p>
+      {{ lhcZodiacResult }}
+    </p>
+
+    <el-divider></el-divider>
+
+    <p>sc</p>
+    <div style="margin-top: 10px;">
+      生成：
+      <el-select class="w70" v-model="carCount" placeholder="输入" size="mini">
+        <el-option v-for="item in car" :key="item" :label="item" :value="item">
+        </el-option>
+      </el-select>
+      个；
+      <el-button type="primary" @click="createRandomCar" size="mini">随机</el-button>
+      <el-button type="primary" @click="handelCopy(carResult)" size="mini">复制</el-button>
+    </div>
+
+    <p>{{ carResult }}</p>
+  </div>
+
+  <script>
+    // 创建vue
+    new Vue({
+      // 控制的标签容器
+      el: '#app',
+      // 交互的数据
+      data: function () {
+        this.filters = [{
+            key: 1,
+            value: 1,
+            initChecked: true,
+            label: '豹子',
+            handle: (v) => v.filter(item => new Set(item.code).size === 1)
+          },
+          {
+            key: 2,
+            value: 2,
+            initChecked: true,
+            label: '组三',
+            handle: (v) => v.filter(item => new Set(item.code).size === 2)
+          },
+          {
+            key: 3,
+            value: 3,
+            initChecked: true,
+            label: '组六',
+            handle: (v) => v.filter(item => new Set(item.code).size === 3)
+          },
+          {
+            key: 8,
+            value: 8,
+            initChecked: false,
+            label: '取单',
+            replace: (v) => v.filter(item => +item.code % 2 === 1)
+          },
+          {
+            key: 9,
+            value: 9,
+            initChecked: false,
+            label: '取双',
+            replace: (v) => v.filter(item => +item.code % 2 === 0)
+          },
+          {
+            key: 10,
+            value: 10,
+            initChecked: false,
+            label: '取小',
+            replace: (v) => v.filter(item => item.size === '小')
+          },
+          {
+            key: 11,
+            value: 11,
+            initChecked: false,
+            label: '取大',
+            replace: (v) => v.filter(item => item.size === '大')
+          },
+          {
+            key: 12,
+            value: 12,
+            initChecked: false,
+            label: '单双单',
+            replace: (v) => v.filter(item => item.singleAndDoubleForm === '单双单')
+          },
+          {
+            key: 13,
+            value: 13,
+            initChecked: false,
+            label: '双单双',
+            replace: (v) => v.filter(item => item.singleAndDoubleForm === '双单双')
+          },
+          {
+            key: 14,
+            value: 14,
+            initChecked: false,
+            label: '单单单',
+            replace: (v) => v.filter(item => item.singleAndDoubleForm === '单单单')
+          },
+          {
+            key: 15,
+            value: 15,
+            initChecked: false,
+            label: '双双双',
+            replace: (v) => v.filter(item => item.singleAndDoubleForm === '双双双')
+          },
+          {
+            key: 16,
+            value: 16,
+            initChecked: false,
+            label: '小小小',
+            replace: (v) => v.filter(item => item.sizeAndForm === '小小小')
+          },
+          {
+            key: 17,
+            value: 17,
+            initChecked: false,
+            label: '大大大',
+            replace: (v) => v.filter(item => item.sizeAndForm === '大大大')
+          },
+          {
+            key: 18,
+            value: 18,
+            initChecked: false,
+            label: '小大小',
+            replace: (v) => v.filter(item => item.sizeAndForm === '小大小')
+          },
+          {
+            key: 7,
+            value: 7,
+            initChecked: false,
+            label: '剔除近50期',
+            replace: (v) => v.filter(item => !this.history.slice(0, 5).includes(item.code))
+          },
+          {
+            key: 4,
+            value: 4,
+            initChecked: false,
+            label: '剔除近100期',
+            replace: (v) => v.filter(item => !this.history.slice(0, 100).includes(item.code))
+          },
+          {
+            key: 19,
+            value: 19,
+            initChecked: false,
+            label: '剔除近150期',
+            replace: (v) => v.filter(item => !this.history.slice(0, 150).includes(item.code))
+          },
+          {
+            key: 5,
+            value: 5,
+            initChecked: false,
+            label: '剔除近200期',
+            replace: (v) => v.filter(item => !this.history.slice(0, 200).includes(item.code))
+          },
+          {
+            key: 6,
+            value: 6,
+            initChecked: false,
+            label: '剔除近300期',
+            replace: (v) => v.filter(item => !this.history.slice(0, 300).includes(item.code))
+          },
+        ];
+        return {
+          value: '',
+
+          arr: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+          exclude: [],
+          history: window.historyCode,
+          createCount: 650,
+          allCombination: [],
+          result: [],
+          allCountTip: '',
+          awardNumber: '',
+          tip: '',
+          periods: 100,
+
+          isIndeterminate: true,
+          checkAll: false,
+          checkedCities: [],
+          sortType: 1,
+
+          hundred: [],
+          ten: [],
+          unit: [],
+          // 每天一注
+          everyDayRandom: '',
+          everyDayRandomCount: 10,
+          hitRate: 0,
+
+
+          // 六合彩
+          lhcCode: new Array(48).fill(0).map((item, index) => index + 1),
+          lhcCount: 30,
+          lhcCodeResult: '',
+          // 生肖
+          lhcZodiac: ['鼠', '牛', '虎', '兔', '龙', '蛇', '马', '羊', '猴', '鸡', '狗', '猪'].map((i, index) => ({
+            index,
+            label: i
+          })),
+          lhcZodiacCount: 8,
+          lhcZodiacResult: '',
+
+          // 赛车
+          car: new Array(10).fill(0).map((item, index) => index + 1),
+          carCount: 5,
+          carResult: '',
+        }
+      },
+      watch: {},
+      computed: {
+        historyCode_({ history }) {
+          const calc = (item, index) => {
+            const value = history.slice(index+1, index+300);
+            return value.includes(item) ? `${item}: 前${value.findIndex(i => i === item)+1}期出现` : `${item}: 300期内未出现`;
+          };
+          return history.map((item, index) => {
+            return {
+              value: item,
+              label: calc(item, index),
+            }
+          });
+        },
+        filterAfterValue() {
+          const value = this.resultStr.split(',');
+          return value.filter(item => item).length;
+        },
+        periodsCount() {
+          const {
+            count
+          } = this.handleRepeat(this.periods)
+          return count;
+        },
+        resultStr({
+          result,
+          sortType,
+          checkedCities
+        }) {
+          let value = [];
+          checkedCities.forEach(item => {
+            const filter = this.filters.find(i => i.value === item);
+            if (filter && filter.handle) {
+              value.push(...filter.handle(result));
+            }
+
+            if (filter && filter.replace) {
+              value = filter.replace(value);
+            }
+          });
+          value.sort((a, b) => sortType === 1 ? a.code - b.code : b.code - a.code);
+          // 排除百位开头
+          if (this.hundred.length) {
+            value = value.filter(item => !this.hundred.includes(+item.code[0]));
+          }
+          // 排除十位开头
+          if (this.ten.length) {
+            value = value.filter(item => !this.ten.includes(+item.code[1]));
+          }
+          // 排除个位开头
+          if (this.unit.length) {
+            value = value.filter(item => !this.unit.includes(+item.code[2]));
+          }
+          return value.map(i => i.code).filter(i => i).join(',');
+        }
+      },
+      created() {
+        this.checkedCities = this.filters.filter(i => i.initChecked).map(i => i.value);
+        this.calcRandomAllCombination();
+        this.createEveryDayRandom();
+        console.log(this.lhcCode)
+      },
+      mounted() {},
+      // 方法
+      methods: {
+        calcRandomAllCombination() {
+          this.allCombination.length = 0;
+          const arr_ = [...this.arr].filter(item => !this.exclude.includes(item));
+          for (let i = 0; i < arr_.length; i++) {
+            for (let j = 0; j < arr_.length; j++) {
+              for (let k = 0; k < arr_.length; k++) {
+
+                this.allCombination.push(this.calcType({
+                  code: `${arr_[i]}${arr_[j]}${arr_[k]}`
+                }));
+              }
+            }
+          }
+          console.log(this.allCombination)
+        },
+        calcType(params) {
+          const code = params.code;
+          params = {
+            ...params,
+            singleAndDoubleForm: `${code[0] % 2 === 0 ? '双' : '单'}${code[1] % 2 === 0 ? '双' : '单'}${code[2] % 2 === 0 ? '双' : '单'}`,
+            sizeAndForm: `${code[0] < 6 ? '小' : '大'}${code[1] < 6 ? '小' : '大'}${code[2] < 6 ? '小' : '大'}`,
+            size: +`${code[0]}${code[1]}${code[2]}` < 500 ? '小' : '大',
+          }
+          return params;
+        },
+        startRandom() {
+          this.calcRandomAllCombination();
+          this.result.length = 0;
+          const result = []
+          this.calcCombination(this.allCombination);
+          this.allCountTip = '';
+          this.calcStartCount();
+        },
+        calcCombination(arr) {
+          const allCombination = [...arr];
+          if (this.result.length < this.createCount && this.createCount) {
+            let randomIndex = Math.floor(Math.random() * allCombination.length);
+            this.result.push(allCombination.splice(randomIndex, 1)[0]);
+            this.calcCombination(allCombination);
+          }
+        },
+        handelClean() {
+          this.exclude.length = 0;
+          this.allCombination.length = 0;
+          this.result = [],
+            this.resultStr = '',
+            this.allCountTip = '',
+            this.awardNumber = '',
+            this.setTip('');
+          this.calcRandomAllCombination();
+        },
+        setTip(str) {
+          this.tip = `${new Date().toLocaleString()}: ${str}`;
+        },
+        handelExist() {
+          const isExist = this.result.filter(i => i.code === this.awardNumber).length > 0;
+          this.setTip(isExist ? '存在' : '不存在')
+        },
+        calcStartCount() {
+          const startCount = {};
+          this.allCountTip = '';
+          for (let i = 0; i < this.result.length; i++) {
+            const start = this.result[i].code[0];
+            if (startCount[start]) {
+              startCount[start] += 1;
+            } else {
+              startCount[start] = 1;
+            }
+          }
+          Object.keys(startCount).forEach(key => {
+            this.allCountTip += `${key} 开头的有 ${startCount[key]} 个 <br>`;
+          });
+        },
+        handelCopy(v) {
+          this.setTip('复制成功');
+          navigator.clipboard.writeText(v);
+        },
+        handlePaste() {
+          navigator.clipboard.readText().then(text => {
+            this.result.length = 0;
+            text = text.split(',');
+            text.forEach(i => {
+              this.result.push(this.calcType({
+                code: i
+              }));
+            })
+            // this.result = text.split(',');
+          });
+        },
+        handleRepeat(count) {
+          const last = this.history.slice(0, count);
+          const lastMap = new Map();
+          last.forEach(item => {
+            if (lastMap.has(item)) {
+              lastMap.set(item, lastMap.get(item) + 1);
+            } else {
+              lastMap.set(item, 1);
+            }
+          });
+          const repeatData = Array.from(lastMap.entries());
+
+          const uniqueCount = repeatData.filter(item => item[1] > 1).length;
+
+          return {
+            count: uniqueCount, // 不同重复项的数量
+            repeatData: repeatData // 每个重复项及其出现次数
+          };
+        },
+
+        handleCheckAllChange(val) {
+          this.checkedCities = val ? this.filters.map(i => i.value) : [];
+          this.isIndeterminate = false;
+        },
+        handleCheckedCitiesChange(value) {
+          let checkedCount = value.length;
+          this.checkAll = checkedCount === this.filters.length;
+          this.isIndeterminate = checkedCount > 0 && checkedCount < this.filters.length;
+        },
+
+        createEveryDayRandom() {
+          this.everyDayRandom = this.allCombination[Math.floor(Math.random() * this.allCombination.length)].code;
+        },
+        // 计算命中率
+        calcHitRate() {
+          let hitCount = 0;
+          let randomCount = 0;
+          while (randomCount < this.everyDayRandomCount) {
+            randomCount++;
+            const arr = [];
+            const allCombination = [...this.allCombination];
+            while (arr.length < allCombination.length) {
+              const randomIndex = Math.floor(Math.random() * allCombination.length);
+              arr.push(allCombination.splice(randomIndex, 1)[0]);
+            }
+            if (arr.map(i => i.code).includes(this.everyDayRandom)) {
+              hitCount++;
+            }
+            arr.length = 0;
+            allCombination.length = 0;
+          }
+          this.hitRate =
+            `${hitCount}/${this.everyDayRandomCount} ; 命中率：${(hitCount / this.everyDayRandomCount * 100).toFixed(2)}%`;
+        },
+        createRandomLhc() {
+          const result = [];
+          const lhcCode = [...this.lhcCode];
+          while (result.length < this.lhcCount) {
+            const randomIndex = Math.floor(Math.random() * lhcCode.length);
+            result.push(lhcCode.splice(randomIndex, 1)[0]);
+          }
+          this.lhcCodeResult = result.sort((a, b) => a - b).join(',');
+        },
+        createRandomLhcZodiac() {
+          const result = [];
+          const lhcZodiac = [...this.lhcZodiac];
+          while (result.length < this.lhcZodiacCount) {
+            const randomIndex = Math.floor(Math.random() * lhcZodiac.length);
+            result.push(lhcZodiac.splice(randomIndex, 1)[0]);
+          }
+          result.sort((a, b) => a.index - b.index);
+          this.lhcZodiacResult = result.map(i => i.label).join(',');
+        },
+        createRandomCar() {
+          const result = [];
+          const car = [...this.car];
+          while (result.length < this.carCount) {
+            const randomIndex = Math.floor(Math.random() * car.length);
+            result.push(car.splice(randomIndex, 1)[0]);
+          }
+          this.carResult = result.sort((a, b) => a - b).join(',');
+        }
+      },
+    });
+  </script>
+</body>
+
+</html>
