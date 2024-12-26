@@ -27,7 +27,7 @@ function compareOddEvenCount(numbers) {
 }
 
 // 格式化code 返回形态
-function formatCode(code) {
+function formatCode(code, timestamp) {
   // 去掉空格
   const numbers = code.split('').filter(i => i !== '' && i.trim()).join('');
   const sum = numbers.split('').reduce((a, b) => a + Number(b), 0);
@@ -53,6 +53,8 @@ function formatCode(code) {
     sumOddEven: compareOddEven(sum),
     // 跨度
     span: Math.max(...numbers.split('').map(Number)) - Math.min(...numbers.split('').map(Number)),
+    // 时间戳
+    timestamp: timestamp ? new Date(timestamp).getTime() : new Date().getTime(),
   };
 };
 

@@ -1,8 +1,15 @@
+p {
+    margin: 6px 0;
+    padding: 0;
+}
 span {
-  white-space: nowrap;
+    white-space: nowrap;
 }
 .w80 {
     width: 80px;
+}
+.w70 {
+    width: 70px;
 }
 .w120 {
     width: 120px;

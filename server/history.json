@@ -23037,5 +23037,34 @@
     "saleamount": 5489592,
     "totalmoney": "0.00",
     "prize": false
+  },
+  "2024-12-25": {
+    "opendate": "2024-12-25",
+    "officialopendate": "",
+    "issueno": "2024346",
+    "number": "0 5 6",
+    "refernumber": "",
+    "saleamount": 130815928,
+    "totalmoney": "0.00",
+    "prize": [
+      {
+        "prizename": "直选",
+        "require": "定位中3码",
+        "num": 0,
+        "singlebonus": 1040
+      },
+      {
+        "prizename": "组三",
+        "require": "不定位中3码",
+        "num": 0,
+        "singlebonus": 346
+      },
+      {
+        "prizename": "组六",
+        "require": "不定位中3码",
+        "num": 0,
+        "singlebonus": 173
+      }
+    ]
   }
 }

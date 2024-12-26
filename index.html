@@ -68,6 +68,19 @@
       </el-radio-group>
     </div>
 
+    <div>
+      <p>排除和值</p>
+      <el-checkbox-group v-model="sumInclude" style="display: contents;">
+        <el-checkbox v-for="(i, index) in sumList" :label="i" :key="i">{{ i }}</el-checkbox>
+      </el-checkbox-group>
+    </div>
+    <div>
+      <p>排除跨度</p>
+      <el-checkbox-group v-model="spanInclude" style="display: contents;">
+        <el-checkbox v-for="(i, index) in spanList" :label="i" :key="i">{{ i }}</el-checkbox>
+      </el-checkbox-group>
+    </div>
+
     <div class="flex flex-ac mb8">
       <p>排除：</p>
       百: &nbsp;
@@ -89,6 +102,8 @@
 
     <div>
       <el-button type="primary" @click="handleCopy(afterValue)" size="mini">复制</el-button>
+      <el-input class="w70" v-model="awardNumber" placeholder="号码" size="mini"></el-input>
+      <el-button type="primary" @click="handelExist" size="mini">验证是否存在</el-button>
     </div>
 
     <p class="pr">
@@ -118,25 +133,24 @@
       </div>
     </div>
 
-
     <el-table :data="tableData">
-      <el-table-column prop="opendate" label="日期" width="120"></el-table-column>
-      <el-table-column prop="number" label="code" width="80"></el-table-column>
+      <el-table-column prop="opendate" label="日期" width="110"></el-table-column>
+      <el-table-column prop="number" label="code" width="60"></el-table-column>
       <el-table-column label="类型">
-        <el-table-column prop="isGroupThree" label="组三" width="80">
+        <el-table-column prop="isGroupThree" label="组三" width="40">
           <template slot-scope="scope">
             {{ scope.row.isGroupThree ? '三' : '' }}
           </template>
         </el-table-column>
-        <el-table-column prop="isGroupSix" label="组六" width="80">
+        <el-table-column prop="isGroupSix" label="组六" width="40">
           <template slot-scope="scope">
             {{ scope.row.isGroupSix ? '六' : '' }}
           </template>
         </el-table-column>
       </el-table-column>
-      <el-table-column prop="lastRepeat" label="300期重复" width="120">
+      <el-table-column prop="lastRepeat" label="300期重复" width="80">
         <template slot-scope="scope">
-          {{ scope.row.lastRepeat.isRepeat ? `前${scope.row.lastRepeat.preIndex}期出现` : '' }}
+          {{ scope.row.lastRepeat.isRepeat ? `前${scope.row.lastRepeat.preIndex}期` : '' }}
         </template>
       </el-table-column>
       <el-table-column prop="sum" label="和值" width="60"></el-table-column>
@@ -154,6 +168,8 @@
         this.buttomTypes = [10, 50, 100, 200, 300];
         return {
           numbers: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+          sumList: new Array(28).fill(0).map((i, index) => index),
+          spanList: new Array(10).fill(0).map((i, index) => index),
           codes: [],
           count: 600,
           exclude: {
@@ -179,10 +195,14 @@
 
           checkedFilter: ['豹子', '组三', '组六'],
           checkedRadio: '不剔除',
+          sumInclude: new Array(28).fill(0).map((i, index) => index),
+          spanInclude: new Array(10).fill(0).map((i, index) => index),
 
           hundred: [],
           ten: [],
           unit: [],
+
+          awardNumber: ''
         }
       },
       watch: {
@@ -217,7 +237,7 @@
         maxCount({ appearCount }) {
           return Object.values(appearCount).reduce((a, b) => a > b ? a : b, 0);
         },
-        afterValue({ filterConfig, checkedFilter, checkedRadio,result }) {
+        afterValue({ filterConfig, checkedFilter, checkedRadio, sumInclude, spanInclude, result }) {
           let value = [];
           checkedFilter.forEach(i => {
             const filter = filterConfig.find(j => j.label === i);
@@ -233,6 +253,14 @@
             if (filter && filter.replace) {
               value = filter.replace(value);
             }
+          }
+          // 排除和值
+          if (sumInclude.length) {
+            value = value.filter(item => sumInclude.includes(item.sum));
+          }
+          // 排除跨度
+          if (spanInclude.length) {
+            value = value.filter(item => spanInclude.includes(item.span));
           }
           // 排除百位开头
           if (this.hundred.length) {
@@ -389,6 +417,15 @@
           this.pageNum = 0;
         },
 
+        handelExist() {
+          if (!this.awardNumber) {
+            this.setTip('请输入号码');
+            return;
+          }
+          const isExist = this.afterValue.includes(this.awardNumber);
+          this.setTip(isExist ? '存在' : '不存在');
+        },
+
         getHistory() {
           fetch('./server/history.json')
             .then(response => response.json())
@@ -409,13 +446,13 @@
                 return {
                   opendate: data[i].opendate,
                   number: data[i].number,
-                  ...window.formatCode(data[i].number),
+                  ...window.formatCode(data[i].number, data[i].opendate),
                   // 上期重复
                   lastRepeat: func(data[i], ondex),
                   // 和值
                   sum: window.formatCode(data[i].number).sum,
                 }
-              }).sort((a, b) => a.opendate - b.opendate);
+              }).sort((a, b) => b.timestamp - a.timestamp);
             })
         }
       }
