@@ -69,16 +69,18 @@
     </div>
 
     <div>
-      <p>排除和值</p>
+      <p>排除和值（和值：注数）</p>
       <el-checkbox-group v-model="sumInclude" style="display: contents;">
-        <el-checkbox v-for="(i, index) in sumList" :label="i" :key="i">{{ i }}</el-checkbox>
+        <el-checkbox v-for="(i, index) in sumList" :label="i" :key="i">{{ `${i}: (${sumCountAllMap[i].length})` }}</el-checkbox>
       </el-checkbox-group>
+        <el-link type="info" @click="handleDialog('span')" class="ml10">对应关系</el-link>
     </div>
     <div>
-      <p>排除跨度</p>
+      <p>排除跨度（跨度：注数）</p>
       <el-checkbox-group v-model="spanInclude" style="display: contents;">
-        <el-checkbox v-for="(i, index) in spanList" :label="i" :key="i">{{ i }}</el-checkbox>
+        <el-checkbox v-for="(i, index) in spanList" :label="i" :key="i">{{ `${i}: (${spanCountAllMap[i].length})` }}</el-checkbox>
       </el-checkbox-group>
+        <el-link type="info" @click="handleDialog('span')" class="ml10">对应关系</el-link>
     </div>
 
     <div class="flex flex-ac mb8">
@@ -158,6 +160,13 @@
       <el-table-column prop="span" label="跨度" width="60"></el-table-column>
     </el-table>
 
+    <el-dialog
+      title="对应关系"
+      :visible.sync="dialogVisible"
+      width="90%">
+      <div v-html="dialogContent"></div>
+    </el-dialog>
+
   </div>
 
   <script>
@@ -202,7 +211,13 @@
           ten: [],
           unit: [],
 
-          awardNumber: ''
+          awardNumber: '',
+
+          sumCountAllMap: {},
+          spanCountAllMap: {},
+
+          dialogVisible: false,
+          dialogContentType: 'sum'
         }
       },
       watch: {
@@ -369,16 +384,60 @@
             tip += `${i}: ${startCount[i]}注; <br>`;
           })
           return tip;
+        },
+        dialogContent({ dialogContentType }) {
+          const c = dialogContentType === 'sum' ? this.sumCountAllMap : this.spanCountAllMap;
+          let content = '';
+          const keys = Object.keys(c);
+          const div = document.createElement('div');
+          keys.forEach(i => {
+            const div1 = document.createElement('div');
+            const p = document.createElement('p');
+            p.style.fontWeight = 'bold';
+            p.innerHTML = `${i}`;
+            const div_ = document.createElement('div');
+            div_.innerHTML = c[i].join(',');
+            div1.appendChild(p);
+            div1.appendChild(div_);
+            div.appendChild(div1);
+          });
+          content = div.innerHTML;
+          return content;
         }
       },
       created() {
         this.getHistory();
+        this.calcSumCountAllMap();
+        this.calcSpanCountAllMap();
       },
       methods: {
 
         init() {
           this.combination = '';
           this.result = [];
+        },
+
+        // 和值下的注数
+        calcSumCountAllMap() {
+          for (let i = 0; i < 28; i++) {
+            this.sumCountAllMap[i] = [];
+          }
+          const codes = window.generateThreeDigits();
+          for (let i = 0; i < 1000; i++) {
+            this.sumCountAllMap[codes[i].sum].push(codes[i].code);
+          }
+          return this.sumCountAllMap;
+        },
+        // 跨度下的注数
+        calcSpanCountAllMap() {
+          for (let i = 0; i < 10; i++) {
+            this.spanCountAllMap[i] = [];
+          }
+          const codes = window.generateThreeDigits();
+          for (let i = 0; i < 1000; i++) {
+            this.spanCountAllMap[codes[i].span].push(codes[i].code);
+          }
+          return this.spanCountAllMap;
         },
 
         generate() {
@@ -424,6 +483,11 @@
           }
           const isExist = this.afterValue.includes(this.awardNumber);
           this.setTip(isExist ? '存在' : '不存在');
+        },
+
+        handleDialog(type) {
+          this.dialogContentType = type;
+          this.dialogVisible = true;
         },
 
         getHistory() {

@@ -28,6 +28,7 @@ function compareOddEvenCount(numbers) {
 
 // 格式化code 返回形态
 function formatCode(code, timestamp) {
+  // console.log('formatCode',code);
   // 去掉空格
   const numbers = code.split('').filter(i => i !== '' && i.trim()).join('');
   const sum = numbers.split('').reduce((a, b) => a + Number(b), 0);
@@ -60,6 +61,7 @@ function formatCode(code, timestamp) {
 
 // 加工数据
 function generateData(codes) {
+  // console.log(codes);
   return codes.map((numbers) => {
     const code = `${numbers[0]}${numbers[1]}${numbers[2]}`;
     return formatCode(code);
@@ -67,7 +69,7 @@ function generateData(codes) {
 };
 
 // 生成 0 - 9 三位数组组合
-function generateThreeDigits({ hundred,ten, one }) {
+function generateThreeDigits({ hundred,ten, one } = { hundred: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'], ten: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'], one: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] }) {
   let result = [];
   for (let i = 0; i < hundred.length; i++) {
     for (let j = 0; j < ten.length; j++) {
