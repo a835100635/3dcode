@@ -73,7 +73,7 @@
       <el-checkbox-group v-model="sumInclude" style="display: contents;">
         <el-checkbox v-for="(i, index) in sumList" :label="i" :key="i">{{ `${i}: (${sumCountAllMap[i].length})` }}</el-checkbox>
       </el-checkbox-group>
-        <el-link type="info" @click="handleDialog('span')" class="ml10">对应关系</el-link>
+        <el-link type="info" @click="handleDialog('sum')" class="ml10">对应关系</el-link>
     </div>
     <div>
       <p>排除跨度（跨度：注数）</p>
