@@ -137,7 +137,16 @@
 
     <el-table :data="tableData">
       <el-table-column prop="opendate" label="日期" width="110"></el-table-column>
-      <el-table-column prop="number" label="code" width="60"></el-table-column>
+      <el-table-column prop="testCode" label="试机号" width="60">
+        <template slot-scope="scope">
+          {{ scope.row.testCode.split('').join(' ') }}
+        </template>
+      </el-table-column>
+      <el-table-column prop="number" label="code" width="60">
+        <template slot-scope="scope">
+          <span style="font-weight: bold;">{{ scope.row.number }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="类型">
         <el-table-column prop="isGroupThree" label="组三" width="40">
           <template slot-scope="scope">
@@ -508,6 +517,7 @@
               this.history = data;
               this.historyList = keys.map((i, ondex) => {
                 return {
+                  testCode: data[i]?.testCode,
                   opendate: data[i].opendate,
                   number: data[i].number,
                   ...window.formatCode(data[i].number, data[i].opendate),
