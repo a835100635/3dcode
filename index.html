@@ -102,6 +102,11 @@
       </el-select>
     </div>
 
+    <div v-if="excludeConfig.length"  class="mb4">
+      <span>已排除:</span>
+        {{ excludeConfigStr }}
+    </div>
+
     <div>
       <el-button type="primary" @click="handleCopy(afterValue)" size="mini">复制</el-button>
       <el-input class="w70" v-model="awardNumber" placeholder="号码" size="mini"></el-input>
@@ -412,6 +417,81 @@
           });
           content = div.innerHTML;
           return content;
+        },
+        excludeConfig({ numbers, filterConfig, sumList, sumInclude, spanList, spanInclude, exclude, hundred, ten, unit }) {
+          const type = ['百', '十', '个'];
+          let result = [];
+          const arr = [[], [], []];
+          numbers.forEach(i => {
+            if (!exclude.hundred.includes(i)) {
+              arr[0].push(i);
+            }
+            if (!exclude.ten.includes(i)) {
+              arr[1].push(i);
+            }
+            if (!exclude.one.includes(i)) {
+              arr[2].push(i);
+            }
+          });
+          arr.forEach((i, index) => {
+            if (i.length) {
+              result.push(`${type[index]}: ${i.join('，')}`);
+            }
+          });
+          if (result.length) {
+            result = [`<生成前>${[...result]}`];
+          }
+          let afterStr= '';
+          const brr = [hundred, ten, unit];
+          brr.forEach((i, index) => {
+            let s = ''
+            if (i.length && i.length < 10) {
+              s = `${type[index]}: `;
+              numbers.forEach(j => {
+                if (i.includes(j)) {
+                  s += `${j}，`;
+                }
+              });
+            }
+            afterStr += s;
+          });
+          if (afterStr) {
+            result.push(`<生成后>${afterStr}`);
+          }
+          const checkbox = filterConfig.filter(i => i.type === 'checkbox');
+          const radio = filterConfig.filter(i => i.type === 'radio');
+          checkbox.forEach(i => {
+            if (!i.initChecked) {
+              result.push(i.label);
+            }
+          });
+          radio.forEach(i => {
+            if (i.initChecked && i.label !== '不剔除') {
+              result.push(i.label);
+            }
+          });
+          let sumStr = '';
+          sumList.forEach((i)=> {
+            if (!sumInclude.includes(i)) {
+              sumStr += `${i}， `;
+            }
+          });
+          sumStr && result.push(`和值: ${sumStr}`);
+          let spanStr = '';
+          spanList.forEach((i,)=> {
+            if (!spanInclude.includes(i)) {
+              spanStr += `${i}， `;
+            }
+          });
+          spanStr && result.push(`跨度: ${spanStr}`);
+          return result;
+        },
+        excludeConfigStr({ excludeConfig }) {
+          let str = '';
+          excludeConfig.forEach(i => {
+            str += `[${i}]； `;
+          });
+          return str;
         }
       },
       created() {
