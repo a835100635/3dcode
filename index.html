@@ -153,14 +153,14 @@
         </template>
       </el-table-column>
       <el-table-column label="类型">
-        <el-table-column prop="isGroupThree" label="组三" width="40">
+        <el-table-column prop="isGroupThree" label="组三" width="50">
           <template slot-scope="scope">
             {{ scope.row.isGroupThree ? '三' : '' }}
           </template>
         </el-table-column>
-        <el-table-column prop="isGroupSix" label="组六" width="40">
+        <el-table-column prop="isGroupSix" label="组六" width="50">
           <template slot-scope="scope">
-            {{ scope.row.isGroupSix ? '六' : '' }}
+            <span :class="getRowClass(scope)">{{ scope.row.isGroupSix ? '六' : '' }}</span>
           </template>
         </el-table-column>
       </el-table-column>
@@ -170,7 +170,13 @@
         </template>
       </el-table-column>
       <el-table-column prop="sum" label="和值" width="60"></el-table-column>
-      <el-table-column prop="sumOddEven" label="和值单双" width="60"></el-table-column>
+      <el-table-column prop="sumOddEven" label="和值单双" width="60">
+        <template slot-scope="scope">
+          <span  :class="getRowSumOddEvenClass(scope)">
+            {{ scope.row.sumOddEven }}
+          </span>
+        </template>
+      </el-table-column>
       <el-table-column prop="span" label="跨度" width="60"></el-table-column>
     </el-table>
 
@@ -577,6 +583,46 @@
         handleDialog(type) {
           this.dialogContentType = type;
           this.dialogVisible = true;
+        },
+
+        getRowClass(scope) {
+          const { isGroupSix } = scope.row;
+          const index = scope.$index;
+          const tableData = this.tableData;
+          let isGroupSixClass = false;
+          // 计算后几天的数据是否有组六
+          if(tableData[index].isGroupSix && tableData[index+1] && tableData[index+1].isGroupSix && tableData[index+2] &&tableData[index+2].isGroupSix) {
+            isGroupSixClass = true;
+          } else if(tableData[index-1] && tableData[index-1].isGroupSix && tableData[index+1] &&tableData[index+1].isGroupSix && isGroupSix) {
+            isGroupSixClass = true;
+          } else if(tableData[index-2] && tableData[index-2].isGroupSix && tableData[index-1].isGroupSix && isGroupSix) {
+            isGroupSixClass = true;
+          }
+          return {
+            'is-continuous-style': isGroupSixClass
+          };
+        },
+
+        getRowSumOddEvenClass(scope) {
+          if (scope.row.code === '214') {
+            console.log(scope.row);
+          }
+          const tableData = this.tableData;
+          const { sumOddEven } = scope.row;
+          const isEven = sumOddEven === '双';
+          const index = scope.$index;
+          let show = false;
+          if(tableData[index+1] && tableData[index+1].sumOddEven === sumOddEven && tableData[index+2] && tableData[index+2].sumOddEven === sumOddEven) {
+            show = true;
+          } else if(tableData[index-1] && tableData[index-1].sumOddEven === sumOddEven && tableData[index+1] &&tableData[index+1].sumOddEven === sumOddEven) {
+            show = true;
+          } else if(tableData[index-2] && tableData[index-2].sumOddEven === sumOddEven && tableData[index-1].sumOddEven === sumOddEven) {
+            show = true;
+          }
+          return {
+            'is-continuous-style': show,
+            'is-even-style': show && isEven
+          };
         },
 
         getHistory() {
