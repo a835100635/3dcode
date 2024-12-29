@@ -23920,5 +23920,35 @@
       }
     ],
     "testCode": "483"
+  },
+  "2024-12-28": {
+    "opendate": "2024-12-28",
+    "officialopendate": "",
+    "issueno": "2024349",
+    "number": "1 0 8",
+    "refernumber": "",
+    "saleamount": 127946706,
+    "totalmoney": "0.00",
+    "prize": [
+      {
+        "prizename": "直选",
+        "require": "定位中3码",
+        "num": 0,
+        "singlebonus": 1040
+      },
+      {
+        "prizename": "组三",
+        "require": "不定位中3码",
+        "num": 0,
+        "singlebonus": 346
+      },
+      {
+        "prizename": "组六",
+        "require": "不定位中3码",
+        "num": 0,
+        "singlebonus": 173
+      }
+    ],
+    "testCode": "075"
   }
 }
