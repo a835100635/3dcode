@@ -102,3 +102,7 @@ span {
 .is-even-style {
     background-color: #0fd1ff;
 }
+.is-highlight {
+    font-size: 16px;
+    color: #f22a0b;
+}

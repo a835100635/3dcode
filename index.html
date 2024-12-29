@@ -140,6 +140,12 @@
       </div>
     </div>
 
+    <div>
+      <el-checkbox-group v-model="highlightNumbers" style="display: contents;">
+        <el-checkbox v-for="(i, index) in numbers" :label="i" :key="i">{{ i }}</el-checkbox>
+      </el-checkbox-group>
+    </div>
+
     <el-table :data="tableData">
       <el-table-column prop="opendate" label="日期" width="110"></el-table-column>
       <el-table-column prop="testCode" label="试机号" width="60">
@@ -149,7 +155,9 @@
       </el-table-column>
       <el-table-column prop="number" label="code" width="60">
         <template slot-scope="scope">
-          <span style="font-weight: bold;">{{ scope.row.number }}</span>
+          <span style="font-weight: bold;" :class="{ 'is-highlight': highlightNumbers.includes(+scope.row.number[0]) }">{{ scope.row.number[0] }}</span>
+          <span style="font-weight: bold;" :class="{ 'is-highlight': highlightNumbers.includes(+scope.row.number[2]) }">{{ scope.row.number[2] }}</span>
+          <span style="font-weight: bold;" :class="{ 'is-highlight': highlightNumbers.includes(+scope.row.number[4]) }">{{ scope.row.number[4] }}</span>
         </template>
       </el-table-column>
       <el-table-column label="类型">
@@ -237,7 +245,8 @@
           spanCountAllMap: {},
 
           dialogVisible: false,
-          dialogContentType: 'sum'
+          dialogContentType: 'sum',
+          highlightNumbers: []
         }
       },
       watch: {
@@ -545,15 +554,29 @@
         },
 
         handlePaste() {
-          navigator.clipboard.readText().then(text => {
-            this.result.length = 0;
-            if (regex.test(text)) {
+          let text = document.execCommand('paste');
+          console.log(text);
+          if (!text) {
+            this.setTip('请手动粘贴');
+          }
+          this.result.length = 0;
+          if (regex.test(text)) {
               text = text.split(',');
               this.result = window.generateData(text);
             } else {
               this.$message.error('请粘贴正确的内容');
             }
-          });
+
+          // 兼容问题
+          // navigator.clipboard.readText().then(text => {
+          //   this.result.length = 0;
+          //   if (regex.test(text)) {
+          //     text = text.split(',');
+          //     this.result = window.generateData(text);
+          //   } else {
+          //     this.$message.error('请粘贴正确的内容');
+          //   }
+          // });
         },
 
         handleCopy(v) {
