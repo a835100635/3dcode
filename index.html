@@ -52,7 +52,7 @@
     </el-row>
 
     <p class="pr">
-      <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="combination">
+      <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="combination" @change="initCombination">
       </el-input>
       <span class="pa after-value-Length" v-if="result.length"> 生成{{ result.length }}注</span>
     </p>
@@ -516,6 +516,11 @@
       },
       methods: {
 
+        initCombination(text) {
+          text = text.split(',')
+          this.result = window.generateData(text);
+        },
+
         init() {
           this.combination = '';
           this.result = [];
@@ -553,30 +558,17 @@
           this.init();
         },
 
-        handlePaste() {
-          let text = document.execCommand('paste');
-          console.log(text);
-          if (!text) {
-            this.setTip('请手动粘贴');
-          }
-          this.result.length = 0;
-          if (regex.test(text)) {
+        async handlePaste() {
+          // 兼容问题
+          navigator.clipboard.readText().then(text => {
+            this.result.length = 0;
+            if (regex.test(text)) {
               text = text.split(',');
               this.result = window.generateData(text);
             } else {
               this.$message.error('请粘贴正确的内容');
             }
-
-          // 兼容问题
-          // navigator.clipboard.readText().then(text => {
-          //   this.result.length = 0;
-          //   if (regex.test(text)) {
-          //     text = text.split(',');
-          //     this.result = window.generateData(text);
-          //   } else {
-          //     this.$message.error('请粘贴正确的内容');
-          //   }
-          // });
+          });
         },
 
         handleCopy(v) {
@@ -652,28 +644,33 @@
           fetch('./server/history.json')
             .then(response => response.json())
             .then(data => {
-              const keys = Object.keys(data);
+              const keys = Object.keys(data).map(i => ({ key: i, timestamp: new Date(i).getTime() })).sort((a, b) => b.timestamp - a.timestamp);
+
+                  console.log('keys', keys);
               const func = ({ number, opendate }, index) => {
                 // 截取 300 条
-                const value_ = keys.slice(index+1, index+300).map(i => data[i].number);
+                const value_ = keys.slice(index+1, index+300).map(i => data[i.key].number);
+                if(number === '6 7 2' ) {
+                  console.log('value_', value_);
+                } 
                 // 判断是否重复
                 const isRepeat = value_.includes(number);
                 return {
                   isRepeat,
-                  preIndex: value_.indexOf(number),
+                  preIndex: value_.indexOf(number) !== -1 ? value_.indexOf(number) + 1 : '',
                 };
               };
               this.history = data;
               this.historyList = keys.map((i, ondex) => {
                 return {
-                  testCode: data[i]?.testCode,
-                  opendate: data[i].opendate,
-                  number: data[i].number,
-                  ...window.formatCode(data[i].number, data[i].opendate),
+                  testCode: data[i.key]?.testCode,
+                  opendate: data[i.key].opendate,
+                  number: data[i.key].number,
+                  ...window.formatCode(data[i.key].number, data[i.key].opendate),
                   // 上期重复
-                  lastRepeat: func(data[i], ondex),
+                  lastRepeat: func(data[i.key], ondex),
                   // 和值
-                  sum: window.formatCode(data[i].number).sum,
+                  sum: window.formatCode(data[i.key].number).sum,
                 }
               }).sort((a, b) => b.timestamp - a.timestamp);
             })
