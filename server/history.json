@@ -23950,5 +23950,35 @@
       }
     ],
     "testCode": "075"
+  },
+  "2024-12-29": {
+    "opendate": "2024-12-29",
+    "officialopendate": "",
+    "issueno": "2024350",
+    "number": "6 7 2",
+    "refernumber": "",
+    "saleamount": 0,
+    "totalmoney": "0.00",
+    "prize": [
+      {
+        "prizename": "直选",
+        "require": "定位中3码",
+        "num": 0,
+        "singlebonus": 1040
+      },
+      {
+        "prizename": "组三",
+        "require": "不定位中3码",
+        "num": 0,
+        "singlebonus": 346
+      },
+      {
+        "prizename": "组六",
+        "require": "不定位中3码",
+        "num": 0,
+        "singlebonus": 173
+      }
+    ],
+    "testCode": "965"
   }
 }
