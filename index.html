@@ -168,7 +168,12 @@
         </el-table-column>
         <el-table-column prop="isGroupSix" label="组六" width="50">
           <template slot-scope="scope">
-            <span :class="getRowClass(scope)">{{ scope.row.isGroupSix ? '六' : '' }}</span>
+            <span :class="{
+              'is-continuous-base is-continuous-style': scope.row.continuousSix
+            }">
+              {{ scope.row.isGroupSix ? '六' : '' }}
+            </span>
+            <span class="continuous-number-style">{{ scope.row.continuousSixIndex }}</span>
           </template>
         </el-table-column>
       </el-table-column>
@@ -177,15 +182,37 @@
           {{ scope.row.lastRepeat.isRepeat ? `前${scope.row.lastRepeat.preIndex}期` : '' }}
         </template>
       </el-table-column>
-      <el-table-column prop="sum" label="和值" width="60"></el-table-column>
-      <el-table-column prop="sumOddEven" label="和值单双" width="60">
+      <el-table-column prop="sum" label="和值" width="60">
         <template slot-scope="scope">
-          <span  :class="getRowSumOddEvenClass(scope)">
-            {{ scope.row.sumOddEven }}
+          <span :class="{
+            'is-continuous-base is-sum-style': scope.row.continuousSum
+          }">
+            {{ scope.row.sum }}
           </span>
+          <span class="continuous-number-style">{{ scope.row.continuousSumIndex }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="span" label="跨度" width="60"></el-table-column>
+      <el-table-column prop="sumOddEven" label="和值单双" width="60">
+        <template slot-scope="scope">
+          <span  :class="{
+            'is-continuous-base is-odd-style': scope.row.continuousOdd,
+            'is-continuous-base is-even-style': scope.row.continuousEven
+          }">
+            {{ scope.row.sumOddEven }}
+          </span>
+          <span class="continuous-number-style">{{ scope.row.continuousOddIndex || scope.row.continuousEvenIndex }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="span" label="跨度" width="60">
+        <template slot-scope="scope">
+          <span :class="{
+            'is-continuous-base is-span-style': scope.row.continuousSpan
+          }">
+            {{ scope.row.span }}
+          </span>
+          <span class="continuous-number-style">{{ scope.row.continuousSpanIndex }}</span>
+        </template>
+      </el-table-column>
     </el-table>
 
     <el-dialog
@@ -262,8 +289,80 @@
       },
       computed: {
         tableData() {
-          return this.historyList.slice(this.pageNum * this.pageSize, (this.pageNum + 1) * this.pageSize);
+          const list = this.historyList.slice(this.pageNum * this.pageSize, (this.pageNum + 1) * this.pageSize);
+          // 简化辅助函数，判断是否连续
+          const isContinuous = (index, value, sumOddEven, count = 3) => {
+            const current = list[index];
+            const next = list[index + 1] || {};
+            const next2 = list[index + 2] || {};
+            const pre = list[index - 1] || {};
+            const pre2 = list[index - 2] || {};
+            // 连续2个就算
+            if (count === 2) {
+              return ((current[sumOddEven] === value && next[sumOddEven] === value) ||
+              (current[sumOddEven] === value && pre[sumOddEven] === value))
+            }
+            return (
+              (current[sumOddEven] === value && next[sumOddEven] === value && next2[sumOddEven] === value) ||
+              (current[sumOddEven] === value && pre[sumOddEven] === value && next[sumOddEven] === value) ||
+              (current[sumOddEven] === value && pre2[sumOddEven] === value && pre[sumOddEven] === value)
+            );
+          };
+          const calcIndex = (index, count, key, key1) => {
+            const current = list[index];
+            const pre = list[index - 1];
+            current[key1] = count;
+            if (pre && pre[key]) {
+              calcIndex(index-1, count + 1, key, key1);
+            }
+          };
+
+          list.forEach((i, index) => {
+            const { sum } = i;
+            // 判断是否连续的6
+            if (isContinuous(index, true, 'isGroupSix')) {
+              i.continuousSix = true;
+            }
+            // 判断是否连续的奇偶
+            if (isContinuous(index, '单', 'sumOddEven')) {
+              i.continuousOdd = true;
+            }
+            // 判断是否连续的偶数
+            if (isContinuous(index, '双', 'sumOddEven')) {
+              i.continuousEven = true;
+            }
+            // 判断是否连续的和值
+            if (isContinuous(index, i.sum, 'sum', 2)) {
+              i.continuousSum = true;
+            }
+            // 判断是否连续跨度
+            if (isContinuous(index, i.span, 'span', 2)) {
+              i.continuousSpan = true;
+            }
+
+          });
+
+          // 连续的组六 编号设置
+          list.forEach((i, index) => {
+            if (i.continuousSix && !list[index + 1]?.continuousSix) {
+              calcIndex(index, 1 , 'continuousSix', 'continuousSixIndex');
+            }
+            if (i.continuousOdd && !list[index + 1]?.continuousOdd) {
+              calcIndex(index, 1 , 'continuousOdd', 'continuousOddIndex');
+            }
+            if (i.continuousEven && !list[index + 1]?.continuousEven) {
+              calcIndex(index, 1 , 'continuousEven', 'continuousEvenIndex');
+            }
+            if (i.continuousSum && !list[index + 1]?.continuousSum) {
+              calcIndex(index, 1 , 'continuousSum', 'continuousSumIndex');
+            }
+            if (i.continuousSpan && !list[index + 1]?.continuousSpan) {
+              calcIndex(index, 1 , 'continuousSpan', 'continuousSpanIndex');
+            }
+          });
+          return list;
         },
+
         // 出现的次数
         appearCount({ numbers, tableData }) {
           const obj = {};
@@ -600,59 +699,16 @@
           this.dialogVisible = true;
         },
 
-        getRowClass(scope) {
-          const { isGroupSix } = scope.row;
-          const index = scope.$index;
-          const tableData = this.tableData;
-          let isGroupSixClass = false;
-          // 计算后几天的数据是否有组六
-          if(tableData[index].isGroupSix && tableData[index+1] && tableData[index+1].isGroupSix && tableData[index+2] &&tableData[index+2].isGroupSix) {
-            isGroupSixClass = true;
-          } else if(tableData[index-1] && tableData[index-1].isGroupSix && tableData[index+1] &&tableData[index+1].isGroupSix && isGroupSix) {
-            isGroupSixClass = true;
-          } else if(tableData[index-2] && tableData[index-2].isGroupSix && tableData[index-1].isGroupSix && isGroupSix) {
-            isGroupSixClass = true;
-          }
-          return {
-            'is-continuous-style': isGroupSixClass
-          };
-        },
-
-        getRowSumOddEvenClass(scope) {
-          if (scope.row.code === '214') {
-            console.log(scope.row);
-          }
-          const tableData = this.tableData;
-          const { sumOddEven } = scope.row;
-          const isEven = sumOddEven === '双';
-          const index = scope.$index;
-          let show = false;
-          if(tableData[index+1] && tableData[index+1].sumOddEven === sumOddEven && tableData[index+2] && tableData[index+2].sumOddEven === sumOddEven) {
-            show = true;
-          } else if(tableData[index-1] && tableData[index-1].sumOddEven === sumOddEven && tableData[index+1] &&tableData[index+1].sumOddEven === sumOddEven) {
-            show = true;
-          } else if(tableData[index-2] && tableData[index-2].sumOddEven === sumOddEven && tableData[index-1].sumOddEven === sumOddEven) {
-            show = true;
-          }
-          return {
-            'is-continuous-style': show,
-            'is-even-style': show && isEven
-          };
-        },
-
         getHistory() {
           fetch('./server/history.json')
             .then(response => response.json())
             .then(data => {
               const keys = Object.keys(data).map(i => ({ key: i, timestamp: new Date(i).getTime() })).sort((a, b) => b.timestamp - a.timestamp);
 
-                  console.log('keys', keys);
               const func = ({ number, opendate }, index) => {
                 // 截取 300 条
                 const value_ = keys.slice(index+1, index+300).map(i => data[i.key].number);
-                if(number === '6 7 2' ) {
-                  console.log('value_', value_);
-                } 
+
                 // 判断是否重复
                 const isRepeat = value_.includes(number);
                 return {

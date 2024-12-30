@@ -90,19 +90,39 @@ span {
     bottom: -24px;
     right: 24px;
 }
-
-.is-continuous-style {
+.is-continuous-base {
     height: 20px;
     width: 20px;
     display: inline-block;
     border-radius: 50%;
-    background-color: #409eff;
     color: #fff;
+}
+
+.is-continuous-style {
+    background-color: #409eff;
+}
+.is-odd-style {
+    background-color: #0067b1;
 }
 .is-even-style {
     background-color: #0fd1ff;
 }
+.is-sum-style {
+    background-color: #c472fc;
+}
+.is-span-style {
+    background-color: #8c8c8c;
+}
 .is-highlight {
     font-size: 16px;
     color: #f22a0b;
+}
+.cell {
+    position: relative;
+}
+.continuous-number-style {
+    position: absolute;
+    top: -6px;
+    right: 3px;
+    opacity: 0.5;
 }
