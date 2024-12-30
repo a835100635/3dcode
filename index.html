@@ -291,7 +291,7 @@
         tableData() {
           const list = this.historyList.slice(this.pageNum * this.pageSize, (this.pageNum + 1) * this.pageSize);
           // 简化辅助函数，判断是否连续
-          const isContinuous = (index, value, sumOddEven, count = 3) => {
+          const isContinuous = (index, value, key, count = 3) => {
             const current = list[index];
             const next = list[index + 1] || {};
             const next2 = list[index + 2] || {};
@@ -299,13 +299,13 @@
             const pre2 = list[index - 2] || {};
             // 连续2个就算
             if (count === 2) {
-              return ((current[sumOddEven] === value && next[sumOddEven] === value) ||
-              (current[sumOddEven] === value && pre[sumOddEven] === value))
+              return ((current[key] === value && next[key] === value) ||
+              (current[key] === value && pre[key] === value))
             }
             return (
-              (current[sumOddEven] === value && next[sumOddEven] === value && next2[sumOddEven] === value) ||
-              (current[sumOddEven] === value && pre[sumOddEven] === value && next[sumOddEven] === value) ||
-              (current[sumOddEven] === value && pre2[sumOddEven] === value && pre[sumOddEven] === value)
+              (current[key] === value && next[key] === value && next2[key] === value) ||
+              (current[key] === value && pre[key] === value && next[key] === value) ||
+              (current[key] === value && pre2[key] === value && pre[key] === value)
             );
           };
           const calcIndex = (index, count, key, key1) => {
