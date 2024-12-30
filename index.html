@@ -370,8 +370,8 @@
             obj[i] = 0;
           });
           tableData.forEach(i => {
-            const number = i.number.split('').filter(i => i !== '' && i.trim()).join('');
-            number.split('').forEach(j => {
+            const number = i?.number?.split('').filter(i => i !== '' && i.trim()).join('');
+            number?.split('').forEach(j => {
               obj[j]++;
             });
           });

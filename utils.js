@@ -28,7 +28,7 @@ function compareOddEvenCount(numbers) {
 
 // 格式化code 返回形态
 function formatCode(code, timestamp) {
-  // console.log('formatCode',code);
+  if (!code) return {};
   // 去掉空格
   const numbers = code.split('').filter(i => i !== '' && i.trim()).join('');
   const sum = numbers.split('').reduce((a, b) => a + Number(b), 0);
