@@ -12,8 +12,10 @@ async function func(i) {
         console.log('请求成功', i);
         const { list } = response.data.data;
         list.forEach(item => {
-            if (!history[item.opendate]) {
+            if (!history[item.opendate] || !history[item.opendate].issueno) {
+                const testCode = history[item.opendate].testCode;
                 history[item.opendate] = item;
+                history[item.opendate].testCode = testCode;
             }
         });
         fs.writeFileSync('./history.json', JSON.stringify(history, null, 2), 'utf8');

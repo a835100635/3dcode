@@ -1,7 +1,32 @@
 {
   "2024-12-30": {
     "opendate": "2024-12-30",
-    "number": "? ? ?",
+    "officialopendate": "",
+    "issueno": "2024351",
+    "number": "6 5 7",
+    "refernumber": "",
+    "saleamount": 138132670,
+    "totalmoney": "0.00",
+    "prize": [
+      {
+        "prizename": "直选",
+        "require": "定位中3码",
+        "num": 0,
+        "singlebonus": 1040
+      },
+      {
+        "prizename": "组三",
+        "require": "不定位中3码",
+        "num": 0,
+        "singlebonus": 346
+      },
+      {
+        "prizename": "组六",
+        "require": "不定位中3码",
+        "num": 0,
+        "singlebonus": 173
+      }
+    ],
     "testCode": "348"
   },
   "2024-12-24": {
@@ -31,8 +56,7 @@
         "num": 0,
         "singlebonus": 173
       }
-    ],
-    "testCode": "068"
+    ]
   },
   "2024-12-23": {
     "opendate": "2024-12-23",
@@ -61,8 +85,7 @@
         "num": 0,
         "singlebonus": 173
       }
-    ],
-    "testCode": "085"
+    ]
   },
   "2024-12-22": {
     "opendate": "2024-12-22",
@@ -91,8 +114,7 @@
         "num": 0,
         "singlebonus": 173
       }
-    ],
-    "testCode": "346"
+    ]
   },
   "2024-12-21": {
     "opendate": "2024-12-21",
@@ -121,8 +143,7 @@
         "num": 0,
         "singlebonus": 173
       }
-    ],
-    "testCode": "313"
+    ]
   },
   "2024-12-20": {
     "opendate": "2024-12-20",
@@ -151,8 +172,7 @@
         "num": 0,
         "singlebonus": 173
       }
-    ],
-    "testCode": "584"
+    ]
   },
   "2024-12-19": {
     "opendate": "2024-12-19",
@@ -181,8 +201,7 @@
         "num": 0,
         "singlebonus": 173
       }
-    ],
-    "testCode": "834"
+    ]
   },
   "2024-12-18": {
     "opendate": "2024-12-18",
@@ -211,8 +230,7 @@
         "num": 0,
         "singlebonus": 173
       }
-    ],
-    "testCode": "247"
+    ]
   },
   "2024-12-17": {
     "opendate": "2024-12-17",
@@ -241,8 +259,7 @@
         "num": 0,
         "singlebonus": 173
       }
-    ],
-    "testCode": "720"
+    ]
   },
   "2024-12-16": {
     "opendate": "2024-12-16",
@@ -271,8 +288,7 @@
         "num": 0,
         "singlebonus": 173
       }
-    ],
-    "testCode": "811"
+    ]
   },
   "2024-12-15": {
     "opendate": "2024-12-15",
@@ -301,8 +317,7 @@
         "num": 0,
         "singlebonus": 173
       }
-    ],
-    "testCode": "903"
+    ]
   },
   "2024-12-14": {
     "opendate": "2024-12-14",
@@ -331,8 +346,7 @@
         "num": 0,
         "singlebonus": 173
       }
-    ],
-    "testCode": "921"
+    ]
   },
   "2024-12-13": {
     "opendate": "2024-12-13",
@@ -361,8 +375,7 @@
         "num": 0,
         "singlebonus": 173
       }
-    ],
-    "testCode": "568"
+    ]
   },
   "2024-12-12": {
     "opendate": "2024-12-12",
@@ -391,8 +404,7 @@
         "num": 0,
         "singlebonus": 173
       }
-    ],
-    "testCode": "757"
+    ]
   },
   "2024-12-11": {
     "opendate": "2024-12-11",
@@ -421,8 +433,7 @@
         "num": 0,
         "singlebonus": 173
       }
-    ],
-    "testCode": "505"
+    ]
   },
   "2024-12-10": {
     "opendate": "2024-12-10",
@@ -23863,8 +23874,7 @@
         "num": 0,
         "singlebonus": 173
       }
-    ],
-    "testCode": "464"
+    ]
   },
   "2024-12-26": {
     "opendate": "2024-12-26",
@@ -23872,7 +23882,7 @@
     "issueno": "2024347",
     "number": "3 9 2",
     "refernumber": "",
-    "saleamount": 0,
+    "saleamount": 128212650,
     "totalmoney": "0.00",
     "prize": [
       {
@@ -23893,8 +23903,7 @@
         "num": 0,
         "singlebonus": 173
       }
-    ],
-    "testCode": "917"
+    ]
   },
   "2024-12-27": {
     "opendate": "2024-12-27",
@@ -23902,7 +23911,7 @@
     "issueno": "2024348",
     "number": "9 2 8",
     "refernumber": "",
-    "saleamount": 0,
+    "saleamount": 132175376,
     "totalmoney": "0.00",
     "prize": [
       {
@@ -23923,8 +23932,7 @@
         "num": 0,
         "singlebonus": 173
       }
-    ],
-    "testCode": "483"
+    ]
   },
   "2024-12-28": {
     "opendate": "2024-12-28",
@@ -23953,8 +23961,7 @@
         "num": 0,
         "singlebonus": 173
       }
-    ],
-    "testCode": "075"
+    ]
   },
   "2024-12-29": {
     "opendate": "2024-12-29",
@@ -23962,7 +23969,7 @@
     "issueno": "2024350",
     "number": "6 7 2",
     "refernumber": "",
-    "saleamount": 0,
+    "saleamount": 132391202,
     "totalmoney": "0.00",
     "prize": [
       {
@@ -23983,7 +23990,6 @@
         "num": 0,
         "singlebonus": 173
       }
-    ],
-    "testCode": "965"
+    ]
   }
 }

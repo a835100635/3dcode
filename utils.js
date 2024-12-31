@@ -14,6 +14,7 @@ function compareSizeCount(numbers) {
 
 // 判断单双
 function compareOddEven(a) {
+  if (`${a}`.includes('?')) return '';
   return a % 2 === 0 ? '双' : '单';
 }
 
