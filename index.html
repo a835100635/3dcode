@@ -163,7 +163,7 @@
       <el-table-column label="类型">
         <el-table-column prop="isGroupThree" label="组三" width="50">
           <template slot-scope="scope">
-            {{ scope.row.isGroupThree ? '三' : '' }}
+            {{ scope.row.isGroupThree ? '三' : '-' }}
           </template>
         </el-table-column>
         <el-table-column prop="isGroupSix" label="组六" width="50">
@@ -171,7 +171,7 @@
             <span :class="{
               'is-continuous-base is-continuous-style': scope.row.continuousSix
             }">
-              {{ scope.row.isGroupSix ? '六' : '' }}
+              {{ scope.row.isGroupSix ? '六' : '-' }}
             </span>
             <span class="continuous-number-style">{{ scope.row.continuousSixIndex }}</span>
           </template>
@@ -717,6 +717,26 @@
               };
               this.history = data;
               this.historyList = keys.map((i, ondex) => {
+                if (data[i.key].number === '? ? ?') {
+                  return {
+                    testCode: data[i.key]?.testCode,
+                    opendate: data[i.key].opendate,
+                    number: data[i.key].number,
+                    code: data[i.key].number,
+                    types: [],
+                    isLeopard: false,
+                    isGroupThree: false,
+                    isGroupSix: false,
+                    sum: '-',
+                    sumOddEven: '-',
+                    span: '-',
+                    timestamp: new Date(data[i.key].opendate).getTime(),
+                    lastRepeat: {
+                      isRepeat: false,
+                      preIndex: '',
+                    }
+                  }
+                }
                 return {
                   testCode: data[i.key]?.testCode,
                   opendate: data[i.key].opendate,

@@ -12,8 +12,9 @@ async function func(i) {
         console.log('请求成功', i);
         const { list } = response.data.data;
         list.forEach(item => {
-            if (!history[item.opendate]) {
-                history[item.opendate] = item;
+            history[item.opendate] = {
+                ...history[item.opendate],
+                ...item
             }
         });
         fs.writeFileSync('./history.json', JSON.stringify(history, null, 2), 'utf8');

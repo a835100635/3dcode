@@ -14,7 +14,6 @@ function compareSizeCount(numbers) {
 
 // 判断单双
 function compareOddEven(a) {
-  if (`${a}`.includes('?')) return '';
   return a % 2 === 0 ? '双' : '单';
 }
 
@@ -32,7 +31,7 @@ function formatCode(code, timestamp) {
   if (!code) return {};
   // 去掉空格
   const numbers = code.split('').filter(i => i !== '' && i.trim()).join('');
-  const sum = numbers.split('').reduce((a, b) => a + Number(b), 0);
+  const sum =  numbers.split('').reduce((a, b) => a + Number(b), 0);
   return {
     // 三位数
     code: numbers,
@@ -62,7 +61,6 @@ function formatCode(code, timestamp) {
 
 // 加工数据
 function generateData(codes) {
-  // console.log(codes);
   return codes.map((numbers) => {
     const code = `${numbers[0]}${numbers[1]}${numbers[2]}`;
     return formatCode(code);

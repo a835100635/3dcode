@@ -1,4 +1,11 @@
 {
+  "2024-12-31": {
+    "opendate": "2024-12-30",
+    "officialopendate": "",
+    "issueno": "2024352",
+    "testCode": "152",
+    "number": "? ? ?"
+  },
   "2024-12-30": {
     "opendate": "2024-12-30",
     "officialopendate": "",
@@ -23897,7 +23904,7 @@
     "issueno": "2024347",
     "number": "3 9 2",
     "refernumber": "",
-    "saleamount": 0,
+    "saleamount": 128212650,
     "totalmoney": "0.00",
     "prize": [
       {
@@ -23927,7 +23934,7 @@
     "issueno": "2024348",
     "number": "9 2 8",
     "refernumber": "",
-    "saleamount": 0,
+    "saleamount": 132175376,
     "totalmoney": "0.00",
     "prize": [
       {
@@ -23987,7 +23994,7 @@
     "issueno": "2024350",
     "number": "6 7 2",
     "refernumber": "",
-    "saleamount": 0,
+    "saleamount": 132391202,
     "totalmoney": "0.00",
     "prize": [
       {
