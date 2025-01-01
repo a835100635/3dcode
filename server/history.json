@@ -1,10 +1,33 @@
 {
   "2024-12-31": {
-    "opendate": "2024-12-30",
+    "opendate": "2024-12-31",
     "officialopendate": "",
     "issueno": "2024352",
     "testCode": "152",
-    "number": "? ? ?"
+    "number": "2 9 2",
+    "refernumber": "",
+    "saleamount": 140641718,
+    "totalmoney": "0.00",
+    "prize": [
+      {
+        "prizename": "直选",
+        "require": "定位中3码",
+        "num": 0,
+        "singlebonus": 1040
+      },
+      {
+        "prizename": "组三",
+        "require": "不定位中3码",
+        "num": 0,
+        "singlebonus": 346
+      },
+      {
+        "prizename": "组六",
+        "require": "不定位中3码",
+        "num": 0,
+        "singlebonus": 173
+      }
+    ]
   },
   "2024-12-30": {
     "opendate": "2024-12-30",
