@@ -108,19 +108,23 @@
     </div>
 
     <div>
-      <el-button type="primary" @click="handleCopy(afterValue)" size="mini">复制</el-button>
+      <el-button type="primary" @click="handleCopy(afterValue.codes)" size="mini">复制</el-button>
       <el-input class="w70" v-model="awardNumber" placeholder="号码" size="mini"></el-input>
       <el-button type="primary" @click="handelExist" size="mini">验证是否存在</el-button>
     </div>
 
     <p class="pr">
-      <el-input type="textarea" :rows="3" :value="afterValue">
+      <el-input type="textarea" :rows="3" :value="afterValue.codes" placeholder="结果" size="mini" readonly>
       </el-input>
       <span class="pa after-value-Length" v-if="afterValueLength">
         剩{{ afterValueLength }}注; {{ ( 980 / afterValueLength  ).toFixed(2) }} 倍
       </span>
     </p>
-    <p v-html="startCountTip"></p>
+    
+    <div class="flex gap8">
+      <div v-html="startCountTip"></div>
+      <div v-html="resultCountInfo"></div>
+    </div>
 
     <el-divider></el-divider>
 
@@ -163,7 +167,7 @@
       <el-table-column label="类型">
         <el-table-column prop="isGroupThree" label="组三" width="50">
           <template slot-scope="scope">
-            {{ scope.row.isGroupThree ? '三' : '-' }}
+            {{ scope.row.isGroupThree ? '三' : '' }}
           </template>
         </el-table-column>
         <el-table-column prop="isGroupSix" label="组六" width="50">
@@ -171,7 +175,7 @@
             <span :class="{
               'is-continuous-base is-continuous-style': scope.row.continuousSix
             }">
-              {{ scope.row.isGroupSix ? '六' : '-' }}
+              {{ scope.row.isGroupSix ? '六' : '' }}
             </span>
             <span class="continuous-number-style">{{ scope.row.continuousSixIndex }}</span>
           </template>
@@ -416,11 +420,14 @@
           if (this.unit.length) {
             value = value.filter(item => !this.unit.includes(+item.code[2]));
           }
-          return value.map(i => i.code).sort((a, b) => a - b).join(',');
+          return {
+            value,
+            codes: value.map(i => i.code).sort((a, b) => a - b).join(',')
+          };
         },
         afterValueLength({ afterValue }) {
-          if (!afterValue || !afterValue.length) return 0;
-          return afterValue.split(',').length;
+          if (!afterValue.codes || !afterValue.codes.length) return 0;
+          return afterValue.codes.split(',').length;
         },
         filterResult() {
           return this.result.map(i => i.code).sort((a, b) => a - b).join(',');
@@ -490,12 +497,12 @@
           return filterConfig.filter(i => i.type === 'radio');
         },
         startCount({ afterValue, numbers }) {
-          if (!afterValue || !afterValue.length) return {};
+          if (!afterValue.codes || !afterValue.codes.length) return {};
           const obj = {};
           numbers.forEach(i => {
             obj[i] = 0;
           });
-          afterValue.split(',').forEach(i => {
+          afterValue.codes.split(',').forEach(i => {
             if (obj[i[0]]) {
               obj[i[0]]++;
             } else {
@@ -511,6 +518,16 @@
             tip += `${i}: ${startCount[i]}注; <br>`;
           })
           return tip;
+        },
+        resultCountInfo({ afterValue, result }) {
+          const { value } = afterValue;
+          if (!value.length) return '';
+          let tip = '';
+          // 组三数量
+          const groupThree = value.filter(i => i.isGroupThree);
+          // 组六数量
+          const groupSix = value.filter(i => i.isGroupSix);
+          return `含有组三: ${groupThree.length}注; <br> 含有组六: ${groupSix.length}注;`;
         },
         dialogContent({ dialogContentType }) {
           const c = dialogContentType === 'sum' ? this.sumCountAllMap : this.spanCountAllMap;
@@ -689,7 +706,7 @@
             this.setTip('请输入号码');
             return;
           }
-          const isExist = this.afterValue.includes(this.awardNumber);
+          const isExist = this.afterValue.codes.includes(this.awardNumber);
           this.setTip(isExist ? '存在' : '不存在');
         },
 

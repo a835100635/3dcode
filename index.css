@@ -87,8 +87,8 @@ span {
 }
 
 .after-value-Length {
-    bottom: -24px;
-    right: 24px;
+    right: 4px;
+    top: -21px;
 }
 .is-continuous-base {
     height: 20px;
@@ -96,6 +96,7 @@ span {
     display: inline-block;
     border-radius: 50%;
     color: #fff;
+    line-height: 20px;
 }
 
 .is-continuous-style {
