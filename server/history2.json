@@ -1,0 +1,1082 @@
+{
+  "2025-01-01": {
+    "opendate": "2025-01-01",
+    "officialopendate": "2025-01-02 08:30",
+    "issueno": "2025001",
+    "number": "02 15 20 22 32 34 35 42 44 46 50 54 55 64 68 71 74 75 77 79",
+    "refernumber": null,
+    "saleamount": 118698862,
+    "totalmoney": "167317247.00"
+  },
+  "2024-12-31": {
+    "opendate": "2024-12-31",
+    "officialopendate": "2025-01-01 20:52",
+    "issueno": "2024352",
+    "number": "04 06 12 18 26 30 31 34 51 55 56 59 65 66 68 73 74 77 78 79",
+    "refernumber": null,
+    "saleamount": 120942308,
+    "totalmoney": "162215695.00"
+  },
+  "2024-12-30": {
+    "opendate": "2024-12-30",
+    "officialopendate": "2024-12-31 21:31",
+    "issueno": "2024351",
+    "number": "07 09 12 15 16 28 29 31 33 34 35 36 37 38 43 44 64 69 76 79",
+    "refernumber": null,
+    "saleamount": 114120944,
+    "totalmoney": "161904245.00"
+  },
+  "2024-12-29": {
+    "opendate": "2024-12-29",
+    "officialopendate": "2024-12-30 21:32",
+    "issueno": "2024350",
+    "number": "01 03 08 09 13 32 38 40 41 50 51 57 59 60 65 67 69 72 75 76",
+    "refernumber": null,
+    "saleamount": 111527536,
+    "totalmoney": "164045059.00"
+  },
+  "2024-12-28": {
+    "opendate": "2024-12-28",
+    "officialopendate": "2024-12-29 21:32",
+    "issueno": "2024349",
+    "number": "02 03 06 22 26 27 28 32 33 35 36 42 46 49 63 67 69 71 73 78",
+    "refernumber": null,
+    "saleamount": 114613642,
+    "totalmoney": "163393205.00"
+  },
+  "2024-12-27": {
+    "opendate": "2024-12-27",
+    "officialopendate": "2024-12-28 21:30",
+    "issueno": "2024348",
+    "number": "04 12 14 16 20 21 29 31 36 43 44 51 57 59 64 65 72 76 78 80",
+    "refernumber": null,
+    "saleamount": 126020920,
+    "totalmoney": "158740345.00"
+  },
+  "2024-12-26": {
+    "opendate": "2024-12-26",
+    "officialopendate": "2024-12-27 21:21",
+    "issueno": "2024347",
+    "number": "03 05 10 15 18 19 20 29 32 33 41 42 44 47 55 59 63 71 76 77",
+    "refernumber": null,
+    "saleamount": 113962818,
+    "totalmoney": "161992582.00"
+  },
+  "2024-12-25": {
+    "opendate": "2024-12-25",
+    "officialopendate": "2024-12-27 09:49",
+    "issueno": "2024346",
+    "number": "04 07 10 16 19 20 23 27 38 39 40 43 51 52 55 56 62 72 77 79",
+    "refernumber": null,
+    "saleamount": 121174440,
+    "totalmoney": "157422634.00"
+  },
+  "2024-12-24": {
+    "opendate": "2024-12-24",
+    "officialopendate": "2024-12-25 12:31",
+    "issueno": "2024345",
+    "number": "13 23 26 34 38 39 40 43 46 48 57 58 59 64 67 70 72 73 78 80",
+    "refernumber": null,
+    "saleamount": 116634902,
+    "totalmoney": "151610096.00"
+  },
+  "2024-12-23": {
+    "opendate": "2024-12-23",
+    "officialopendate": "2024-12-24 21:40",
+    "issueno": "2024344",
+    "number": "02 04 07 12 19 23 25 31 33 40 42 43 56 57 58 60 63 64 73 75",
+    "refernumber": null,
+    "saleamount": 115137452,
+    "totalmoney": "147036808.00"
+  },
+  "2024-12-22": {
+    "opendate": "2024-12-22",
+    "officialopendate": "2024-12-23 21:21",
+    "issueno": "2024343",
+    "number": "07 22 27 28 31 34 37 42 44 45 46 49 54 57 66 67 72 76 78 80",
+    "refernumber": null,
+    "saleamount": 115457694,
+    "totalmoney": "141565308.00"
+  },
+  "2024-12-21": {
+    "opendate": "2024-12-21",
+    "officialopendate": "2024-12-22 21:21",
+    "issueno": "2024342",
+    "number": "04 07 09 13 15 17 25 37 39 54 58 59 60 65 67 71 72 74 75 80",
+    "refernumber": null,
+    "saleamount": 116143520,
+    "totalmoney": "135695979.00"
+  },
+  "2024-12-20": {
+    "opendate": "2024-12-20",
+    "officialopendate": "2024-12-21 21:20",
+    "issueno": "2024341",
+    "number": "01 02 09 10 15 28 29 31 32 42 44 50 56 58 61 62 71 75 77 78",
+    "refernumber": null,
+    "saleamount": 128221690,
+    "totalmoney": "137672837.00"
+  },
+  "2024-12-19": {
+    "opendate": "2024-12-19",
+    "officialopendate": "2024-12-20 21:30",
+    "issueno": "2024340",
+    "number": "02 03 07 11 18 22 25 27 38 40 46 48 57 59 60 63 64 69 76 79",
+    "refernumber": null,
+    "saleamount": 119289878,
+    "totalmoney": "132395807.00"
+  },
+  "2024-12-18": {
+    "opendate": "2024-12-18",
+    "officialopendate": "2024-12-19 21:21",
+    "issueno": "2024339",
+    "number": "01 02 05 07 10 12 13 16 25 32 35 38 42 50 61 64 67 72 76 80",
+    "refernumber": null,
+    "saleamount": 119704396,
+    "totalmoney": "126583636.00"
+  },
+  "2024-12-17": {
+    "opendate": "2024-12-17",
+    "officialopendate": "2024-12-18 21:30",
+    "issueno": "2024338",
+    "number": "01 02 04 05 07 08 09 12 14 15 19 20 25 31 41 52 56 69 71 77",
+    "refernumber": null,
+    "saleamount": 112588748,
+    "totalmoney": "121264624.00"
+  },
+  "2024-12-16": {
+    "opendate": "2024-12-16",
+    "officialopendate": "2024-12-17 21:32",
+    "issueno": "2024337",
+    "number": "14 15 17 22 26 32 37 42 49 50 59 68 70 71 73 74 75 76 77 79",
+    "refernumber": null,
+    "saleamount": 115159046,
+    "totalmoney": "201264624.00"
+  },
+  "2024-12-15": {
+    "opendate": "2024-12-15",
+    "officialopendate": "2024-12-16 21:32",
+    "issueno": "2024336",
+    "number": "08 12 15 16 17 19 21 27 32 41 44 45 49 54 58 59 61 66 71 74",
+    "refernumber": null,
+    "saleamount": 111524052,
+    "totalmoney": "196840133.00"
+  },
+  "2024-12-14": {
+    "opendate": "2024-12-14",
+    "officialopendate": "2024-12-15 21:31",
+    "issueno": "2024335",
+    "number": "11 13 14 22 23 24 26 32 34 44 50 53 56 58 61 63 67 71 77 79",
+    "refernumber": null,
+    "saleamount": 113889112,
+    "totalmoney": "192537695.00"
+  },
+  "2024-12-13": {
+    "opendate": "2024-12-13",
+    "officialopendate": "2024-12-14 21:31",
+    "issueno": "2024334",
+    "number": "02 10 12 14 20 23 24 44 52 53 57 58 59 60 68 69 70 72 73 78",
+    "refernumber": null,
+    "saleamount": 121894838,
+    "totalmoney": "192921818.00"
+  },
+  "2024-12-12": {
+    "opendate": "2024-12-12",
+    "officialopendate": "2024-12-13 21:10",
+    "issueno": "2024333",
+    "number": "03 05 10 12 13 18 23 27 30 33 48 49 54 56 60 65 67 71 72 77",
+    "refernumber": null,
+    "saleamount": 109027730,
+    "totalmoney": "188879248.00"
+  },
+  "2024-12-11": {
+    "opendate": "2024-12-11",
+    "officialopendate": "2024-12-12 21:32",
+    "issueno": "2024332",
+    "number": "01 08 10 13 21 30 35 38 41 46 47 49 51 61 63 64 65 66 69 80",
+    "refernumber": null,
+    "saleamount": 115609340,
+    "totalmoney": "189177317.00"
+  },
+  "2024-12-10": {
+    "opendate": "2024-12-10",
+    "officialopendate": "2024-12-11 21:21",
+    "issueno": "2024331",
+    "number": "03 04 08 14 21 22 23 35 39 43 46 49 55 58 60 69 72 78 79 80",
+    "refernumber": null,
+    "saleamount": 113315630,
+    "totalmoney": "183308424.00"
+  },
+  "2024-12-09": {
+    "opendate": "2024-12-09",
+    "officialopendate": "2024-12-10 21:12",
+    "issueno": "2024330",
+    "number": "02 03 06 12 17 23 26 29 30 46 48 49 60 61 62 67 70 71 73 74",
+    "refernumber": null,
+    "saleamount": 116044950,
+    "totalmoney": "200623252.00"
+  },
+  "2024-12-08": {
+    "opendate": "2024-12-08",
+    "officialopendate": "2024-12-09 21:31",
+    "issueno": "2024329",
+    "number": "07 09 15 16 17 20 22 25 37 39 48 58 59 67 69 70 72 74 79 80",
+    "refernumber": null,
+    "saleamount": 107481182,
+    "totalmoney": "201573104.00"
+  },
+  "2024-12-07": {
+    "opendate": "2024-12-07",
+    "officialopendate": "2024-12-08 21:32",
+    "issueno": "2024328",
+    "number": "02 06 08 15 16 18 19 23 30 39 40 43 47 50 58 69 71 72 76 80",
+    "refernumber": null,
+    "saleamount": 110775042,
+    "totalmoney": "291573104.00"
+  },
+  "2024-12-06": {
+    "opendate": "2024-12-06",
+    "officialopendate": "2024-12-07 21:02",
+    "issueno": "2024327",
+    "number": "05 06 11 15 16 18 20 29 32 34 36 46 52 55 57 59 65 69 72 79",
+    "refernumber": null,
+    "saleamount": 119161210,
+    "totalmoney": "287863911.00"
+  },
+  "2024-12-05": {
+    "opendate": "2024-12-05",
+    "officialopendate": "2024-12-06 21:32",
+    "issueno": "2024326",
+    "number": "04 06 08 14 15 17 39 46 48 50 52 54 56 58 63 66 71 73 74 80",
+    "refernumber": null,
+    "saleamount": 107032436,
+    "totalmoney": "282492712.00"
+  },
+  "2024-12-04": {
+    "opendate": "2024-12-04",
+    "officialopendate": "2024-12-05 21:30",
+    "issueno": "2024325",
+    "number": "02 03 06 13 16 23 26 36 42 44 46 52 53 54 60 61 64 69 73 79",
+    "refernumber": null,
+    "saleamount": 107920938,
+    "totalmoney": "282616417.00"
+  },
+  "2024-12-03": {
+    "opendate": "2024-12-03",
+    "officialopendate": "2024-12-04 21:32",
+    "issueno": "2024324",
+    "number": "02 06 08 16 20 22 26 28 31 33 39 42 45 53 57 62 65 69 72 80",
+    "refernumber": null,
+    "saleamount": 104478974,
+    "totalmoney": "307825223.00"
+  },
+  "2024-12-02": {
+    "opendate": "2024-12-02",
+    "officialopendate": "2024-12-03 21:31",
+    "issueno": "2024323",
+    "number": "08 18 24 30 32 33 34 35 37 38 42 51 52 54 56 66 69 72 73 74",
+    "refernumber": null,
+    "saleamount": 111736144,
+    "totalmoney": "308262871.00"
+  },
+  "2024-12-01": {
+    "opendate": "2024-12-01",
+    "officialopendate": "2024-12-02 21:32",
+    "issueno": "2024322",
+    "number": "02 03 04 13 16 21 24 37 38 40 42 46 47 57 60 63 70 73 74 75",
+    "refernumber": null,
+    "saleamount": 106800218,
+    "totalmoney": "303468408.00"
+  },
+  "2024-11-30": {
+    "opendate": "2024-11-30",
+    "officialopendate": "2024-12-01 21:31",
+    "issueno": "2024321",
+    "number": "02 03 06 08 11 12 13 15 20 22 26 41 46 47 48 56 58 60 73 74",
+    "refernumber": null,
+    "saleamount": 110198518,
+    "totalmoney": "299071193.00"
+  },
+  "2024-11-29": {
+    "opendate": "2024-11-29",
+    "officialopendate": "2024-11-30 21:30",
+    "issueno": "2024320",
+    "number": "02 05 09 13 17 19 20 28 29 38 44 48 51 60 65 68 73 74 76 79",
+    "refernumber": null,
+    "saleamount": 122227664,
+    "totalmoney": "310851772.00"
+  },
+  "2024-11-28": {
+    "opendate": "2024-11-28",
+    "officialopendate": "2024-11-29 21:21",
+    "issueno": "2024319",
+    "number": "02 05 08 09 11 18 22 26 27 28 33 44 53 55 56 58 61 72 77 80",
+    "refernumber": null,
+    "saleamount": 103978948,
+    "totalmoney": "305036762.00"
+  },
+  "2024-11-27": {
+    "opendate": "2024-11-27",
+    "officialopendate": "2024-11-28 21:22",
+    "issueno": "2024318",
+    "number": "02 03 11 12 15 19 21 26 32 39 41 46 54 58 59 62 67 75 76 78",
+    "refernumber": null,
+    "saleamount": 108017324,
+    "totalmoney": "303381045.00"
+  },
+  "2024-11-26": {
+    "opendate": "2024-11-26",
+    "officialopendate": "2024-11-27 21:21",
+    "issueno": "2024317",
+    "number": "04 09 11 14 18 23 24 26 29 35 36 39 40 49 53 61 62 68 70 74",
+    "refernumber": null,
+    "saleamount": 106055156,
+    "totalmoney": "298593136.00"
+  },
+  "2024-11-25": {
+    "opendate": "2024-11-25",
+    "officialopendate": "2024-11-26 21:22",
+    "issueno": "2024316",
+    "number": "06 08 12 22 29 32 42 47 49 50 54 56 58 59 64 67 68 70 71 80",
+    "refernumber": null,
+    "saleamount": 108451428,
+    "totalmoney": "294133339.00"
+  },
+  "2024-11-24": {
+    "opendate": "2024-11-24",
+    "officialopendate": "2024-11-25 21:20",
+    "issueno": "2024315",
+    "number": "05 06 07 08 09 17 21 29 30 38 39 43 57 61 68 69 72 76 77 80",
+    "refernumber": null,
+    "saleamount": 105029096,
+    "totalmoney": "289320446.00"
+  },
+  "2024-11-23": {
+    "opendate": "2024-11-23",
+    "officialopendate": "2024-11-24 21:31",
+    "issueno": "2024314",
+    "number": "03 05 14 22 23 24 25 28 33 34 44 45 53 55 61 68 69 75 76 79",
+    "refernumber": null,
+    "saleamount": 109194838,
+    "totalmoney": "287047110.00"
+  },
+  "2024-11-22": {
+    "opendate": "2024-11-22",
+    "officialopendate": "2024-11-23 21:30",
+    "issueno": "2024313",
+    "number": "04 08 11 13 15 19 20 23 25 26 28 33 40 41 42 48 53 64 73 78",
+    "refernumber": null,
+    "saleamount": 119807992,
+    "totalmoney": "287839804.00"
+  },
+  "2024-11-21": {
+    "opendate": "2024-11-21",
+    "officialopendate": "2024-11-22 21:30",
+    "issueno": "2024312",
+    "number": "05 06 07 08 12 17 20 22 23 25 27 34 35 41 47 49 53 61 66 71",
+    "refernumber": null,
+    "saleamount": 104441378,
+    "totalmoney": "283298696.00"
+  },
+  "2024-11-20": {
+    "opendate": "2024-11-20",
+    "officialopendate": "2024-11-21 21:42",
+    "issueno": "2024311",
+    "number": "01 03 04 05 13 14 25 28 33 36 50 54 59 61 64 66 69 72 73 76",
+    "refernumber": null,
+    "saleamount": 107279096,
+    "totalmoney": "281764145.00"
+  },
+  "2024-11-19": {
+    "opendate": "2024-11-19",
+    "officialopendate": "2024-11-20 21:21",
+    "issueno": "2024310",
+    "number": "02 06 08 09 16 18 21 22 23 25 33 34 37 45 46 50 52 56 60 76",
+    "refernumber": null,
+    "saleamount": 101023860,
+    "totalmoney": "277282967.00"
+  },
+  "2024-11-18": {
+    "opendate": "2024-11-18",
+    "officialopendate": "2024-11-19 21:31",
+    "issueno": "2024309",
+    "number": "06 07 15 17 20 22 24 26 33 37 50 51 59 64 68 71 72 74 75 80",
+    "refernumber": null,
+    "saleamount": 105754574,
+    "totalmoney": "279846531.00"
+  },
+  "2024-11-17": {
+    "opendate": "2024-11-17",
+    "officialopendate": "2024-11-18 21:32",
+    "issueno": "2024308",
+    "number": "06 08 09 12 25 30 32 34 35 39 41 43 45 48 52 55 63 70 74 80",
+    "refernumber": null,
+    "saleamount": 101430122,
+    "totalmoney": "274925261.00"
+  },
+  "2024-11-16": {
+    "opendate": "2024-11-16",
+    "officialopendate": "2024-11-17 21:31",
+    "issueno": "2024307",
+    "number": "07 13 14 20 27 30 31 36 37 39 41 42 43 44 46 56 61 66 73 77",
+    "refernumber": null,
+    "saleamount": 104033556,
+    "totalmoney": "281316896.00"
+  },
+  "2024-11-15": {
+    "opendate": "2024-11-15",
+    "officialopendate": "2024-11-16 21:30",
+    "issueno": "2024306",
+    "number": "03 07 08 11 12 17 20 33 34 40 41 42 52 56 60 66 68 75 77 79",
+    "refernumber": null,
+    "saleamount": 114959958,
+    "totalmoney": "277329616.00"
+  },
+  "2024-11-14": {
+    "opendate": "2024-11-14",
+    "officialopendate": "2024-11-15 21:30",
+    "issueno": "2024305",
+    "number": "04 08 16 17 22 34 35 36 38 39 40 46 48 52 54 58 64 71 74 75",
+    "refernumber": null,
+    "saleamount": 101301648,
+    "totalmoney": "272107903.00"
+  },
+  "2024-11-13": {
+    "opendate": "2024-11-13",
+    "officialopendate": "2024-11-14 21:31",
+    "issueno": "2024304",
+    "number": "01 02 09 11 13 18 24 29 31 37 38 39 41 46 61 62 63 67 69 72",
+    "refernumber": null,
+    "saleamount": 104606980,
+    "totalmoney": "267732109.00"
+  },
+  "2024-11-12": {
+    "opendate": "2024-11-12",
+    "officialopendate": "2024-11-13 21:32",
+    "issueno": "2024303",
+    "number": "06 07 11 18 21 24 25 28 32 36 40 42 43 46 59 67 71 72 73 79",
+    "refernumber": null,
+    "saleamount": 100296488,
+    "totalmoney": "263505615.00"
+  },
+  "2024-11-11": {
+    "opendate": "2024-11-11",
+    "officialopendate": "2024-11-12 21:32",
+    "issueno": "2024302",
+    "number": "04 15 21 30 31 37 38 39 41 43 49 56 58 60 61 64 65 67 70 76",
+    "refernumber": null,
+    "saleamount": 106248490,
+    "totalmoney": "264430229.00"
+  },
+  "2024-11-10": {
+    "opendate": "2024-11-10",
+    "officialopendate": "2024-11-11 21:31",
+    "issueno": "2024301",
+    "number": "05 07 09 10 15 17 22 23 24 29 30 43 49 51 57 58 63 64 67 73",
+    "refernumber": null,
+    "saleamount": 102510044,
+    "totalmoney": "264324422.00"
+  },
+  "2024-11-09": {
+    "opendate": "2024-11-09",
+    "officialopendate": "2024-11-10 21:31",
+    "issueno": "2024300",
+    "number": "01 03 05 07 24 33 36 39 40 43 51 54 55 56 59 65 70 74 76 80",
+    "refernumber": null,
+    "saleamount": 104676820,
+    "totalmoney": "265428118.00"
+  },
+  "2024-11-08": {
+    "opendate": "2024-11-08",
+    "officialopendate": "2024-11-09 21:32",
+    "issueno": "2024299",
+    "number": "05 06 12 14 22 23 25 26 36 39 48 54 58 61 64 68 69 75 76 79",
+    "refernumber": null,
+    "saleamount": 114214920,
+    "totalmoney": "260783576.00"
+  },
+  "2024-11-07": {
+    "opendate": "2024-11-07",
+    "officialopendate": "2024-11-08 21:32",
+    "issueno": "2024298",
+    "number": "01 02 07 08 15 32 34 37 38 40 42 49 51 54 59 61 67 69 72 73",
+    "refernumber": null,
+    "saleamount": 101151518,
+    "totalmoney": "260915965.00"
+  },
+  "2024-11-06": {
+    "opendate": "2024-11-06",
+    "officialopendate": "2024-11-07 21:32",
+    "issueno": "2024297",
+    "number": "09 10 14 27 28 31 36 39 46 47 60 61 63 64 69 70 71 75 78 80",
+    "refernumber": null,
+    "saleamount": 102676332,
+    "totalmoney": "256125563.00"
+  },
+  "2024-11-05": {
+    "opendate": "2024-11-05",
+    "officialopendate": "2024-11-06 21:31",
+    "issueno": "2024296",
+    "number": "03 05 07 11 12 20 21 29 32 33 35 43 45 51 56 58 74 77 79 80",
+    "refernumber": null,
+    "saleamount": 98945088,
+    "totalmoney": "251579464.00"
+  },
+  "2024-11-04": {
+    "opendate": "2024-11-04",
+    "officialopendate": "2024-11-05 21:31",
+    "issueno": "2024295",
+    "number": "02 10 12 13 14 23 24 29 31 32 35 37 43 44 45 46 61 64 74 75",
+    "refernumber": null,
+    "saleamount": null,
+    "totalmoney": null
+  },
+  "2024-11-03": {
+    "opendate": "2024-11-03",
+    "officialopendate": "2024-11-04 21:01",
+    "issueno": "2024294",
+    "number": "01 02 05 16 19 21 25 31 34 37 42 43 51 53 54 58 59 64 73 80",
+    "refernumber": null,
+    "saleamount": 101816156,
+    "totalmoney": "248588608.00"
+  },
+  "2024-11-02": {
+    "opendate": "2024-11-02",
+    "officialopendate": "2024-11-03 21:32",
+    "issueno": "2024293",
+    "number": "01 02 03 08 09 11 12 16 18 24 31 36 39 44 56 58 67 70 74 80",
+    "refernumber": null,
+    "saleamount": 104763014,
+    "totalmoney": "243632886.00"
+  },
+  "2024-11-01": {
+    "opendate": "2024-11-01",
+    "officialopendate": "2024-11-02 21:32",
+    "issueno": "2024292",
+    "number": "01 07 11 12 23 27 31 37 39 43 45 50 53 54 55 57 65 67 71 75",
+    "refernumber": null,
+    "saleamount": 115776114,
+    "totalmoney": "240777899.00"
+  },
+  "2024-10-31": {
+    "opendate": "2024-10-31",
+    "officialopendate": "2024-11-01 21:41",
+    "issueno": "2024291",
+    "number": "02 12 15 26 27 28 30 31 32 36 38 47 52 54 59 62 63 68 71 76",
+    "refernumber": null,
+    "saleamount": 108768048,
+    "totalmoney": "235409316.00"
+  },
+  "2024-10-30": {
+    "opendate": "2024-10-30",
+    "officialopendate": "2024-10-31 21:31",
+    "issueno": "2024290",
+    "number": "05 09 10 15 23 27 29 31 38 39 41 47 54 66 70 71 72 75 76 78",
+    "refernumber": null,
+    "saleamount": 107443736,
+    "totalmoney": "230272944.00"
+  },
+  "2024-10-29": {
+    "opendate": "2024-10-29",
+    "officialopendate": "2024-10-30 21:32",
+    "issueno": "2024289",
+    "number": "03 12 13 16 21 38 44 46 50 51 54 62 63 68 69 70 74 76 77 78",
+    "refernumber": null,
+    "saleamount": 105603942,
+    "totalmoney": "230645908.00"
+  },
+  "2024-10-28": {
+    "opendate": "2024-10-28",
+    "officialopendate": "2024-10-29 21:32",
+    "issueno": "2024288",
+    "number": "02 06 11 16 18 22 39 46 47 52 55 60 61 66 67 70 71 74 77 78",
+    "refernumber": null,
+    "saleamount": 107824522,
+    "totalmoney": "226019362.00"
+  },
+  "2024-10-27": {
+    "opendate": "2024-10-27",
+    "officialopendate": "2024-10-28 21:40",
+    "issueno": "2024287",
+    "number": "01 05 12 13 15 17 18 28 29 34 39 44 55 60 62 64 66 67 70 77",
+    "refernumber": null,
+    "saleamount": 108552814,
+    "totalmoney": "226493507.00"
+  },
+  "2024-10-26": {
+    "opendate": "2024-10-26",
+    "officialopendate": "2024-10-27 21:21",
+    "issueno": "2024286",
+    "number": "06 09 11 13 14 18 24 28 29 36 38 41 42 49 51 57 66 71 75 78",
+    "refernumber": null,
+    "saleamount": 107990450,
+    "totalmoney": "226651077.00"
+  },
+  "2024-10-25": {
+    "opendate": "2024-10-25",
+    "officialopendate": "2024-10-26 21:31",
+    "issueno": "2024285",
+    "number": "02 12 16 17 23 25 26 27 34 45 51 54 56 58 60 64 67 70 72 77",
+    "refernumber": null,
+    "saleamount": 118787308,
+    "totalmoney": "228675644.00"
+  },
+  "2024-10-24": {
+    "opendate": "2024-10-24",
+    "officialopendate": "2024-10-25 21:31",
+    "issueno": "2024284",
+    "number": "05 07 14 18 19 23 26 27 36 37 44 46 50 53 56 58 64 66 73 78",
+    "refernumber": null,
+    "saleamount": 106998386,
+    "totalmoney": "222373490.00"
+  },
+  "2024-10-23": {
+    "opendate": "2024-10-23",
+    "officialopendate": "2024-10-24 21:21",
+    "issueno": "2024283",
+    "number": "03 09 11 14 15 18 20 21 25 26 28 40 43 50 54 66 72 76 77 78",
+    "refernumber": null,
+    "saleamount": 107365820,
+    "totalmoney": "273339171.00"
+  },
+  "2024-10-22": {
+    "opendate": "2024-10-22",
+    "officialopendate": "2024-10-23 21:30",
+    "issueno": "2024282",
+    "number": "03 07 08 12 13 34 40 43 47 50 54 55 58 61 63 64 66 72 74 78",
+    "refernumber": null,
+    "saleamount": 110086252,
+    "totalmoney": "268924994.00"
+  },
+  "2024-10-21": {
+    "opendate": "2024-10-21",
+    "officialopendate": "2024-10-22 20:41",
+    "issueno": "2024281",
+    "number": "11 12 16 19 22 26 27 36 40 42 45 46 48 49 55 65 69 72 74 76",
+    "refernumber": null,
+    "saleamount": 111053516,
+    "totalmoney": "263545090.00"
+  },
+  "2024-10-20": {
+    "opendate": "2024-10-20",
+    "officialopendate": "2024-10-21 21:30",
+    "issueno": "2024280",
+    "number": "07 16 22 27 28 34 37 38 39 40 45 46 51 57 63 64 65 73 77 80",
+    "refernumber": null,
+    "saleamount": 109823808,
+    "totalmoney": "258691703.00"
+  },
+  "2024-10-19": {
+    "opendate": "2024-10-19",
+    "officialopendate": "2024-10-20 21:31",
+    "issueno": "2024279",
+    "number": "03 05 09 13 20 23 28 31 32 36 42 43 44 49 63 66 68 69 75 76",
+    "refernumber": null,
+    "saleamount": 112496502,
+    "totalmoney": "254228212.00"
+  },
+  "2024-10-18": {
+    "opendate": "2024-10-18",
+    "officialopendate": "2024-10-19 21:30",
+    "issueno": "2024278",
+    "number": "09 13 14 18 22 28 33 35 41 45 48 49 51 53 58 68 71 73 74 80",
+    "refernumber": null,
+    "saleamount": 126682868,
+    "totalmoney": "249857619.00"
+  },
+  "2024-10-17": {
+    "opendate": "2024-10-17",
+    "officialopendate": "2024-10-18 21:32",
+    "issueno": "2024277",
+    "number": "04 07 09 11 12 16 19 20 25 27 28 37 42 52 60 64 66 69 71 78",
+    "refernumber": null,
+    "saleamount": 112577776,
+    "totalmoney": "243416783.00"
+  },
+  "2024-10-16": {
+    "opendate": "2024-10-16",
+    "officialopendate": "2024-10-17 21:30",
+    "issueno": "2024276",
+    "number": "02 03 06 13 14 19 21 22 32 49 52 53 60 68 69 70 71 73 74 75",
+    "refernumber": null,
+    "saleamount": 113664242,
+    "totalmoney": "245503480.00"
+  },
+  "2024-10-15": {
+    "opendate": "2024-10-15",
+    "officialopendate": "2024-10-16 21:40",
+    "issueno": "2024275",
+    "number": "07 13 19 20 23 26 39 40 41 55 57 61 62 63 65 66 71 73 76 79",
+    "refernumber": null,
+    "saleamount": 108131676,
+    "totalmoney": "245930572.00"
+  },
+  "2024-10-14": {
+    "opendate": "2024-10-14",
+    "officialopendate": "2024-10-15 21:32",
+    "issueno": "2024274",
+    "number": "03 12 16 21 23 25 32 39 40 41 52 54 65 67 68 73 74 75 76 77",
+    "refernumber": null,
+    "saleamount": 111618230,
+    "totalmoney": "241022652.00"
+  },
+  "2024-10-13": {
+    "opendate": "2024-10-13",
+    "officialopendate": "2024-10-14 21:22",
+    "issueno": "2024273",
+    "number": "03 05 08 10 11 13 14 26 27 30 32 34 46 48 49 51 68 72 75 79",
+    "refernumber": null,
+    "saleamount": 108600998,
+    "totalmoney": "235564383.00"
+  },
+  "2024-10-12": {
+    "opendate": "2024-10-12",
+    "officialopendate": "2024-10-13 21:31",
+    "issueno": "2024272",
+    "number": "03 04 08 11 14 22 30 31 33 48 49 51 57 58 63 64 67 68 74 76",
+    "refernumber": null,
+    "saleamount": 113805444,
+    "totalmoney": "231901795.00"
+  },
+  "2024-10-11": {
+    "opendate": "2024-10-11",
+    "officialopendate": "2024-10-12 21:30",
+    "issueno": "2024271",
+    "number": "02 03 07 08 16 23 27 31 32 33 35 43 46 50 51 57 59 66 69 71",
+    "refernumber": null,
+    "saleamount": 120875348,
+    "totalmoney": "226789935.00"
+  },
+  "2024-10-10": {
+    "opendate": "2024-10-10",
+    "officialopendate": "2024-10-11 21:31",
+    "issueno": "2024270",
+    "number": "01 02 05 07 20 21 23 27 39 42 45 49 54 58 63 67 70 71 72 74",
+    "refernumber": null,
+    "saleamount": 110961236,
+    "totalmoney": "226990013.00"
+  },
+  "2024-10-09": {
+    "opendate": "2024-10-09",
+    "officialopendate": "2024-10-10 21:30",
+    "issueno": "2024269",
+    "number": "06 16 22 23 25 30 32 36 41 44 45 51 55 65 66 67 71 74 75 76",
+    "refernumber": null,
+    "saleamount": 109642266,
+    "totalmoney": "236571769.00"
+  },
+  "2024-10-08": {
+    "opendate": "2024-10-08",
+    "officialopendate": "2024-10-09 21:31",
+    "issueno": "2024268",
+    "number": "09 10 14 16 19 23 25 27 33 34 37 39 42 50 51 58 67 69 72 75",
+    "refernumber": null,
+    "saleamount": 109162214,
+    "totalmoney": "271551568.00"
+  },
+  "2024-10-07": {
+    "opendate": "2024-10-07",
+    "officialopendate": "2024-10-08 21:21",
+    "issueno": "2024267",
+    "number": "02 04 07 09 17 22 23 24 26 29 33 38 43 50 55 56 71 77 78 79",
+    "refernumber": null,
+    "saleamount": 108701500,
+    "totalmoney": "266463235.00"
+  },
+  "2024-10-06": {
+    "opendate": "2024-10-06",
+    "officialopendate": "2024-10-07 20:51",
+    "issueno": "2024266",
+    "number": "02 05 06 07 09 23 25 26 34 37 45 46 50 53 54 57 65 72 73 78",
+    "refernumber": null,
+    "saleamount": 102521974,
+    "totalmoney": "262041171.00"
+  },
+  "2024-10-05": {
+    "opendate": "2024-10-05",
+    "officialopendate": "2024-10-06 21:31",
+    "issueno": "2024265",
+    "number": "01 03 26 27 32 33 38 39 40 41 44 49 50 53 66 68 71 75 77 79",
+    "refernumber": null,
+    "saleamount": 103172576,
+    "totalmoney": "263284488.00"
+  },
+  "2024-09-30": {
+    "opendate": "2024-09-30",
+    "officialopendate": "2024-10-05 21:41",
+    "issueno": "2024264",
+    "number": "02 03 04 06 08 10 13 17 19 20 26 34 36 48 51 54 57 62 70 76",
+    "refernumber": null,
+    "saleamount": 118542754,
+    "totalmoney": "258390712.00"
+  },
+  "2024-09-29": {
+    "opendate": "2024-09-29",
+    "officialopendate": "2024-09-30 21:30",
+    "issueno": "2024263",
+    "number": "07 10 19 30 32 36 46 47 48 51 53 54 57 64 66 67 69 71 73 76",
+    "refernumber": null,
+    "saleamount": 113966158,
+    "totalmoney": "255557142.00"
+  },
+  "2024-09-28": {
+    "opendate": "2024-09-28",
+    "officialopendate": "2024-09-29 21:21",
+    "issueno": "2024262",
+    "number": "06 09 15 18 19 23 26 30 34 38 46 49 55 57 60 70 71 72 77 80",
+    "refernumber": null,
+    "saleamount": 113235870,
+    "totalmoney": "255767055.00"
+  },
+  "2024-09-27": {
+    "opendate": "2024-09-27",
+    "officialopendate": "2024-09-28 21:31",
+    "issueno": "2024261",
+    "number": "01 08 09 11 12 15 22 28 31 38 39 40 44 57 59 63 64 71 74 79",
+    "refernumber": null,
+    "saleamount": 122307778,
+    "totalmoney": "251079616.00"
+  },
+  "2024-09-26": {
+    "opendate": "2024-09-26",
+    "officialopendate": "2024-09-27 21:30",
+    "issueno": "2024260",
+    "number": "02 03 04 05 07 12 32 42 44 49 50 54 56 62 63 69 71 75 76 77",
+    "refernumber": null,
+    "saleamount": 112161820,
+    "totalmoney": "245411219.00"
+  },
+  "2024-09-25": {
+    "opendate": "2024-09-25",
+    "officialopendate": "2024-09-26 21:41",
+    "issueno": "2024259",
+    "number": "06 20 26 30 32 35 38 39 54 56 57 59 60 61 62 67 71 72 75 76",
+    "refernumber": null,
+    "saleamount": 109679064,
+    "totalmoney": "244979499.00"
+  },
+  "2024-09-24": {
+    "opendate": "2024-09-24",
+    "officialopendate": "2024-09-25 21:21",
+    "issueno": "2024258",
+    "number": "02 05 06 07 09 16 30 32 40 48 56 57 58 59 60 69 70 72 74 80",
+    "refernumber": null,
+    "saleamount": 110404816,
+    "totalmoney": "240261564.00"
+  },
+  "2024-09-23": {
+    "opendate": "2024-09-23",
+    "officialopendate": "2024-09-24 21:31",
+    "issueno": "2024257",
+    "number": "06 07 09 18 20 35 36 45 46 48 51 52 53 56 60 66 68 77 79 80",
+    "refernumber": null,
+    "saleamount": 112209662,
+    "totalmoney": "241118501.00"
+  },
+  "2024-09-22": {
+    "opendate": "2024-09-22",
+    "officialopendate": "2024-09-23 21:21",
+    "issueno": "2024256",
+    "number": "03 07 15 21 27 28 38 44 48 62 63 64 68 70 72 73 74 75 77 79",
+    "refernumber": null,
+    "saleamount": 112214120,
+    "totalmoney": "242135878.00"
+  },
+  "2024-09-21": {
+    "opendate": "2024-09-21",
+    "officialopendate": "2024-09-22 21:31",
+    "issueno": "2024255",
+    "number": "09 12 13 14 16 21 22 27 29 31 32 44 49 50 52 53 62 65 72 77",
+    "refernumber": null,
+    "saleamount": 113475104,
+    "totalmoney": "237349570.00"
+  },
+  "2024-09-20": {
+    "opendate": "2024-09-20",
+    "officialopendate": "2024-09-21 21:31",
+    "issueno": "2024254",
+    "number": "02 04 06 10 22 24 26 27 29 36 37 43 48 50 55 56 58 59 64 76",
+    "refernumber": null,
+    "saleamount": 123515272,
+    "totalmoney": "238151553.00"
+  },
+  "2024-09-19": {
+    "opendate": "2024-09-19",
+    "officialopendate": "2024-09-20 21:20",
+    "issueno": "2024253",
+    "number": "13 14 17 18 19 27 29 31 37 41 43 49 53 56 59 61 65 67 68 79",
+    "refernumber": null,
+    "saleamount": 114102024,
+    "totalmoney": "232606603.00"
+  },
+  "2024-09-18": {
+    "opendate": "2024-09-18",
+    "officialopendate": "2024-09-19 21:30",
+    "issueno": "2024252",
+    "number": "03 08 10 16 17 18 19 25 28 29 33 35 41 43 59 60 63 66 73 75",
+    "refernumber": null,
+    "saleamount": 111683510,
+    "totalmoney": "227585325.00"
+  },
+  "2024-09-17": {
+    "opendate": "2024-09-17",
+    "officialopendate": "2024-09-18 21:21",
+    "issueno": "2024251",
+    "number": "04 09 12 14 18 21 22 23 24 26 29 30 41 53 58 62 69 71 72 73",
+    "refernumber": null,
+    "saleamount": 106784808,
+    "totalmoney": "224500468.00"
+  },
+  "2024-09-16": {
+    "opendate": "2024-09-16",
+    "officialopendate": "2024-09-17 21:31",
+    "issueno": "2024250",
+    "number": "06 08 17 23 24 25 27 29 33 36 37 45 52 53 57 64 66 69 72 73",
+    "refernumber": null,
+    "saleamount": 106099568,
+    "totalmoney": "220579733.00"
+  },
+  "2024-09-15": {
+    "opendate": "2024-09-15",
+    "officialopendate": "2024-09-16 21:30",
+    "issueno": "2024249",
+    "number": "03 12 19 20 22 23 26 36 43 46 51 52 55 59 69 71 72 73 76 80",
+    "refernumber": null,
+    "saleamount": 108054956,
+    "totalmoney": "222114975.00"
+  },
+  "2024-09-14": {
+    "opendate": "2024-09-14",
+    "officialopendate": "2024-09-15 21:31",
+    "issueno": "2024248",
+    "number": "07 08 10 11 12 16 26 34 35 43 45 46 49 50 51 53 61 63 64 69",
+    "refernumber": null,
+    "saleamount": 109720242,
+    "totalmoney": "217027133.00"
+  },
+  "2024-09-13": {
+    "opendate": "2024-09-13",
+    "officialopendate": "2024-09-14 21:31",
+    "issueno": "2024247",
+    "number": "22 24 26 28 31 35 37 41 42 45 48 49 50 51 54 56 57 65 66 67",
+    "refernumber": null,
+    "saleamount": 122182314,
+    "totalmoney": "228095781.00"
+  },
+  "2024-09-12": {
+    "opendate": "2024-09-12",
+    "officialopendate": "2024-09-13 21:31",
+    "issueno": "2024246",
+    "number": "06 09 12 13 18 19 24 28 35 36 38 39 41 42 55 57 61 71 72 76",
+    "refernumber": null,
+    "saleamount": 115428196,
+    "totalmoney": "222809373.00"
+  },
+  "2024-09-11": {
+    "opendate": "2024-09-11",
+    "officialopendate": "2024-09-12 20:41",
+    "issueno": "2024245",
+    "number": "02 04 06 07 17 21 23 28 29 32 35 36 42 45 55 62 66 68 72 77",
+    "refernumber": null,
+    "saleamount": 114685496,
+    "totalmoney": "218736258.00"
+  },
+  "2024-09-10": {
+    "opendate": "2024-09-10",
+    "officialopendate": "2024-09-11 21:41",
+    "issueno": "2024244",
+    "number": "05 15 19 21 22 24 25 29 35 42 45 47 56 63 64 67 74 75 76 79",
+    "refernumber": null,
+    "saleamount": 112042178,
+    "totalmoney": "214690801.00"
+  },
+  "2024-09-09": {
+    "opendate": "2024-09-09",
+    "officialopendate": "2024-09-10 21:31",
+    "issueno": "2024243",
+    "number": "05 07 09 10 11 12 14 15 17 27 37 41 42 43 46 61 64 70 73 80",
+    "refernumber": null,
+    "saleamount": 112511566,
+    "totalmoney": "214954660.00"
+  },
+  "2024-09-08": {
+    "opendate": "2024-09-08",
+    "officialopendate": "2024-09-09 21:31",
+    "issueno": "2024242",
+    "number": "02 19 20 26 30 34 38 40 41 46 48 51 53 54 56 62 65 68 73 80",
+    "refernumber": null,
+    "saleamount": 113703168,
+    "totalmoney": "217823925.00"
+  },
+  "2024-09-07": {
+    "opendate": "2024-09-07",
+    "officialopendate": "2024-09-08 21:31",
+    "issueno": "2024241",
+    "number": "05 11 12 14 27 28 33 41 57 58 63 66 69 70 72 74 75 76 78 80",
+    "refernumber": null,
+    "saleamount": 114478370,
+    "totalmoney": "213341815.00"
+  },
+  "2024-09-06": {
+    "opendate": "2024-09-06",
+    "officialopendate": "2024-09-07 21:31",
+    "issueno": "2024240",
+    "number": "06 08 10 15 23 27 32 35 37 40 41 43 47 54 58 59 63 66 74 75",
+    "refernumber": null,
+    "saleamount": 128209992,
+    "totalmoney": "209646814.00"
+  },
+  "2024-09-05": {
+    "opendate": "2024-09-05",
+    "officialopendate": "2024-09-06 21:21",
+    "issueno": "2024239",
+    "number": "11 16 19 24 26 27 28 31 46 47 52 54 55 60 61 62 63 76 77 78",
+    "refernumber": null,
+    "saleamount": 119264572,
+    "totalmoney": "204015032.00"
+  },
+  "2024-09-04": {
+    "opendate": "2024-09-04",
+    "officialopendate": "2024-09-05 21:33",
+    "issueno": "2024238",
+    "number": "09 23 24 27 31 33 36 37 38 39 41 44 45 48 52 55 58 65 67 71",
+    "refernumber": null,
+    "saleamount": 119449404,
+    "totalmoney": "199512475.00"
+  },
+  "2024-09-03": {
+    "opendate": "2024-09-03",
+    "officialopendate": "2024-09-04 21:21",
+    "issueno": "2024237",
+    "number": "01 02 05 07 16 17 19 20 26 32 38 41 49 58 64 65 66 69 71 79",
+    "refernumber": null,
+    "saleamount": 118566154,
+    "totalmoney": "200533040.00"
+  },
+  "2024-09-02": {
+    "opendate": "2024-09-02",
+    "officialopendate": "2024-09-03 21:32",
+    "issueno": "2024236",
+    "number": "04 05 11 12 21 28 35 36 38 39 40 46 50 61 64 68 71 73 74 77",
+    "refernumber": null,
+    "saleamount": 119318880,
+    "totalmoney": "200723414.00"
+  },
+  "2024-09-01": {
+    "opendate": "2024-09-01",
+    "officialopendate": "2024-09-02 21:12",
+    "issueno": "2024235",
+    "number": "01 09 10 14 16 20 27 28 30 32 33 34 36 39 46 52 59 60 76 77",
+    "refernumber": null,
+    "saleamount": 114490250,
+    "totalmoney": "196338449.00"
+  },
+  "2024-08-31": {
+    "opendate": "2024-08-31",
+    "officialopendate": "2024-09-01 21:12",
+    "issueno": "2024234",
+    "number": "07 13 14 27 32 33 36 37 48 52 53 54 62 65 68 72 73 74 76 77",
+    "refernumber": null,
+    "saleamount": 129903292,
+    "totalmoney": "191597839.00"
+  }
+}
