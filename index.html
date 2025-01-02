@@ -316,33 +316,22 @@
             const current = list[index];
             const pre = list[index - 1];
             current[key1] = count;
-            if (['continuousSpan', 'continuousSum'].includes(key) && current.span !== pre.span) return;
+            if (['continuousSpan', 'continuousSum'].includes(key) && pre && current.span !== pre.span) return;
             if (pre && pre[key]) calcIndex(index-1, count + 1, key, key1, key2);
           };
 
           list.forEach((i, index) => {
             const { sum } = i;
             // 判断是否连续的6
-            if (isContinuous(index, true, 'isGroupSix')) {
-              i.continuousSix = true;
-            }
+            i.continuousSix = isContinuous(index, true, 'isGroupSix');
             // 判断是否连续的奇偶
-            if (isContinuous(index, '单', 'sumOddEven')) {
-              i.continuousOdd = true;
-            }
+            i.continuousOdd = isContinuous(index, '单', 'sumOddEven');
             // 判断是否连续的偶数
-            if (isContinuous(index, '双', 'sumOddEven')) {
-              i.continuousEven = true;
-            }
+            i.continuousEven = isContinuous(index, '双', 'sumOddEven');
             // 判断是否连续的和值
-            if (isContinuous(index, i.sum, 'sum', 2)) {
-              i.continuousSum = true;
-            }
+            i.continuousSum = isContinuous(index, i.sum, 'sum', 2);
             // 判断是否连续跨度
-            if (isContinuous(index, i.span, 'span', 2)) {
-              i.continuousSpan = true;
-            }
-
+            i.continuousSpan = isContinuous(index, i.span, 'span', 2);
           });
 
           // 连续
