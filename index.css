@@ -114,6 +114,9 @@ span {
 .is-span-style {
     background-color: #8c8c8c;
 }
+.is-continuous-down-style {
+    background-color: #0984ff;
+}
 .is-highlight {
     font-size: 16px;
     color: #f22a0b;
@@ -126,4 +129,7 @@ span {
     top: -6px;
     right: 3px;
     opacity: 0.5;
+}
+.code-span + .code-span {
+    margin-left: 3px;
 }

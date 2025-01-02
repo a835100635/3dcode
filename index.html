@@ -131,7 +131,7 @@
     <el-divider content-position="left">历史数据</el-divider>
 
     <div class="mb4">
-      <el-button :type="i === pageSize ? 'primary' : 'default'" v-for="i in buttomTypes" :key="i" @click="changePageSize(i)" size="mini">{{ i }}期</el-button>
+      <el-button :type="i === pageSize ? 'primary' : 'default'" v-for="i in buttonTypes" :key="i" @click="changePageSize(i)" size="mini">{{ i }}期</el-button>
     </div>
 
     <div class="flex gap8">
@@ -233,7 +233,7 @@
     new Vue({
       el: '#app',
       data: function() {
-        this.buttomTypes = [10, 50, 100, 200, 300];
+        this.buttonTypes = [10, 50, 100, 200, 300];
         return {
           numbers: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
           sumList: new Array(28).fill(0).map((i, index) => index),
@@ -295,23 +295,7 @@
         tableData() {
           const list = this.historyList.slice(this.pageNum * this.pageSize, (this.pageNum + 1) * this.pageSize);
           // 简化辅助函数，判断是否连续
-          const isContinuous = (index, value, key, count = 3) => {
-            const current = list[index];
-            const next = list[index + 1] || {};
-            const next2 = list[index + 2] || {};
-            const pre = list[index - 1] || {};
-            const pre2 = list[index - 2] || {};
-            // 连续2个就算
-            if (count === 2) {
-              return ((current[key] === value && next[key] === value && next[key] !== pre[key]) ||
-              (current[key] === value && pre[key] === value && next[key] !== pre[key]))
-            }
-            return (
-              (current[key] === value && next[key] === value && next2[key] === value) ||
-              (current[key] === value && pre[key] === value && next[key] === value) ||
-              (current[key] === value && pre2[key] === value && pre[key] === value)
-            );
-          };
+          const isContinuous = window.isContinuous;
           const calcIndex = (index, count, key, key1, key2) => {
             const current = list[index];
             const pre = list[index - 1];
@@ -323,15 +307,15 @@
           list.forEach((i, index) => {
             const { sum } = i;
             // 判断是否连续的6
-            i.continuousSix = isContinuous(index, true, 'isGroupSix');
+            i.continuousSix = isContinuous(list,index, true, 'isGroupSix');
             // 判断是否连续的奇偶
-            i.continuousOdd = isContinuous(index, '单', 'sumOddEven');
+            i.continuousOdd = isContinuous(list,index, '单', 'sumOddEven');
             // 判断是否连续的偶数
-            i.continuousEven = isContinuous(index, '双', 'sumOddEven');
+            i.continuousEven = isContinuous(list,index, '双', 'sumOddEven');
             // 判断是否连续的和值
-            i.continuousSum = isContinuous(index, i.sum, 'sum', 2);
+            i.continuousSum = isContinuous(list,index, i.sum, 'sum', 2);
             // 判断是否连续跨度
-            i.continuousSpan = isContinuous(index, i.span, 'span', 2);
+            i.continuousSpan = isContinuous(list,index, i.span, 'span', 2);
           });
 
           // 连续

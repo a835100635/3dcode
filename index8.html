@@ -5,93 +5,97 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
-  <!-- import element-ui CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
   <!-- import Vue before Element -->
-  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+  <script src="./static/vue.js"></script>
   <!-- import element-ui JavaScript -->
-  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
-  <script src="history.js"></script>
-  <style>
-    * {
-      font-size: 12px;
-    }
+  <link rel="stylesheet" href="./static/element-ui.css">
+  <!-- 引入组件库 -->
+  <script src="./static/element-ui.js"></script>
+  <script src="./utils.js"></script>
+  <link rel="stylesheet" href="./index.css"></link>
 
-    #app>div {
-      margin-bottom: 2px;
-    }
-
-    .w70 {
-      width: 70px;
-    }
-
-    .w100 {
-      width: 100px;
-    }
-
-    .w120 {
-      width: 120px;
-    }
-
-    .w150 {
-      width: 150px;
-    }
-
-    .flex {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 4px;
-    }
-
-    .flex-ac {
-      align-items: center;
-    }
-
-    .mr-16 {
-      margin-right: 16px !important;
-    }
-  </style>
 </head>
 
 <body>
   <div id="app">
-    <div>
-      <el-select v-model="value" placeholder="历史开奖" size="mini">
-        <el-option v-for="(item, index) in historyCode" :key="index" :label="item.label" :value="item">
-        </el-option>
-      </el-select>
-    </div>
 
-    <div>
+    <div class="mb4">
       <p>
-        选中: {{ value?.value }}
+        上期：{{ historyList[0]?.number }}
       </p>
       <p>
-        上期重复: {{ value?.lastRepetition }}
-      </p>
-      <p>
-        上期开奖: {{ value?.preCode }}
+        排除上期：{{ calcExcludeCodes(historyList[0].codes) }}
       </p>
     </div>
+
     <div>
-
-      <!-- <el-table :data="historyCode">
-        <el-table-column prop="label" label="code" />
-        <el-table-column prop="lastRepetition" label="重复" />
-        <el-table-column prop="preCode" label="上期" />
-      </el-table> -->
-
-
-      <el-table :data="historyCode" style="width: 660px" :show-overflow-tooltip="true">
-        <el-table-column prop="label" label="code" width="180">
+      <div class="mb4">
+        <el-button :type="i === pageSize ? 'primary' : 'default'" v-for="i in buttonTypes" :key="i" @click="changePageSize(i)" size="mini">{{ i }}期</el-button>
+      </div>
+      <div class="mb4">
+        <el-checkbox-group v-model="highlightCode" style="display: contents;">
+          <el-checkbox v-for="(i, index) in code" :label="i" :key="i">{{ i }}</el-checkbox>
+        </el-checkbox-group>
+      </div>
+      <el-table :data="tableData" :border="true">
+        <el-table-column prop="opendate" label="日期" width="110">
         </el-table-column>
-        <el-table-column prop="lastRepetition" label="重复" width="100">
+        <el-table-column prop="number" label="code" width="200">
+          <template slot-scope="{ row, index, column, store }">
+            <span class="code-span" :class="{
+              'is-highlight': highlightCode.includes(item)
+            }" v-for="item in row.codes" :key="item">{{ `${item}` }}</span>
+          </template>
         </el-table-column>
-        <el-table-column prop="preCode" label="上期" width="180">
+        <el-table-column prop="preRepeats" label="重复出现" width="150">
+          <template slot-scope="{ row, index, column, store }">
+            <span>{{ row.preRepeats.number || '-' }}</span>
+          </template>
+          </el-table-column>
+        <el-table-column label="上下盘">
+          <el-table-column prop="upOrDownText" label="上盘" width="50">
+            <template slot-scope="{ row, index, column, store }" v-if="row.upOrDownText === '上'">
+              <span :class="{
+                'is-continuous-base is-continuous-style': row.continuousUp,
+              }">
+                {{ row.upOrDownText}}
+              </span>
+            <span class="continuous-number-style">{{ row.continuousUpIndex }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="upOrDownText" label="下盘" width="50">
+            <template slot-scope="{ row, index, column, store }" v-if="row.upOrDownText === '下'">
+              <span :class="{
+                'is-continuous-base is-continuous-down-style': row.continuousDown
+              }">
+                {{ row.upOrDownText}}
+              </span>
+              <span class="continuous-number-style">{{ row.continuousDownIndex }}</span>
+            </template>
+          </el-table-column>
         </el-table-column>
-        <el-table-column prop="recommend" label="下期推荐" width="100">
         </el-table-column>
-        <el-table-column prop="isWin" label="中数量" width="70">
+        <el-table-column label="奇偶盘">
+          <el-table-column prop="oddOrEvenText" label="奇盘" width="50">
+              <template slot-scope="{ row, index, column, store }" v-if="row.oddOrEvenText === '单'">
+                <span :class="{
+                  'is-continuous-base is-continuous-style': row.continuousOdd,
+                }">
+                  {{ row.oddOrEvenText}}
+                </span>
+              <span class="continuous-number-style">{{ row.continuousOddIndex }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="oddOrEvenText" label="偶盘" width="50">
+              <template slot-scope="{ row, index, column, store }" v-if="row.oddOrEvenText === '双'">
+                <span :class="{
+                  'is-continuous-base is-continuous-down-style': row.continuousEven
+                }">
+                  {{ row.oddOrEvenText}}
+                </span>
+                <span class="continuous-number-style">{{ row.continuousEvenIndex }}</span>
+              </template>
+            </el-table-column>
         </el-table-column>
       </el-table>
     </div>
@@ -105,17 +109,79 @@
       el: '#app',
       // 交互的数据
       data: function () {
+        this.buttonTypes = [10, 50, 100, 200, 300];
         return {
-          value: '',
-          history: window.historyCode8.map((i) => i.map(i => `${i}`)),
-          historyCode: [],
-          code: new Array(80).fill(0).map((item, index) => index + 1)
+          history: [],
+          historyList: [],
+          code: new Array(80).fill(0).map((item, index) => index + 1),
+
+          highlightCode: [],
+
+          pageNum: 0,
+          pageSize: 50,
         }
       },
       watch: {},
-      computed: {},
+      computed: {
+        tableData() {
+          const list = this.historyList.slice(this.pageNum * this.pageSize, (this.pageNum + 1) * this.pageSize);
+          
+          const calcIndex = (index, count, key, key1, key2) => {
+            const current = list[index];
+            const pre = list[index - 1];
+            current[key1] = count;
+            if (pre && pre[key]) calcIndex(index-1, count + 1, key, key1, key2);
+          };
+
+
+          list.forEach((i, index) => {
+            const { sum } = i;
+            // 判断是否连续的上下盘
+            i.continuousUp = window.isContinuous(list,index, '上', 'upOrDownText');
+            i.continuousDown = window.isContinuous(list,index, '下', 'upOrDownText');
+            // 判断是否连续的奇偶
+            i.continuousOdd = window.isContinuous(list,index, '单', 'oddOrEvenText');
+            i.continuousEven = window.isContinuous(list,index, '双', 'oddOrEvenText');
+            // 上期重复出现
+            
+            i.preRepeats = {
+              codes: [],
+              number: ''
+            };
+            const preArr = list[index + 1];
+            if (preArr && preArr.codes.length) {
+              i.codes.forEach((code) => {
+                if(preArr.codes.includes(code)) {
+                  i.preRepeats.codes.push(code);
+                };
+              });
+              i.preRepeats.number = i.preRepeats.codes.sort((a, b) => a - b).join(' ');
+            }
+          });
+
+          // 连续
+          list.forEach((i, index) => {
+            if (i.continuousUp && !list[index + 1]?.continuousUp) {
+              calcIndex(index, 1 , 'continuousUp', 'continuousUpIndex');
+            }
+            if (i.continuousDown && !list[index + 1]?.continuousDown) {
+              calcIndex(index, 1 , 'continuousDown', 'continuousDownIndex');
+            }
+            if (i.continuousOdd && !list[index + 1]?.continuousOdd) {
+              calcIndex(index, 1 , 'continuousOdd', 'continuousOddIndex');
+            }
+            if (i.continuousEven && !list[index + 1]?.continuousEven) {
+              calcIndex(index, 1 , 'continuousEven', 'continuousEvenIndex');
+            }
+          });
+
+          // console.table(list);
+          return list;
+        }
+      },
       created() {
-        this.historyCode = this.history.map((item, index) => {
+        this.getHistory();
+        this.historyList = this.history.map((item, index) => {
           const arr = [];
           if (this.history[index + 1]) {
             for (let i = 0; i < item.length; i++) {
@@ -153,12 +219,39 @@
             isWin: count
           };
         })
-
-        console.log(this.code);
       },
       mounted() {},
       // 方法
-      methods: {},
+      methods: {
+        changePageSize(size) {
+          this.pageSize = size;
+          this.pageNum = 0;
+        },
+
+        // 排除
+        calcExcludeCodes(codes) {
+          const excludeCodes = this.code.filter(item => !codes.includes(item));
+          return excludeCodes.join(' ');
+        },
+
+        getHistory() {
+        fetch('./server/history2.json')
+          .then(response => response.json())
+          .then(data => {
+              const keys = Object.keys(data).map(i => ({ key: i, timestamp: new Date(i).getTime() })).sort((a, b) => b.timestamp - a.timestamp);
+              // console.log(keys);
+              this.historyList = keys.map((item, index) => {
+                const codes = data[item.key].number.split(' ').map(i => parseInt(i));
+                return {
+                  timestamp: item.timestamp,
+                  ...data[item.key],
+                  codes,
+                  ...window.compareUpperLower(codes)
+                }
+              }).sort((a, b) => b.timestamp - a.timestamp);
+          })
+        }
+      },
     });
   </script>
 </body>

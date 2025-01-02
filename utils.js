@@ -23,7 +23,11 @@ function compareOddEvenCount(numbers) {
   if (odd === 0) return '全双';
   if (odd === numbers.length) return '全单';
   const even = numbers.length - odd;
-  return `${odd}单${even}双`;
+  return {
+    odd,
+    even,
+    oddEven: `${odd}单${even}双`
+  }
 }
 
 // 格式化code 返回形态
@@ -40,7 +44,7 @@ function formatCode(code, timestamp) {
       `${compareSize(numbers[0])}${compareSize(numbers[1])}${compareSize(numbers[2])}`, 
       compareSizeCount([numbers[0], numbers[1], numbers[2]]),
       `${compareOddEven(numbers[0])}${compareOddEven(numbers[1])}${compareOddEven(numbers[2])}`,
-      compareOddEvenCount([numbers[0], numbers[1], numbers[2]]),
+      compareOddEvenCount([numbers[0], numbers[1], numbers[2]]).oddEven,
     ],
     // 豹子
     isLeopard: new Set(numbers.split('')).size === 1,
@@ -95,3 +99,39 @@ function generateCombination(count ,codes) {
   func();
   return arr;
 };
+
+function isContinuous(list, index, value, key, count = 3) {
+  const current = list[index];
+  const next = list[index + 1] || {};
+  const next2 = list[index + 2] || {};
+  const pre = list[index - 1] || {};
+  const pre2 = list[index - 2] || {};
+  // 连续2个就算
+  if (count === 2) {
+    return ((current[key] === value && next[key] === value && next[key] !== pre[key]) ||
+    (current[key] === value && pre[key] === value && next[key] !== pre[key]))
+  }
+  return (
+    (current[key] === value && next[key] === value && next2[key] === value) ||
+    (current[key] === value && pre[key] === value && next[key] === value) ||
+    (current[key] === value && pre2[key] === value && pre[key] === value)
+  );
+};
+
+
+// 上盘下盘
+function compareUpperLower(numbers) {
+  const upArr = numbers.filter(item => item <= 40);
+  const downArr = numbers.filter(item => item > 40);
+  const oddEven = compareOddEvenCount(numbers);
+  return {
+    up: upArr,
+    down: downArr,
+    upCount: upArr.length,
+    downCount: downArr.length,
+    oddCount: oddEven.odd,
+    evenCount: oddEven.even,
+    upOrDownText: upArr.length > downArr.length ? '上' : upArr.length === downArr.length ? '和' : '下',
+    oddOrEvenText: oddEven.odd > oddEven.even ? '单' : oddEven.odd === oddEven.even ? '和' : '双',
+  }
+}
