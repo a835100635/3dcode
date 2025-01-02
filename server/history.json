@@ -24040,5 +24040,35 @@
       }
     ],
     "testCode": "965"
+  },
+  "2025-01-01": {
+    "opendate": "2025-01-01",
+    "officialopendate": "",
+    "issueno": "2025001",
+    "number": "7 0 3",
+    "refernumber": "",
+    "saleamount": 121010930,
+    "totalmoney": "0.00",
+    "prize": [
+      {
+        "prizename": "直选",
+        "require": "定位中3码",
+        "num": 0,
+        "singlebonus": 1040
+      },
+      {
+        "prizename": "组三",
+        "require": "不定位中3码",
+        "num": 0,
+        "singlebonus": 346
+      },
+      {
+        "prizename": "组六",
+        "require": "不定位中3码",
+        "num": 0,
+        "singlebonus": 173
+      }
+    ],
+    "testCode": "287"
   }
 }
