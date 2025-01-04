@@ -1090,11 +1090,20 @@
   },
   "2025-01-03": {
     "opendate": "2025-01-03",
-    "officialopendate": "2025-01-04 12:30",
+    "officialopendate": "2025-01-04 21:40",
     "issueno": "2025003",
     "number": "03 06 10 12 15 22 24 26 30 32 37 38 43 57 58 60 62 69 70 79",
     "refernumber": null,
     "saleamount": 130235600,
     "totalmoney": "166882468.00"
+  },
+  "2025-01-04": {
+    "opendate": "2025-01-04",
+    "officialopendate": "2025-01-04 23:30",
+    "issueno": "2025004",
+    "number": "04 07 09 12 16 26 27 35 36 43 46 50 53 65 67 68 73 75 77 80",
+    "refernumber": null,
+    "saleamount": 120024172,
+    "totalmoney": "171315467.00"
   }
 }

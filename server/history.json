@@ -24130,5 +24130,34 @@
       }
     ],
     "testCode": "726"
+  },
+  "2025-01-04": {
+    "opendate": "2025-01-04",
+    "officialopendate": "",
+    "issueno": "2025004",
+    "number": "6 3 4",
+    "refernumber": "",
+    "saleamount": 127119438,
+    "totalmoney": "0.00",
+    "prize": [
+      {
+        "prizename": "直选",
+        "require": "定位中3码",
+        "num": 0,
+        "singlebonus": 1040
+      },
+      {
+        "prizename": "组三",
+        "require": "不定位中3码",
+        "num": 0,
+        "singlebonus": 346
+      },
+      {
+        "prizename": "组六",
+        "require": "不定位中3码",
+        "num": 0,
+        "singlebonus": 173
+      }
+    ]
   }
 }
