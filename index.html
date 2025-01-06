@@ -217,7 +217,7 @@
           <span class="continuous-number-style">{{ scope.row.continuousSpanIndex }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="code" label="明天组六推荐" width="60">
+      <el-table-column prop="code" label="今日组六推荐" width="60">
         <template slot-scope="scope">
           <span @click="previewPrediction(scope.row?.prediction?.groupSix)"> {{ scope.row?.prediction?.groupSix }}</span>
         </template>
@@ -232,7 +232,7 @@
           </span>
         </template>
       </el-table-column>
-      <el-table-column prop="code" label="明日700推荐" width="60">
+      <el-table-column prop="code" label="今日700推荐" width="60">
         <template slot-scope="scope">
             <el-popover
               placement="bottom"
@@ -269,7 +269,7 @@
     new Vue({
       el: '#app',
       data: function() {
-        this.buttonTypes = [10, 50, 100, 200, 300];
+        this.buttonTypes = [10, 20, 50, 100, 200, 300];
         return {
           numbers: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
           sumList: new Array(28).fill(0).map((i, index) => index),
@@ -293,7 +293,7 @@
           historyList: [],
 
           pageNum: 0,
-          pageSize: 50,
+          pageSize: 20,
 
           tip: '',
 
@@ -708,6 +708,7 @@
         changePageSize(size) {
           this.pageSize = size;
           this.pageNum = 0;
+          this.getHistory();
         },
 
         handelExist() {
@@ -731,16 +732,16 @@
           });
         },
 
-        getHistory() {
-        fetch('./server/history.json')
-        .then(response => response.json())
-        .then(data => {
         // getHistory() {
-        //   fetch('http://192.168.31.142:7001/api/history/12?pageSize=50&pageNum=1')
-        //   .then(response => response.json())
-        //     .then(res => {
-        //       console.log(res.data.data);
-        //       const data = res.data.data
+        // fetch('./server/history.json')
+        // .then(response => response.json())
+        // .then(data => {
+        getHistory() {
+          fetch(`http://150.158.93.215:7001/api/history/12?pageSize=${this.pageSize}&pageNum=1`)
+          .then(response => response.json())
+            .then(res => {
+              console.log(res.data.data);
+              const data = res.data.data
               const keys = Object.keys(data).map(i => ({ key: i, timestamp: new Date(i).getTime() })).sort((a, b) => b.timestamp - a.timestamp);
 
               const func = ({ number, opendate }, index) => {
