@@ -117,6 +117,12 @@ span {
 .is-continuous-down-style {
     background-color: #0984ff;
 }
+.is-red-style {
+    background-color: #f56c6c;
+}
+.is-black-style {
+    background-color: #252525;
+}
 .is-highlight {
     font-size: 16px;
     color: #f22a0b;

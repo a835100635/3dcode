@@ -150,7 +150,7 @@
       </el-checkbox-group>
     </div>
 
-    <el-table :data="tableData">
+    <el-table :data="tableData" :show-overflow-tooltip="true">
       <el-table-column prop="opendate" label="日期" width="110"></el-table-column>
       <el-table-column prop="testCode" label="试机号" width="60">
         <template slot-scope="scope">
@@ -187,7 +187,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="sum" label="和值" width="60">
-        <template slot-scope="scope">
+        <template slot-scope="scope" v-if="scope.row.number">
           <span :class="{
             'is-continuous-base is-sum-style': scope.row.continuousSum
           }">
@@ -197,7 +197,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="sumOddEven" label="和值单双" width="60">
-        <template slot-scope="scope">
+        <template slot-scope="scope" v-if="scope.row.number">
           <span  :class="{
             'is-continuous-base is-odd-style': scope.row.continuousOdd,
             'is-continuous-base is-even-style': scope.row.continuousEven
@@ -208,13 +208,39 @@
         </template>
       </el-table-column>
       <el-table-column prop="span" label="跨度" width="60">
-        <template slot-scope="scope">
+        <template slot-scope="scope" v-if="scope.row.number">
           <span :class="{
             'is-continuous-base is-span-style': scope.row.continuousSpan
           }">
             {{ scope.row.span }}
           </span>
           <span class="continuous-number-style">{{ scope.row.continuousSpanIndex }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="code" label="明天组六推荐" width="60">
+        <template slot-scope="scope">
+          <span @click="previewPrediction(scope.row?.prediction?.groupSix)"> {{ scope.row?.prediction?.groupSix }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="code" label="红黑" width="60">
+        <template slot-scope="scope" v-if="scope.row.number">
+           <span  :class="{
+            'is-continuous-base is-red-style': scope.row.prediction.isGroupSixWinning,
+            'is-continuous-base is-black-style': !scope.row.prediction.isGroupSixWinning
+          }">
+            {{ scope.row.prediction.isGroupSixWinning ? '红' : '黑' }}
+          </span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="code" label="明天600推荐" width="60">
+        <template slot-scope="scope">
+            <el-popover
+              placement="bottom"
+              width="400"
+              trigger="click"
+              :content="scope.row?.prediction?.sixCode?.split(',').sort((a,b) => a-b).join(',')">
+              <span slot="reference"> 预览</span>
+            </el-popover>
         </template>
       </el-table-column>
     </el-table>
@@ -688,10 +714,23 @@
           this.dialogVisible = true;
         },
 
+        previewPrediction(v) {
+          this.$alert(v, '预测', {
+            confirmButtonText: '确定',
+            dangerouslyUseHTMLString: true,
+          });
+        },
+
         getHistory() {
-          fetch('./server/history.json')
-            .then(response => response.json())
-            .then(data => {
+        fetch('./server/history.json')
+        .then(response => response.json())
+        .then(data => {
+        // getHistory() {
+        //   fetch('http://192.168.31.142:7001/api/history/12?pageSize=50&pageNum=1')
+        //   .then(response => response.json())
+        //     .then(res => {
+        //       console.log(res.data.data);
+        //       const data = res.data.data
               const keys = Object.keys(data).map(i => ({ key: i, timestamp: new Date(i).getTime() })).sort((a, b) => b.timestamp - a.timestamp);
 
               const func = ({ number, opendate }, index) => {
@@ -724,11 +763,16 @@
                     lastRepeat: {
                       isRepeat: false,
                       preIndex: '',
-                    }
+                    },
+                    prediction: data[i.key].prediction || {},
                   }
                 }
                 return {
-                  testCode: data[i.key]?.testCode,
+                  testCode: data[i.key]?.test,
+                  prediction: {
+                    ...data[i.key].prediction,
+                    isGroupSixWinning: window.isGroupSixWinningFunc(data[i.key].number, data[i.key].prediction?.groupSix),
+                  },
                   opendate: data[i.key].opendate,
                   number: data[i.key].number,
                   ...window.formatCode(data[i.key].number, data[i.key].opendate),

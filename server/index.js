@@ -17,6 +17,7 @@ async function func(i) {
                 ...history[item.opendate],
                 ...item
             }
+            delete history[item.opendate].prize;
         });
         fs.writeFileSync('./history.json', JSON.stringify(history, null, 2), 'utf8');
         func(i + 1);
@@ -48,3 +49,32 @@ function func2(i) {
     })
 }
 func2(0)
+
+// const defaultNumber = [0,1, 2, 3, 4, 5, 6, 7, 8, 9];
+// function   generateGroupSix(preNumber) {
+//     preNumber = preNumber.split(',');
+//     // 三位数中随机取一个
+//     const randomNumber = +preNumber[Math.floor(Math.random() * preNumber.length)];
+//     return defaultNumber.filter(item => item !== randomNumber).join(',');
+// }
+// const keys = Object.keys(history).map(i => ({ key: i, timestamp: new Date(i).getTime() })).sort((a, b) => a.timestamp - b.timestamp);
+// console.log(keys);
+// keys.forEach(({ key }, index) => {
+//     delete history[key].prize;
+//     const { number } = history[key];
+//     const code = number.split(' ').join(',');
+//     const prediction = {
+//         groupSix: generateGroupSix(code)
+//     }
+//     // if (index < 2) {
+//         // console.log('预测', history[keys[index+1].key]);
+//         if (keys[index+1] && history[keys[index+1].key]) {
+
+//             history[keys[index + 1].key].prediction = {
+//                 ...prediction
+//             }
+//         }
+//     // }
+// });
+// fs.writeFileSync('./history.json', JSON.stringify(history, null, 2), 'utf8');
+// // console.log(keys);

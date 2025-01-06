@@ -135,3 +135,11 @@ function compareUpperLower(numbers) {
     oddOrEvenText: oddEven.odd > oddEven.even ? '单' : oddEven.odd === oddEven.even ? '和' : '双',
   }
 }
+
+function isGroupSixWinningFunc(number, predictionGroupSix) {
+  if (!predictionGroupSix) return -1;
+  const numbers = number.split(' ');
+  if (new Set(numbers).size !== 3) return false;
+  const predictionNumbers = predictionGroupSix.split(',').map(Number);
+  return numbers.every(item => predictionNumbers.includes(+item));
+}
