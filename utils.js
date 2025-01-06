@@ -143,3 +143,4 @@ function isGroupSixWinningFunc(number, predictionGroupSix) {
   const predictionNumbers = predictionGroupSix.split(',').map(Number);
   return numbers.every(item => predictionNumbers.includes(+item));
 }
+

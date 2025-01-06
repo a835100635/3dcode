@@ -232,15 +232,25 @@
           </span>
         </template>
       </el-table-column>
-      <el-table-column prop="code" label="明天600推荐" width="60">
+      <el-table-column prop="code" label="明日700推荐" width="60">
         <template slot-scope="scope">
             <el-popover
               placement="bottom"
               width="400"
               trigger="click"
               :content="scope.row?.prediction?.sixCode?.split(',').sort((a,b) => a-b).join(',')">
-              <span slot="reference"> 预览</span>
+              <span slot="reference" @click="handleCopy(scope.row?.prediction?.sixCode?.split(',').sort((a,b) => a-b).join(','))"> 预览</span>
             </el-popover>
+        </template>
+      </el-table-column>
+      <el-table-column prop="code" label="红黑" width="60">
+        <template slot-scope="scope" v-if="scope.row.number">
+           <span  :class="{
+            'is-continuous-base is-red-style': scope.row.prediction.isSixCodeWinning,
+            'is-continuous-base is-black-style': !scope.row.prediction.isSixCodeWinning
+          }">
+            {{ scope.row.prediction.isSixCodeWinning ? '红' : '黑' }}
+          </span>
         </template>
       </el-table-column>
     </el-table>
@@ -767,11 +777,15 @@
                     prediction: data[i.key].prediction || {},
                   }
                 }
+                if (ondex === 1) {
+                  console.log(data[i.key], data[i.key].prediction?.sixCode.split(','), data[i.key].number.replace(/ /ig, ''));
+                }
                 return {
                   testCode: data[i.key]?.test,
                   prediction: {
                     ...data[i.key].prediction,
                     isGroupSixWinning: window.isGroupSixWinningFunc(data[i.key].number, data[i.key].prediction?.groupSix),
+                    isSixCodeWinning: data[i.key].prediction?.sixCode.split(',').includes(data[i.key].number.replace(/ /ig, '')),
                   },
                   opendate: data[i.key].opendate,
                   number: data[i.key].number,
