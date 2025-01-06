@@ -777,9 +777,6 @@
                     prediction: data[i.key].prediction || {},
                   }
                 }
-                if (ondex === 1) {
-                  console.log(data[i.key], data[i.key].prediction?.sixCode.split(','), data[i.key].number.replace(/ /ig, ''));
-                }
                 return {
                   testCode: data[i.key]?.test,
                   prediction: {
