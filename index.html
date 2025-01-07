@@ -750,7 +750,7 @@
         // .then(response => response.json())
         // .then(data => {
         getHistory() {
-          fetch(`https://150.158.93.215:7001/api/history/12?pageSize=${this.pageSize}&pageNum=1`)
+          fetch(`http://150.158.93.215:7001/api/history/12?pageSize=${this.pageSize}&pageNum=1`)
           .then(response => response.json())
             .then(res => {
               console.log(res.data.data);
