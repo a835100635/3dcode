@@ -12,11 +12,11 @@
   <script src="./static/element-ui.js"></script>
   <script src="./utils.js"></script>
   <script src="./server/history.json"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xe-clipboard"></script>
   <link rel="stylesheet" href="./index.css"></link>
 </head>
 <body>
   <div id="app">
-    <input type="text" ref="inputRef" v-model="copyValue">
     <el-row>
       <el-col :span="24" class="mb4 flex flex-ac">
         <span>百：</span>
@@ -314,8 +314,7 @@
 
           dialogVisible: false,
           dialogContentType: 'sum',
-          highlightNumbers: [],
-          copyValue: ''
+          highlightNumbers: []
         }
       },
       watch: {
@@ -699,18 +698,10 @@
 
         handleCopy(v) {
           if (!v) return;
-          this.copyValue = v;
-
-          // 兼容非安全域，非安全域下不可使用navigator.clipboard.writeText
-          if (navigator.clipboard) {
-            navigator.clipboard.writeText(v);
+          if (XEClipboard.copy(v)) {
             this.setTip('复制成功');
           } else {
-            const input = this.$refs.inputRef;
-            input.select();
-            input.select();
-            document.execCommand("copy");
-            this.setTip('复制成功');
+            this.setTip('复制失败');
           }
         },
 
