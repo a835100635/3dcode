@@ -16,6 +16,7 @@
 </head>
 <body>
   <div id="app">
+    <input type="text" ref="inputRef" v-model="copyValue">
     <el-row>
       <el-col :span="24" class="mb4 flex flex-ac">
         <span>百：</span>
@@ -313,7 +314,8 @@
 
           dialogVisible: false,
           dialogContentType: 'sum',
-          highlightNumbers: []
+          highlightNumbers: [],
+          copyValue: ''
         }
       },
       watch: {
@@ -697,8 +699,19 @@
 
         handleCopy(v) {
           if (!v) return;
-          this.setTip('复制成功');
-          navigator.clipboard.writeText(v);
+          this.copyValue = v;
+
+          // 兼容非安全域，非安全域下不可使用navigator.clipboard.writeText
+          if (navigator.clipboard) {
+            navigator.clipboard.writeText(v);
+            this.setTip('复制成功');
+          } else {
+            const input = this.$refs.inputRef;
+            input.select();
+            input.select();
+            document.execCommand("copy");
+            this.setTip('复制成功');
+          }
         },
 
         setTip(text) {
@@ -737,7 +750,7 @@
         // .then(response => response.json())
         // .then(data => {
         getHistory() {
-          fetch(`http://150.158.93.215:7001/api/history/12?pageSize=${this.pageSize}&pageNum=1`)
+          fetch(`https://150.158.93.215:7001/api/history/12?pageSize=${this.pageSize}&pageNum=1`)
           .then(response => response.json())
             .then(res => {
               console.log(res.data.data);
