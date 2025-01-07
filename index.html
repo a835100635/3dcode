@@ -232,7 +232,7 @@
           </span>
         </template>
       </el-table-column>
-      <el-table-column prop="code" label="今日700推荐" width="60">
+      <el-table-column prop="code" label="今日600推荐" width="60">
         <template slot-scope="scope">
             <el-popover
               placement="bottom"
@@ -743,18 +743,6 @@
               console.log(res.data.data);
               const data = res.data.data
               const keys = Object.keys(data).map(i => ({ key: i, timestamp: new Date(i).getTime() })).sort((a, b) => b.timestamp - a.timestamp);
-
-              const func = ({ number, opendate }, index) => {
-                // 截取 300 条
-                const value_ = keys.slice(index+1, index+300).map(i => data[i.key].number);
-
-                // 判断是否重复
-                const isRepeat = value_.includes(number);
-                return {
-                  isRepeat,
-                  preIndex: value_.indexOf(number) !== -1 ? value_.indexOf(number) + 1 : '',
-                };
-              };
               this.history = data;
               this.historyList = keys.map((i, ondex) => {
                 if (data[i.key].number === '? ? ?') {
@@ -779,7 +767,7 @@
                   }
                 }
                 return {
-                  testCode: data[i.key]?.test,
+                  testCode: data[i.key]?.testCode,
                   prediction: {
                     ...data[i.key].prediction,
                     isGroupSixWinning: window.isGroupSixWinningFunc(data[i.key].number, data[i.key].prediction?.groupSix),
@@ -789,7 +777,7 @@
                   number: data[i.key].number,
                   ...window.formatCode(data[i.key].number, data[i.key].opendate),
                   // 上期重复
-                  lastRepeat: func(data[i.key], ondex),
+                  lastRepeat: data[i.key].lastRepeat || {},
                   // 和值
                   sum: window.formatCode(data[i.key].number).sum,
                 }
