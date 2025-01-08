@@ -151,6 +151,26 @@
       </el-checkbox-group>
     </div>
 
+    <div>
+      <p>600一期为例, 1期计划</p>
+      <p>
+        组六中奖次数: {{ profitCount.sixWinningCount }} / {{ profitCount.total}}; {{ profitCount.sixWinningProfit }}元
+      </p>
+      <p>
+        600中奖次数: {{ profitCount.sixCodeWinningCount }} / {{ profitCount.total }}; {{ profitCount.sixCodeWinningProfit }}元
+      </p>
+    </div>
+
+    <div>
+      <p>600一期为例, 3期计划</p>
+      <p>
+        组六中奖次数: {{ profitCount.sixWinningCount }} / {{ profitCount.total}}; {{ profitCount.sixWinningProfit1 }}元
+      </p>
+      <p>
+        600中奖次数: {{ profitCount.sixCodeWinningCount }} / {{ profitCount.total }}; {{ profitCount.sixCodeWinningProfit1 }}元
+      </p>
+    </div>
+
     <el-table :data="tableData" :show-overflow-tooltip="true">
       <el-table-column prop="opendate" label="日期" width="110"></el-table-column>
       <el-table-column prop="testCode" label="试机号" width="60">
@@ -632,6 +652,64 @@
             str += `[${i}]； `;
           });
           return str;
+        },
+
+        // 盈利次数
+        profitCount({ tableData }) {
+          const sixWinningCount = tableData.filter(i => i.prediction.isGroupSixWinning).length;
+          const sixCodeWinningCount = tableData.filter(i => i.prediction.isSixCodeWinning).length;
+          const total = tableData.length - 1;
+
+          const arr = tableData.map(i => ({ item: i, timestamp: new Date(i.opendate).getTime() })).sort((a, b) => a.timestamp - b.timestamp).filter(i => i.item.number);
+          const calcFunc = ({ key, initMoney, multipleOdds, odds }) => {
+            // 起步资金
+            const money = 600;
+            // 三期计划 第四期开始重新计算 1
+            let threePlan = 0;
+            arr.forEach(({ item }, index) => {
+              if (item.prediction[key]) {
+                initMoney +=  money * multipleOdds[threePlan] * odds - money * multipleOdds[threePlan];
+                threePlan = 0;
+              } else {
+                initMoney -= money * multipleOdds[threePlan]                
+                threePlan++;
+                if (threePlan > 2) {
+                  threePlan = 0;
+                }
+              }
+            });
+            return initMoney; 
+          };
+
+          return {
+            total,
+            sixWinningCount,
+            sixCodeWinningCount,
+            // 600中奖盈利
+            sixCodeWinningProfit: sixCodeWinningCount * (980 - 600) - ((total - sixCodeWinningCount) * 600),
+            // 组liu中奖盈利
+            sixWinningProfit: sixWinningCount * (980 - 500) - (total - sixWinningCount) * 500,
+            // 3期计划
+            sixCodeWinningProfit1: calcFunc({
+              key: 'isSixCodeWinning',
+              // 初始金额
+              initMoney: 0,
+              // 赔率
+              odds: 980 / 600,
+              // 倍投
+              multipleOdds: [1, 1.63, 2],
+            }),
+            // 3期计划
+            sixWinningProfit1: calcFunc({
+              key: 'isGroupSixWinning',
+              // 初始金额
+              initMoney: 0,
+              // 赔率
+              odds: 980 / 500,
+              // 倍投
+              multipleOdds: [1, 2, 3],
+            }),
+          }
         }
       },
       created() {
