@@ -814,19 +814,28 @@
           });
         },
 
-        // getHistory() {
-        // fetch('./server/history.json')
-        // .then(response => response.json())
-        // .then(data => {
         getHistory() {
           fetch(`http://150.158.93.215:7001/api/history/12?pageSize=${this.pageSize}&pageNum=1`)
           .then(response => response.json())
             .then(res => {
-              console.log(res.data.data);
-              const data = res.data.data
-              const keys = Object.keys(data).map(i => ({ key: i, timestamp: new Date(i).getTime() })).sort((a, b) => b.timestamp - a.timestamp);
-              this.history = data;
-              this.historyList = keys.map((i, ondex) => {
+              this.initData(res.data.data);
+            }).catch(err => {
+              this.getLocalHistory();
+            });
+        },
+
+        getLocalHistory() {
+          fetch('./server/history.json')
+          .then(response => response.json())
+          .then(data => {
+            this.initData(data);
+          })
+        },
+
+        initData(data) {
+          const keys = Object.keys(data).map(i => ({ key: i, timestamp: new Date(i).getTime() })).sort((a, b) => b.timestamp - a.timestamp);
+          this.history = data;
+          this.historyList = keys.map((i, ondex) => {
                 if (data[i.key].number === '? ? ?') {
                   return {
                     testCode: data[i.key]?.testCode,
@@ -864,7 +873,6 @@
                   sum: window.formatCode(data[i.key].number).sum,
                 }
               }).sort((a, b) => b.timestamp - a.timestamp);
-            })
         }
       }
     })
