@@ -139,3 +139,41 @@ span {
 .code-span + .code-span {
     margin-left: 3px;
 }
+
+.code-panel {
+
+}
+.fist-label {
+    width: 80px;
+    white-space: nowrap;
+}
+.fist-label,
+.code-panel-content-header {
+    background-color: #e4e4e4;
+}
+.code-panel-content {
+    width: fit-content;
+    border-right: 1px solid #c6c6c6;
+}
+.code-panel-row {
+    border-left: 1px solid #c6c6c6;
+    border-bottom: 1px solid #c6c6c6;
+    height: 24px;
+    width: 24px;
+}
+.is-one {
+    background-color: #fffad5;
+}
+.is-two {
+    background-color: #fff0db;
+}
+.is-three {
+    background-color: #ffe7da;
+}
+.is-four {
+    background-color: #d9e4ff;
+}
+.code-panel-row.is-highlight {
+    color: #3964e5;
+    font-weight: bold;
+}

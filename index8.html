@@ -24,7 +24,7 @@
         上期：{{ historyList[0]?.number }}
       </p>
       <p>
-        排除上期：{{ calcExcludeCodes(historyList[0].codes) }}
+        排除上期：{{ historyList[0] && calcExcludeCodes(historyList[0].codes) }}
       </p>
     </div>
 
@@ -32,16 +32,23 @@
       <div class="mb4">
         <el-button :type="i === pageSize ? 'primary' : 'default'" v-for="i in buttonTypes" :key="i" @click="changePageSize(i)" size="mini">{{ i }}期</el-button>
       </div>
-      <div class="mb4">
+
+      <div>
+        <el-button :type="0 === panelType ? 'primary' : 'default'" @click="handleShowPanel(0)" size="mini">表格</el-button>
+        <el-button :type="1 === panelType ? 'primary' : 'default'" @click="handleShowPanel(1)" size="mini">全景表格</el-button>
+      </div>
+
+      <div class="mb4" v-if="panelType === 0">
         <el-checkbox-group v-model="highlightCode" style="display: contents;">
           <el-checkbox v-for="(i, index) in code" :label="i" :key="i">{{ i }}</el-checkbox>
         </el-checkbox-group>
       </div>
-      <el-table :data="tableData" :border="true">
+
+      <el-table v-if="panelType === 0" :data="tableData" :border="true">
         <el-table-column prop="opendate" label="日期" width="110">
         </el-table-column>
         <el-table-column prop="number" label="code" width="200">
-          <template slot-scope="{ row, index, column, store }">
+          <template slot-scope="{ row, index, column, store }" v-if="row.codes">
             <span class="code-span" :class="{
               'is-highlight': highlightCode.includes(item)
             }" v-for="item in row.codes" :key="item">{{ `${item}` }}</span>
@@ -98,6 +105,35 @@
             </el-table-column>
         </el-table-column>
       </el-table>
+
+
+      <div class="code-panel" v-if="panelType === 1">
+        <div class="flex code-panel-content code-panel-content-header">
+          <div  class="fist-label">日期</div>
+          <div v-for="num in code" :key="num" class="code-panel-row flex flex-ac flex-jc">
+            <span>{{ num }}</span>
+          </div>
+        </div>
+        <div v-for="item in tableData" :key="item.opendate" class="flex code-panel-content">
+          <div class="fist-label">{{item.opendate}}</div>
+          <div v-for="num in code" :key="num" class="code-panel-row flex flex-ac flex-jc" :class="{
+            'is-highlight': item.codes.includes(num),
+            'is-one': num <= 20,
+            'is-two': num > 20 && num <= 40,
+            'is-three': num > 40 && num <= 60,
+            'is-four': num > 60
+          }">
+            <span v-if="item.codes.includes(num)">{{ num }}</span>
+          </div>
+        </div>
+        <div class="flex code-panel-content code-panel-content-header">
+          <div  class="fist-label">出现次数</div>
+          <div v-for="(num, index) in code" :key="num" class="code-panel-row flex flex-ac flex-jc">
+            <span>{{ calcCount(num) }}</span>
+          </div>
+        </div>
+      </div>
+
     </div>
 
   </div>
@@ -109,7 +145,7 @@
       el: '#app',
       // 交互的数据
       data: function () {
-        this.buttonTypes = [10, 50, 100, 200, 300];
+        this.buttonTypes = [10, 20, 50, 100, 200, 300];
         return {
           history: [],
           historyList: [],
@@ -118,7 +154,9 @@
           highlightCode: [],
 
           pageNum: 0,
-          pageSize: 50,
+          pageSize: 20,
+
+          panelType: 1
         }
       },
       watch: {},
@@ -149,7 +187,7 @@
               number: ''
             };
             const preArr = list[index + 1];
-            if (preArr && preArr.codes.length) {
+            if (preArr && preArr.codes && preArr.codes.length) {
               i.codes.forEach((code) => {
                 if(preArr.codes.includes(code)) {
                   i.preRepeats.codes.push(code);
@@ -175,7 +213,7 @@
             }
           });
 
-          // console.table(list);
+          console.table('tabledata:',list);
           return list;
         }
       },
@@ -232,6 +270,14 @@
         calcExcludeCodes(codes) {
           const excludeCodes = this.code.filter(item => !codes.includes(item));
           return excludeCodes.join(' ');
+        },
+
+        handleShowPanel(type) {
+          this.panelType = type;
+        },
+
+        calcCount(num) {
+          return this.tableData.filter(item => item.codes.includes(num)).length;
         },
 
         getHistory() {
