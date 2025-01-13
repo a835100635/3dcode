@@ -41,15 +41,15 @@
     </el-row>
 
     <el-row>
-      <el-col :span="6" class="mb4 flex flex-ac mr4">
-        <span>注数：</span>
+      <el-col class="mb4 flex flex-ac mr4">
+        <span>快捷注数：</span>
         <el-button :type="count === 600 && 'primary'" @click="() => { count=600; generate() }" size="mini">600</el-button>
         <el-button :type="count === 650 && 'primary'" @click="() => { count=650; generate() }" size="mini">650</el-button>
         <el-button :type="count === 700 && 'primary'" @click="() => { count=700; generate() }" size="mini">700</el-button>
-        <el-button :type="count === 750 && 'primary'" @click="() => { count=750; generate() }" size="mini" class="mr4">750</el-button>
-        <el-input v-model="count" placeholder="请输入随机数量" size="mini"></el-input>
-      </el-col>
-      <el-col :span="10" class="mb4 flex flex-ac">
+        <el-button :type="count === 750 && 'primary'" @click="() => { count=750; generate() }" size="mini"  class="mr10">750</el-button>
+
+        <span>自定义：</span><el-input v-model="count" placeholder="请输入随机数量" size="mini" class="mr4 w80"></el-input>
+
         <el-button type="primary" @click="generate" size="mini">生成</el-button>
         <el-button @click="handleClean" size="mini">清空</el-button>
         <el-button @click="handlePaste" size="mini" class="mr4">粘贴</el-button>

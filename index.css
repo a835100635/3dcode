@@ -18,6 +18,9 @@ span {
 .w120 {
     width: 120px;
 }
+.w200 {
+    width: 200px;
+}
 .mb4 {
     margin-bottom: 4px;
 }
@@ -26,6 +29,9 @@ span {
 }
 .mr4 {
     margin-right: 4px;
+}
+.mr10 {
+    margin-right: 10px;
 }
 .ml10 {
     margin-left: 10px;
