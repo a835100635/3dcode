@@ -1117,7 +1117,7 @@
   },
   "2025-01-09": {
     "opendate": "2025-01-09",
-    "officialopendate": "2025-01-10 12:30",
+    "officialopendate": "2025-01-10 21:30",
     "issueno": "2025009",
     "number": "11 15 26 27 28 34 40 43 46 47 48 52 56 58 60 62 67 74 75 79",
     "refernumber": null,
@@ -1150,5 +1150,32 @@
     "refernumber": null,
     "saleamount": 118359358,
     "totalmoney": "181986105.00"
+  },
+  "2025-01-12": {
+    "opendate": "2025-01-12",
+    "officialopendate": "2025-01-13 08:30",
+    "issueno": "2025012",
+    "number": "02 04 06 08 10 13 19 31 33 35 38 45 50 51 59 63 65 66 67 74",
+    "refernumber": null,
+    "saleamount": 117030828,
+    "totalmoney": "200663660.00"
+  },
+  "2025-01-11": {
+    "opendate": "2025-01-11",
+    "officialopendate": "2025-01-12 21:30",
+    "issueno": "2025011",
+    "number": "02 03 05 21 23 24 25 30 34 35 45 47 50 57 58 61 70 75 77 79",
+    "refernumber": null,
+    "saleamount": 119544622,
+    "totalmoney": "201416998.00"
+  },
+  "2025-01-10": {
+    "opendate": "2025-01-10",
+    "officialopendate": "2025-01-11 21:30",
+    "issueno": "2025010",
+    "number": "09 10 20 24 27 41 45 46 48 50 53 56 64 65 66 67 70 73 74 76",
+    "refernumber": null,
+    "saleamount": 126841216,
+    "totalmoney": "195889617.00"
   }
 }

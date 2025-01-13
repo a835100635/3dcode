@@ -43,12 +43,17 @@
     <el-row>
       <el-col :span="6" class="mb4 flex flex-ac mr4">
         <span>注数：</span>
-        <el-input v-model="count" placeholder="请输入随机数量" size="mini"></el-input>
+        <el-button :type="count === 600 && 'primary'" @click="() => { count=600; generate() }" size="mini">600</el-button>
+        <el-button :type="count === 650 && 'primary'" @click="() => { count=650; generate() }" size="mini">650</el-button>
+        <el-button :type="count === 700 && 'primary'" @click="() => { count=700; generate() }" size="mini">700</el-button>
+        <el-button :type="count === 750 && 'primary'" @click="() => { count=750; generate() }" size="mini" class="mr4">750</el-button>
+        <el-input v-model="count" placeholder="请输入随机数量" size="mini" class="w120"></el-input>
       </el-col>
       <el-col :span="10" class="mb4 flex flex-ac">
         <el-button type="primary" @click="generate" size="mini">生成</el-button>
-        <el-button type="primary" @click="handleClean" size="mini">清空</el-button>
-        <el-button type="primary" @click="handlePaste" size="mini" class="mr4">粘贴</el-button>
+        <el-button @click="handleClean" size="mini">清空</el-button>
+        <el-button @click="handlePaste" size="mini" class="mr4">粘贴</el-button>
+        <el-button @click="handleCopyCombination(combination)" size="mini">复制原注</el-button>
       </el-col>
     </el-row>
 
@@ -152,6 +157,10 @@
     </div>
 
     <div>
+      <el-button :type="showProfit && 'primary'" @click="showProfit = !showProfit" size="mini">{{showProfit ? '隐藏' : '显示'}}计划盈利</el-button>
+    </div>
+
+    <div v-if="showProfit">
       <p>600一期为例, 1期计划</p>
       <p>
         组六中奖次数: {{ profitCount.sixWinningCount }} / {{ profitCount.total}}; {{ profitCount.sixWinningProfit }}元
@@ -159,9 +168,6 @@
       <p>
         600中奖次数: {{ profitCount.sixCodeWinningCount }} / {{ profitCount.total }}; {{ profitCount.sixCodeWinningProfit }}元
       </p>
-    </div>
-
-    <div>
       <p>600一期为例, 3期计划</p>
       <p>
         组六中奖次数: {{ profitCount.sixWinningCount }} / {{ profitCount.total}}; {{ profitCount.sixWinningProfit1 }}元
@@ -170,6 +176,7 @@
         600中奖次数: {{ profitCount.sixCodeWinningCount }} / {{ profitCount.total }}; {{ profitCount.sixCodeWinningProfit1 }}元
       </p>
     </div>
+
 
     <el-table :data="tableData" :show-overflow-tooltip="true">
       <el-table-column prop="opendate" label="日期" width="110"></el-table-column>
@@ -334,7 +341,8 @@
 
           dialogVisible: false,
           dialogContentType: 'sum',
-          highlightNumbers: []
+          highlightNumbers: [],
+          showProfit: false
         }
       },
       watch: {
@@ -777,6 +785,15 @@
         handleCopy(v) {
           if (!v) return;
           if (XEClipboard.copy(v)) {
+            this.setTip('复制成功');
+          } else {
+            this.setTip('复制失败');
+          }
+        },
+
+        handleCopyCombination(codes) {  
+          codes = codes.split(',').sort((a, b) => a - b).join(',');
+          if (XEClipboard.copy(codes)) {
             this.setTip('复制成功');
           } else {
             this.setTip('复制失败');
