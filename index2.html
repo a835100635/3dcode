@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- import Vue before Element -->
+    <script src="./static/vue.js"></script>
+    <!-- import element-ui JavaScript -->
+    <link rel="stylesheet" href="./static/element-ui.css">
+    <!-- 引入组件库 -->
+    <script src="./static/element-ui.js"></script>
+    <script src="./utils.js"></script>
+    <script src="./server/history.json"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xe-clipboard"></script>
+    <link rel="stylesheet" href="./index.css"></link>
+</head>
+<body>
+  <div id="app">
+    <el-input type="textarea" :rows="3" :value="afterValue.codes" placeholder="结果" size="mini" readonly>
+    </el-input>
+  </div>
+
+  <script>
+     new Vue({
+      el: '#app',
+      data: function() {
+        return {
+          codes: [],
+
+        }
+      },
+      computed: {
+        afterValue({ codes }) {
+          return {
+            codes: codes.map(i => i.code).sort((a, b) => a - b).join(',')
+          }
+        }
+      },
+      created() {
+        this.init();
+        console.log(this.codes);
+      },
+      methods: {
+        init() {
+          const codes = new Array(100).fill(null).map((_, index) => index.toString().padStart(2, '0'));
+          this.codes = codes.map((code) => {
+            const codeArr = code.split('');
+            return {
+              code,
+              sum: codeArr.reduce((pre, cur) => { return pre + +cur }, 0),
+              span: Math.abs(codeArr[0] - codeArr[1])
+            }
+          });
+        }
+      }
+     });
+  </script>
+</body>
+</html>

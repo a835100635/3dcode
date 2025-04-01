@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dlt</title>
+    <!-- 引入 Axios -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+    <script>
+        async function load(url, rlength = 35, blength = 12) {
+            function fetchData() {
+                return new Promise((resolve, reject) => {
+                    // 示例：发送一个 GET 请求
+                        axios.get(url)
+                        .then(response => {
+
+                            let data = response.data.data;
+                            console.log('response ===>', data);
+                            data = data.splice(0, 3).map((i) => {
+                                let code = i.openCode.split('+');
+                                // console.log(code);
+                                return {
+                                    // ...i,
+                                    openCode: i.openCode,
+                                    numbers_red: code[0].split(','),
+                                    numbers_blus: code.splice(1)
+                                }
+                            });
+                            resolve(data);
+                        })
+                })
+            }
+            const history_numbers = await fetchData();
+            console.table(history_numbers);
+            // const history_numbers = [
+            //     {
+            //         "openCode": "08,02,01,33,10+10+12",
+            //         "numbers_red": [
+            //             "08",
+            //             "02",
+            //             "01",
+            //             "33",
+            //             "10"
+            //         ],
+            //         "numbers_blus": [
+            //             "10",
+            //             "12"
+            //         ]
+            //     },
+            //     {
+            //         "openCode": "22,28,27,25,12+02+01",
+            //         "numbers_red": [
+            //             "22",
+            //             "28",
+            //             "27",
+            //             "25",
+            //             "12"
+            //         ],
+            //         "numbers_blus": [
+            //             "02",
+            //             "01"
+            //         ]
+            //     }
+            // ];
+            // 生成 1 - 35
+            const numbers_red = Array.from({ length: rlength }, (_, i) => i + 1).map(num => num.toString().padStart(2, '0'));
+            // 生成 01 - 12
+            const numbers_blus = Array.from({ length: blength }, (_, i) => i + 1).map(month => month.toString().padStart(2, '0'));
+
+            // console.log(history_numbers);
+
+            // 过滤仅两条数据出现的数字
+            const handleFilterNumbers = () => {
+                const n = [];
+                let num_red = [...numbers_red];
+                let num_blus = [...numbers_blus];
+                history_numbers.forEach((i) => {
+                    i.numbers_red.forEach((j) => {
+                        num_red = num_red.filter((k) => k !== j);
+                    });
+                    i.numbers_blus.forEach((j) => {
+                        num_blus = num_blus.filter((k) => k !== j);
+                    });
+                });
+                return {
+                    numbers_reds: num_red,
+                    numbers_blus: num_blus
+                };
+            }
+            const data = handleFilterNumbers();
+            // console.log(data);
+
+            // 根据 handleFilterNumbers 的 numbers_blus 生成由5个数字组成的数组
+            const handleGenerateNumberBlus = () => {
+                const combinations = [];
+                // 随机组成5个数字的组合
+                for (let i = 0; i < data.numbers_blus.length; i++) {
+                    for (let j = i + 1; j < data.numbers_blus.length; j++) {
+                        combinations.push([data.numbers_blus[i], data.numbers_blus[j]]);
+                    }
+                }
+                return combinations;
+            }
+            const combinations_numbers_blus = handleGenerateNumberBlus();
+            // console.log('combinations_numbers_blus', combinations_numbers_blus);
+
+            const handleGenerateNumberReds = () => {
+                const combinations = [];
+                // 随机组成5个数字的组合
+                function backtrack(start, current) {
+                    if (current.length === 5) {
+                        combinations.push([...current]);
+                        return;
+                    }
+                    for (let i = start; i < data.numbers_reds.length; i++) {
+                        current.push(data.numbers_reds[i]);
+                        backtrack(i + 1, current);
+                        current.pop();
+                    }
+                }
+
+                backtrack(0, []);
+                return combinations;
+            }
+            const combinations_numbers_reds = handleGenerateNumberReds();
+            // console.log('combinations_numbers_reds', combinations_numbers_reds);
+
+            // 随机在 combinations_numbers_reds 中选择5个数组
+            const handleRandomCombinations = () => {
+                const randomCombinations = {
+                    numbers_reds: [],
+                    numbers_blus: []
+                };
+                for (let i = 0; i < 5; i++) {
+                    const randomIndex = Math.floor(Math.random() * combinations_numbers_reds.length);
+                    randomCombinations.numbers_reds.push(combinations_numbers_reds[randomIndex]);
+
+                    const randomIndex_blus = Math.floor(Math.random() * combinations_numbers_blus.length);
+                    randomCombinations.numbers_blus.push(combinations_numbers_blus[randomIndex_blus]);
+                }
+                return randomCombinations;
+            }
+
+            const randomCombinations = handleRandomCombinations();
+            // console.log('randomCombinations', randomCombinations);
+
+            // 最终生成 5+2 的数组
+            const handleGenerateNumber = () => {
+                const combinations = [];
+                // 随机组成5个数字的组合
+                for (let i = 0; i < 5; i++) {
+                    combinations.push([...randomCombinations.numbers_reds[i], ...randomCombinations.numbers_blus[i]]);
+                }
+                return combinations;
+            }
+            const combinations = handleGenerateNumber();
+            console.table(combinations);
+            combinations.forEach((i) => {
+                console.log(i.toString());
+            });
+        }
+        load('https://www.mxnzp.com/api/lottery/common/history?code=cjdlt&size=10&app_id=f1holkefkfpjbjwx&app_secret=u77EjpsFIJ2tJEXop5B9eIUxdVGmDak1', 35, 12);
+        console.log('============================');
+        load('https://www.mxnzp.com/api/lottery/common/history?code=ssq&size=10&app_id=f1holkefkfpjbjwx&app_secret=u77EjpsFIJ2tJEXop5B9eIUxdVGmDak1', 33, 16);
+
+
+    </script>
+</body>
+
+</html>
